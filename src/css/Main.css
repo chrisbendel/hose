@@ -1,0 +1,8 @@
+.Container {
+  display: flex;
+  flex-direction: row;
+}
+
+.Main {
+  padding: 2%;
+}
