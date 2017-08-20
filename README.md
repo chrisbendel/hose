@@ -1,4 +1,5 @@
-#Developing
+# Developing
+
 ## Install the repo and it's depdendencies
 ```git clone https://github.com/chrissbendel/phish```
 ```cd phish```
