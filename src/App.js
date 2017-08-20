@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Shows from './components/Shows';
 import Sidebar from './components/Sidebar';
 import Main from './components/Main';
+import Player from './components/Player';
 import './css/Main.css';
 
 export default class App extends Component {

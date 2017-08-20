@@ -7,7 +7,12 @@ export default class Main extends Component {
   render() {
     return (
       <div className="Main">
-        <Route path="/Shows" component={Shows}/>
+        <div className="Player">
+          Player
+        </div>
+        <div className="Content">
+          <Route path="/shows" component={Shows}/>
+        </div>
       </div>
     );
   }

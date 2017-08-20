@@ -4,23 +4,27 @@ import './../css/Sidebar.css';
 
 const items = [
   {
-    "name": "Shows"
+    "name": "Shows",
+    "path": "/shows"
   },
   {
-    "name": "Songs"
+    "name": "Songs",
+    "path": "/songs"
   },
   {
-    "name": "Venues"
+    "name": "Venues",
+    "path": "/venues"
   },
   {
-    "name": "Years"
+    "name": "Years",
+    "path": "/years"
   }
 ]
 
 const renderList = items.map(function(item, index) {
   return (
     <li>
-      <Link to={`/${item.name}`} className="navItem">
+      <Link to={item.path} className="navItem">
         {item.name}
       </Link>
     </li>

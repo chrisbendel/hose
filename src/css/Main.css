@@ -5,4 +5,9 @@
 
 .Main {
   padding: 2%;
+  flex-direction: column;
+}
+
+.Player {
+  height: 7.5vh;
 }
