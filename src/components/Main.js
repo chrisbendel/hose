@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Shows from './Shows';
+import Years from './Years';
 import './../css/Main.css';
 
 export default class Main extends Component {
@@ -12,6 +13,7 @@ export default class Main extends Component {
         </div>
         <div className="Content">
           <Route path="/shows" component={Shows}/>
+          <Route path="/years" component={Years}/>
         </div>
       </div>
     );

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import {shows} from './../phishin.js';
+import {shows} from './../api/phishin.js';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css'
 
 export default class Shows extends Component {
   state = {
@@ -8,28 +10,29 @@ export default class Shows extends Component {
 
   componentWillMount() {
     shows().then(shows => {
-      console.log(shows);
       this.setState({shows: shows});
     })
   }
 
   render() {
     let shows = this.state.shows;
-    if (shows) {
-      const show = shows.map(show => {
-        return (
-          <p key={show.id}> {show.id} </p>
-        );
-      });
+    if (!shows) {
       return (
-        <div>
-          {show}
-        </div>
-      )
+        <div> Loading ... </div>
+      );
     } else {
       return (
-        <p> Loading ... </p>
-      );
+        <ReactTable
+        data={shows}
+        columns={columns}
+      />
+      )
     }
   }
 }
+
+const columns = [
+  {Header: 'Date', accessor: 'date'},
+  {Header: 'Venue', accessor: 'venue_name'},
+  {Header: 'Location', accessor: 'location'}
+]

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Shows from './components/Shows';
+import { BrowserRouter as Router, Redirect } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Main from './components/Main';
-import Player from './components/Player';
 import './css/Main.css';
 
 export default class App extends Component {
@@ -13,6 +11,7 @@ export default class App extends Component {
         <div className="Container">
           <Sidebar />
           <Main />
+          <Redirect from="/" to="/years"/>
         </div>
       </Router>
     );
