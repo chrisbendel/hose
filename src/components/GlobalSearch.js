@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SearchInput, {createFilter} from 'react-search-input'
+import SearchInput from 'react-search-input'
 import {search} from './../api/phishin.js';
 
 export default class GlobalSearch extends Component {
