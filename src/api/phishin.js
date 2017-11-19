@@ -1,12 +1,12 @@
 const base = 'http://phish.in/api/v1/'
 
-export const search = async() => {
-  let data = await (await fetch(base + 'shows')).json();
+export const search = async(query) => {
+  let data = await (await fetch(base + 'search/' + query)).json();
   return data.data;
 }
 
-export const shows = async(query) => {
-  let data = await (await fetch(base + 'search/' + query)).json();
+export const shows = async() => {
+  let data = await (await fetch(base + 'shows')).json();
   return data.data;
 }
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SearchInput, {createFilter} from 'react-search-input'
+import {search} from './../api/phishin.js';
 
 export default class GlobalSearch extends Component {
   constructor(props) {
@@ -11,13 +12,25 @@ export default class GlobalSearch extends Component {
   }
 
   searchUpdated = (q) => {
-    this.setState({query: q})
+    this.setState({query: q});    
+    if (!q) {
+      return;
+    }
+    search(q).then(res => {
+      console.log(res);
+    })
+  }
+
+  handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      alert('hi');
+    }
   }
 
   render () {
     return (
       <div>
-        <SearchInput className="search-input" onChange={this.searchUpdated} />
+        <SearchInput onKeyPress={this.handleKeyPress} className="search-input" onChange={this.searchUpdated} />
       </div>
     )
   }

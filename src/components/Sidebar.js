@@ -74,10 +74,8 @@ export default class Sidebar extends Component {
 
   renderList = items.map(function(item, index) {
     return (
-      <Link to={item.path}>
-        <a key={item.id} id={item.id}>
-          <span>{item.name}</span>
-        </a>
+      <Link key={item.id} id={item.id} to={item.path}>
+        <span>{item.name}</span>
       </Link>
     );
   });
