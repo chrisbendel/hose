@@ -1,11 +1,13 @@
 .Container {
   display: flex;
   flex-direction: row;
+  height: 100%;
 }
 
 .Main {
   padding: 2%;
   width: 100vw;
+  margin-left: 100px;
   flex: .8;
 }
 
@@ -14,7 +16,6 @@
 
 .Content {
 }
-
 
 /*
 Sidebar stuff
