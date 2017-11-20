@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import SearchBar from 'react-search-bar';
-import {search} from './../api/phishin.js';
-import styles from './../css/Search.css';
+import {search} from './../../api/phishin.js';
 
 const words = [];
 
@@ -10,7 +9,7 @@ export default class GlobalSearch extends Component {
     super(props);
 
     this.state = {
-      suggestions: []      
+      suggestions: []
     };
   }
   

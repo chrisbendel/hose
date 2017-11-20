@@ -1,20 +1,38 @@
 .Container {
-  display: flex;
-  flex-direction: row;
   height: 100%;
 }
 
 .Main {
-  padding: 2%;
-  width: 100vw;
-  margin-left: 100px;
-  flex: .8;
+  /* padding: 2%;
+  width: 100%;
+  margin-left: 75px;
+  flex: .8; */
+}
+
+.Navigation {
+  text-align: center;
+}
+
+.yearList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.yearListItem {
+  float: left;
+  padding-right: 3px;
 }
 
 .Player {
 }
 
 .Content {
+  padding: 2%;
+  width: 100%;
+  margin-left: 75px;
+  flex: .8;
 }
 
 /*
