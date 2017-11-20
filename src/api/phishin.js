@@ -19,4 +19,3 @@ export const tracks = async() => {
   let data = await (await fetch(base + 'tracks')).json();
   return data.data;
 }
-
