@@ -12,13 +12,13 @@ export default class Main extends Component {
   }
 
   componentWillMount = () => {
-    
+
   }
 
   render() {
     return (
       <div className="Main">
-
+        
       </div>
     );
   }
