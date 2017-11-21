@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
+import history from './History';
 import Sidebar from './components/Sidebar/Sidebar';
 import Main from './components/Main/Main';
 import Header from './components/Header/Header'
@@ -20,7 +21,6 @@ export default class App extends Component {
               </header>
               <main className="content">
                 <Route path="/main/:year" component={Main}/>
-                <Redirect from="/" to="/main/all"/>
               </main>
             </div>
           </div>

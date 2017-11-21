@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import history from './../../History';
 import SearchBar from 'react-search-bar';
 import {search} from './../../api/phishin.js';
 import styles from './../../css/Search.css';
@@ -35,6 +37,7 @@ export default class GlobalSearch extends Component {
     if (value) {
       let data = this.state.results[value];
       console.log(data);
+      history.push('/songs');
     }
   }
 
@@ -56,6 +59,7 @@ export default class GlobalSearch extends Component {
   }
 
   render () {
+    console.log(history);
     return (
       <div className="searchBar"> 
         <SearchBar

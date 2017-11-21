@@ -9,24 +9,27 @@ export const search = async(query) => {
     return terms;
   }
 
-  // let show = data.data.show;
-  // if (show) {
-  //   terms[show.date + " " + show.venue_name + ", " + show.location] = show;
-  // }
+  let show = data.data.show;
+  if (show) {
+    terms[show.date + " " + show.venue_name + ", " + show.location] = show;
+    terms[show.date + " " + show.venue_name + ", " + show.location]['type'] = 'shows';
+  }
 
-  // let otherShows = data.data.other_shows;
-  // if (otherShows) {
-  //   Object.keys(otherShows).forEach(function(show) {
-  //     let values = otherShows[show];
-  //     terms[values.date + " " + values.venue_name + ", " + values.location] = values;
-  //   });
-  // }
+  let otherShows = data.data.other_shows;
+  if (otherShows) {
+    Object.keys(otherShows).forEach(function(show) {
+      let values = otherShows[show];
+      terms[values.date + " " + values.venue_name + ", " + values.location] = values;
+      terms[values.date + " " + values.venue_name + ", " + values.location]['type'] = 'shows';
+    });
+  }
 
   let songs = data.data.songs;
   if (songs) {
     Object.keys(songs).forEach(function(song) {
       let values = songs[song];
       terms[values.title] = values;
+      terms[values.title]['type'] = 'songs';
     });
   }
 
@@ -35,6 +38,7 @@ export const search = async(query) => {
     Object.keys(tours).forEach(function(tour) {
       let values = tours[tour];
       terms[values.name] = values;
+      terms[values.name]['type'] = 'tours';
     });
   }
 
@@ -43,6 +47,7 @@ export const search = async(query) => {
     Object.keys(venues).forEach(function(venue) {
       let values = venues[venue];
       terms[values.name + " " + values.location] = values;
+      terms[values.name + " " + values.location]['type'] = 'venues';
     });
   }
 
