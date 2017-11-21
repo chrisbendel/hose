@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import SearchBar from 'react-search-bar';
 import {search} from './../../api/phishin.js';
 import styles from './../../css/Search.css';
-const words = [];
+
+let terms = [];
 
 export default class GlobalSearch extends Component {
   constructor(props) {
@@ -20,9 +21,17 @@ export default class GlobalSearch extends Component {
   }
 
   handleChange = (input) => {
-    this.setState({
-      suggestions: words.filter(word => word.includes(input))
-    });
+    search(input).then(data => {
+      // terms = data;
+      // console.log(terms);
+      this.setState({
+        suggestions: data
+      });
+      // this.setState({
+      //   suggestions: terms.filter(term => term.includes(input))
+      // });
+    })
+
   }
 
   handleSelection = (value) => {
@@ -51,9 +60,8 @@ export default class GlobalSearch extends Component {
       <div>
         <SearchBar
           autoFocus
-          renderClearButton
-          renderSearchButton
           placeholder="Search for a song, show or venue."
+          delay={200}
           onChange={this.handleChange}
           onClear={this.handleClear}
           onSelection={this.handleSelection}

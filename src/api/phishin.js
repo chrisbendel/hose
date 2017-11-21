@@ -2,7 +2,23 @@ const base = 'http://phish.in/api/v1/'
 
 export const search = async(query) => {
   let data = await (await fetch(base + 'search/' + query)).json();
-  return data.data;
+
+  let terms = [];
+  let songs = data.data.songs;
+  Object.keys(songs).forEach(function(song) {
+    let data = songs[song];
+    if (data.alias_for) {
+      terms.push(data.alias_for);
+    }
+    terms.push(data.title);
+  });
+
+  let tours = data.data.tours;
+  let venues = data.data.venues;
+  let show = data.data.show;
+  let otherShows = data.data.other_shows;
+
+  return terms;
 }
 
 export const shows = async() => {
