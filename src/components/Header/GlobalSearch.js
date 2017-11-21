@@ -17,7 +17,8 @@ export default class GlobalSearch extends Component {
   
   handleClear = () => {
     this.setState({
-      suggestions: []
+      suggestions: [],
+      results: {}
     });
   }
 
