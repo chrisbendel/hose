@@ -59,13 +59,10 @@ export default class GlobalSearch extends Component {
   }
 
   render () {
-    console.log(history);
     return (
       <div className="searchBar"> 
         <SearchBar
-          placeholder="Search for a song, show, tour or venue."
-          // renderSearchButton
-          // renderClearButton
+          placeholder="Search for a song, show (Format: 1997-11-17), tour or venue."
           delay={200}
           onChange={this.handleChange}
           onClear={this.handleClear}

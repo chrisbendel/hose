@@ -49,7 +49,16 @@ export default class Sidebar extends Component {
 
   render() {
     return (
-      <Menu noOverlay onStateChange={ this.menuState } isOpen={true} width={225} styles={ styles } pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" }>
+      <Menu 
+        noOverlay
+        disableOverlayClick
+        customBurgerIcon={ false }
+        customCrossIcon={ false }
+        onStateChange={ this.menuState } 
+        isOpen={true} 
+        width={125} 
+        styles={ styles }
+      >
         {this.renderList}
       </Menu>
     );

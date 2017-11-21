@@ -6,7 +6,12 @@ const url = require('url');
 let mainWindow;
 
 function createWindow() {
-    mainWindow = new BrowserWindow({width: 800, height: 600});
+    mainWindow = new BrowserWindow({
+      width: 1000, 
+      height: 800,
+      minWidth: 1000,
+      minHeight: 800
+    });
     mainWindow.loadURL('http://localhost:3000');
 
     // mainWindow.webContents.openDevTools();

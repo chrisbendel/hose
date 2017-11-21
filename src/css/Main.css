@@ -45,20 +45,6 @@ html > * {
   border-top: 1px solid #DDD;
   box-sizing: border-box;
 }
-#page-wrap {
-  min-height: 100vh;
-  box-sizing: border-box;
-}
-.appContent {
-
-}
-
-.Main {
-  /* padding: 2%;
-  width: 100%;
-  margin-left: 75px;
-  flex: .8; */
-}
 
 .Navigation {
   text-align: center;
