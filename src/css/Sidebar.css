@@ -25,9 +25,19 @@
 
 /* General sidebar styles */
 .bm-menu {
-  background: #373a47;
+  background: #FFF;
   padding: 2.5em 1.5em 0;
   font-size: 1.15em;
+}
+
+.bm-menu a {
+  color: #BDBDBD;
+  text-decoration: none;
+
+}
+
+a.active {
+  color: #2979FF;
 }
 
 /* Morph shape necessary with bubble or elastic */

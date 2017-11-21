@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { push as Menu } from 'react-burger-menu'
 import styles from './../../css/Sidebar.css'
 
@@ -41,15 +41,15 @@ export default class Sidebar extends Component {
 
   renderList = items.map(function(item, index) {
     return (
-      <Link key={item.id} id={item.id} to={item.path}>
+      <NavLink key={item.id} id={item.id} to={item.path} activeClassName="active">
         <span>{item.name}</span>
-      </Link>
+      </NavLink>
     );
   });
 
   render() {
     return (
-      <Menu noOverly onStateChange={ this.menuState } isOpen={this.state.menu} width={225} styles={ styles } pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" }>
+      <Menu noOverlay onStateChange={ this.menuState } isOpen={true} width={225} styles={ styles } pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" }>
         {this.renderList}
       </Menu>
     );
