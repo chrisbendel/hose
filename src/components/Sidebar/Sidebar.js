@@ -35,10 +35,6 @@ export default class Sidebar extends Component {
     };
   }
 
-  // menuState = (state) => {
-  //   return !state.isOpen;
-  // }
-
   renderList = items.map(function(item, index) {
     return (
       <NavLink key={item.id} id={item.id} to={item.path} activeClassName="active">
