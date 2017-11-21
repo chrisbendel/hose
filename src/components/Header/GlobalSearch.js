@@ -29,7 +29,6 @@ export default class GlobalSearch extends Component {
         results: data
       });
     })
-
   }
 
   handleSelection = (value) => {
@@ -39,10 +38,13 @@ export default class GlobalSearch extends Component {
     }
   }
 
-  handleSearch = (value) => {
-    if (value) {
-      // console.info(`Searching "${value}"`);
-    }
+  handleSearch = (input) => {
+    search(input).then(data => {
+      this.setState({
+        suggestions: Object.keys(data),
+        results: data
+      });
+    })
   }
 
   suggestionRenderer = (suggestion, searchTerm) => {
