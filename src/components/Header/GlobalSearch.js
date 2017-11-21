@@ -3,16 +3,17 @@ import SearchBar from 'react-search-bar';
 import {search} from './../../api/phishin.js';
 import styles from './../../css/Search.css';
 
-let terms;
-
 export default class GlobalSearch extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      suggestions: []
+      suggestions: [],
+      results: {}
     };
   }
+
+  
   
   handleClear = () => {
     this.setState({
@@ -23,16 +24,17 @@ export default class GlobalSearch extends Component {
   handleChange = (input) => {
     search(input).then(data => {
       this.setState({
-        suggestions: data
+        suggestions: Object.keys(data),
+        results: data
       });
     })
 
   }
 
   handleSelection = (value) => {
-    console.log(value);
     if (value) {
-      // console.info(`Selected "${value}"`);
+      let data = this.state.results[value];
+      console.log(data);
     }
   }
 

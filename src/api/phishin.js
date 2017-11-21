@@ -5,36 +5,49 @@ export const search = async(query) => {
 
   let terms = {};
 
+  if (!data.data) {
+    return terms;
+  }
+
+  // let show = data.data.show;
+  // if (show) {
+  //   terms[show.date + " " + show.venue_name + ", " + show.location] = show;
+  // }
+
+  // let otherShows = data.data.other_shows;
+  // if (otherShows) {
+  //   Object.keys(otherShows).forEach(function(show) {
+  //     let values = otherShows[show];
+  //     terms[values.date + " " + values.venue_name + ", " + values.location] = values;
+  //   });
+  // }
+
   let songs = data.data.songs;
-  Object.keys(songs).forEach(function(song) {
-    let data = songs[song];
-    if (data.alias_for) {
-      // terms[data.title] = {'slug': data.slug, 'id': data.id};
-      terms.push(String(data.alias_for));
-    }
-    terms.push(String(data.title));
-  });
+  if (songs) {
+    Object.keys(songs).forEach(function(song) {
+      let values = songs[song];
+      terms[values.title] = values;
+    });
+  }
 
   let tours = data.data.tours;
-  Object.keys(tours).forEach(function(tour) {
-    let data = tours[tour];
-    terms.push(String(data.name));
-  });
+  if (tours) {
+    Object.keys(tours).forEach(function(tour) {
+      let values = tours[tour];
+      terms[values.name] = values;
+    });
+  }
 
   let venues = data.data.venues;
-  Object.keys(venues).forEach(function(venue) {
-    let data = venues[venue];
-    terms[data.title] = {'slug': data.slug, 'id': data.id};
-    // if (data.alias_for) {
-    //   terms.push(String(data.alias_for));
-    // }
-    terms.push(String(data.title));
-  });
+  if (venues) {
+    Object.keys(venues).forEach(function(venue) {
+      let values = venues[venue];
+      terms[values.name + " " + values.location] = values;
+    });
+  }
 
-  let show = data.data.show;
-  let otherShows = data.data.other_shows;
-
-  return terms.slice(0, 10);
+  //Maybe return top 10 or so
+  return terms;
 }
 
 export const shows = async() => {
