@@ -35,9 +35,9 @@ export default class Sidebar extends Component {
     };
   }
 
-  menuState = (state) => {
-    return !state.isOpen;
-  }
+  // menuState = (state) => {
+  //   return !state.isOpen;
+  // }
 
   renderList = items.map(function(item, index) {
     return (
@@ -49,7 +49,7 @@ export default class Sidebar extends Component {
 
   render() {
     return (
-      <Menu onStateChange={ this.menuState } isOpen={this.state.menu} width={100} styles={ styles } pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" }>
+      <Menu noOverly onStateChange={ this.menuState } isOpen={this.state.menu} width={225} styles={ styles } pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" }>
         {this.renderList}
       </Menu>
     );

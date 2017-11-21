@@ -1,3 +1,6 @@
+.searchBar {
+  position: relative;
+}
 .searchBar > div > ul {
   border: 1px solid #ccc;
   list-style: none;
@@ -5,10 +8,14 @@
   max-height: 240px;
   overflow: auto;
   padding: 0;
-  position: relative;
-  top: -1px;
+  position: absolute;
   user-select: none;
   z-index: 100;
+  background-color: #FFF;
+  box-shadow: 0 0 15px 0px rgba(0, 0, 0, 0.2);
+  bottom: 0;
+  transform: translateY(100%);
+  width: 100%;
 }
 
 .searchBar > div > ul > li {
