@@ -8,9 +8,9 @@ export const search = async(query) => {
   Object.keys(songs).forEach(function(song) {
     let data = songs[song];
     if (data.alias_for) {
-      terms.push(data.alias_for);
+      terms.push(String(data.alias_for));
     }
-    terms.push(data.title);
+    terms.push(String(data.title));
   });
 
   let tours = data.data.tours;
@@ -18,7 +18,7 @@ export const search = async(query) => {
   let show = data.data.show;
   let otherShows = data.data.other_shows;
 
-  return terms;
+  return terms.slice(0, 10);
 }
 
 export const shows = async() => {

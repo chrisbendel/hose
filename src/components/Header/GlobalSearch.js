@@ -22,45 +22,40 @@ export default class GlobalSearch extends Component {
 
   handleChange = (input) => {
     search(input).then(data => {
-      // terms = data;
-      // console.log(terms);
       this.setState({
         suggestions: data
       });
-      // this.setState({
-      //   suggestions: terms.filter(term => term.includes(input))
-      // });
     })
 
   }
 
   handleSelection = (value) => {
     if (value) {
-      console.info(`Selected "${value}"`);
+      // console.info(`Selected "${value}"`);
     }
   }
 
   handleSearch = (value) => {
     if (value) {
-      console.info(`Searching "${value}"`);
+      // console.info(`Searching "${value}"`);
     }
   }
 
   suggestionRenderer = (suggestion, searchTerm) => {
     return (
       <span>
-        <span>{searchTerm}</span>
-        <strong>{suggestion.substr(searchTerm.length)}</strong>
+        <span>{suggestion}</span>
       </span>
     );
   }
 
   render () {
     return (
-      <div>
+      <div className="searchBar"> 
         <SearchBar
-          autoFocus
-          placeholder="Search for a song, show or venue."
+          placeholder="Search for a song, show, tour or venue."
+          // renderSearchButton
+          // renderClearButton
           delay={200}
           onChange={this.handleChange}
           onClear={this.handleClear}
