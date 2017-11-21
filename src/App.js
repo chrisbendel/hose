@@ -12,19 +12,21 @@ export default class App extends Component {
     return (
       <Router>
         <div id="outer-container" className="app">
-          <Sidebar />
-          <div id="page-wrap" className="container">
-            <header className="header">
-              <Header />
-            </header>
-            <main className="content">
-              <Route path="/main/:year" component={Main}/>
-              <Redirect from="/" to="/main/all"/>
-            </main>
-            <footer className="player">
-              <Player /> 
-            </footer>
+          <div className="top-container">
+            <Sidebar />
+            <div className="page-container">
+              <header className="header">
+                <Header />
+              </header>
+              <main className="content">
+                <Route path="/main/:year" component={Main}/>
+                <Redirect from="/" to="/main/all"/>
+              </main>
+            </div>
           </div>
+          <footer className="player">
+            <Player /> 
+          </footer>
         </div>
       </Router>
     );

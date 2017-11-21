@@ -33,7 +33,10 @@
 .bm-menu a {
   color: #BDBDBD;
   text-decoration: none;
+}
 
+.bm-menu-wrap {
+  height: calc(100% - 100px) !important;
 }
 
 a.active {

@@ -1,0 +1,50 @@
+.Player {
+  height: 100%;
+}
+.controls-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transition: border-color .15s ease;
+  outline: none;
+  cursor: pointer;
+}
+
+.button.lg {
+  height: 50px;
+  width: 50px;
+  border: 1px solid #448AFF;
+}
+
+.button.sm {
+  height: 30px; 
+  width: 30px;
+}
+
+.button:hover {
+  border-color: #2979FF;
+}
+
+.button .icon {
+  transition: transform .15s ease;
+  height: 30px;
+  width: 30px;  
+  display: block;
+}
+
+.button .icon.play {
+  margin-left: 3px;
+}
+
+.button:hover .icon {
+  transform: scale(1.1);
+}
