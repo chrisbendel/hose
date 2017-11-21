@@ -3,7 +3,7 @@ import SearchBar from 'react-search-bar';
 import {search} from './../../api/phishin.js';
 import styles from './../../css/Search.css';
 
-let terms = [];
+let terms;
 
 export default class GlobalSearch extends Component {
   constructor(props) {
@@ -30,6 +30,7 @@ export default class GlobalSearch extends Component {
   }
 
   handleSelection = (value) => {
+    console.log(value);
     if (value) {
       // console.info(`Selected "${value}"`);
     }
