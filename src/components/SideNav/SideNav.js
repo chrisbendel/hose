@@ -44,7 +44,7 @@ export default class SideNav extends Component {
 
   render() {
     return (
-      <div>
+      <div id="mySidenav" className="sidenav">
         {this.renderList}
       </div>
     );

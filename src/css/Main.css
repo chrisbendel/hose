@@ -61,10 +61,3 @@ html > * {
   float: left;
   padding-right: 3px;
 }
-
-.Player {
-  position: "fixed";
-  left: "0";
-  bottom: "0";
-  height: "60px";
-}
