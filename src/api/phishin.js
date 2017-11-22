@@ -28,8 +28,12 @@ export const search = async(query) => {
   if (songs) {
     Object.keys(songs).forEach(function(song) {
       let values = songs[song];
-      terms[values.title] = values;
-      terms[values.title]['type'] = 'songs';
+      if (values.alias_for) {
+        //ignore aliases for now
+      } else {
+        terms[values.title] = values;
+        terms[values.title]['type'] = 'songs';
+      }
     });
   }
 

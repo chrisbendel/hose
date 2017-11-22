@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import { push as Menu } from 'react-burger-menu'
-import styles from './../../css/Sidebar.css'
+import styles from './../../css/SideNav.css'
 
 const items = [
   {
@@ -26,12 +25,12 @@ const items = [
   }
 ]
 
-export default class Sidebar extends Component {
+export default class SideNav extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      menu: false
+      open: true
     };
   }
 
@@ -45,18 +44,9 @@ export default class Sidebar extends Component {
 
   render() {
     return (
-      <Menu 
-        noOverlay
-        disableOverlayClick
-        customBurgerIcon={ false }
-        customCrossIcon={ false }
-        onStateChange={ this.menuState } 
-        isOpen={true} 
-        width={125} 
-        styles={ styles }
-      >
+      <div>
         {this.renderList}
-      </Menu>
+      </div>
     );
   }
 }

@@ -25,19 +25,21 @@ export default class GlobalSearch extends Component {
   }
 
   handleChange = (input) => {
-    search(input).then(data => {
-      this.setState({
-        suggestions: Object.keys(data),
-        results: data
-      });
-    })
+    if (input.length > 2) {
+      search(input).then(data => {
+        this.setState({
+          suggestions: Object.keys(data),
+          results: data
+        });
+      })
+    }
   }
 
   handleSelection = (value) => {
     if (value) {
       let data = this.state.results[value];
       console.log(data);
-      history.push('/songs');
+      history.push('/main/' + data.id);
     }
   }
 

@@ -7,10 +7,12 @@ let mainWindow;
 
 function createWindow() {
     mainWindow = new BrowserWindow({
+      title: 'Hose',
       width: 1000, 
       height: 800,
       minWidth: 1000,
-      minHeight: 800
+      minHeight: 800,
+      darkTheme: true
     });
     mainWindow.loadURL('http://localhost:3000');
 
@@ -18,10 +20,13 @@ function createWindow() {
 
     mainWindow.on('closed', function () {
         mainWindow = null
-    })
+    });
 }
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+  createWindow();
+
+});
 
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {

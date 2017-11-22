@@ -5,14 +5,11 @@ import './../../css/Main.css';
 export default class Main extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      year: "all"
-    }
+    console.log(this.props);
   }
 
   componentWillMount = () => {
-
+    
   }
 
   render() {
