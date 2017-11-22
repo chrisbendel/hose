@@ -24,11 +24,10 @@ html > * {
 .page-container {
   padding: 1rem;
   height: 100%;
-  margin-left: 75px;
+  margin-left: 150px;
   flex: 1;
   box-sizing: border-box;
-  width: calc(100% - 225px);
-  margin-left: 225px;
+  width: calc(100% - 150px);
 }
 
 .header {
