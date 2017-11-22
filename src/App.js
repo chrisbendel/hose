@@ -4,6 +4,7 @@ import history from './History';
 import SideNav from './components/SideNav/SideNav';
 import Header from './components/Header/Header';
 import Player from './components/Footer/Player';
+import GlobalSearch from './components/Header/GlobalSearch';
 import routes from './Routes';
 import './css/Main.css';
 
@@ -12,17 +13,14 @@ export default class App extends Component {
     return (
       <Router>
         <div className="app">
+          <SideNav />
           <div className="top-container">
-            <SideNav />
-            
-            <div className="page-container">
-              <header className="header">
-                <Header />
-              </header>
-              <main className="content">
-                {routes}
-              </main>
-            </div>
+            <GlobalSearch />
+
+            <Header className="header" />
+            <main className="content">
+              {routes}
+            </main>
           </div>
           <footer className="player">
             <Player /> 

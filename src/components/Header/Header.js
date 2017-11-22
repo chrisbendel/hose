@@ -48,11 +48,10 @@ export default class Header extends Component {
 
   render() {
     return (
-      <div className="Navigation">
-        <GlobalSearch />
+      <div>
         <ul className="yearList"> 
           {renderList} 
-          </ul>
+        </ul>
       </div>
     );
   }

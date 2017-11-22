@@ -36,7 +36,12 @@ export default class SideNav extends Component {
 
   renderList = items.map(function(item, index) {
     return (
-      <NavLink key={item.id} id={item.id} to={item.path} activeClassName="active">
+      <NavLink 
+        key={item.id} 
+        id={item.id} 
+        to={item.path} 
+        activeClassName="active"
+      >
         <span>{item.name}</span>
       </NavLink>
     );

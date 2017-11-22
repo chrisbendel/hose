@@ -1,78 +1,87 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import history from './../../History';
-import SearchBar from 'react-search-bar';
 import {search} from './../../api/phishin.js';
-import styles from './../../css/Search.css';
+import './../../css/Search.css';
+import Autosuggest from 'react-autosuggest';
+
+let results = {}
 
 export default class GlobalSearch extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      suggestions: [],
-      results: {}
+      value: '',
+      suggestions: []
     };
   }
 
-  
-  
-  handleClear = () => {
+  onChange = (event, { newValue, method }) => {
     this.setState({
-      suggestions: [],
-      results: {}
+      value: newValue
     });
-  }
+  };
 
-  handleChange = (input) => {
-    if (input.length > 2) {
-      search(input).then(data => {
-        this.setState({
-          suggestions: Object.keys(data),
-          results: data
-        });
-      })
-    }
-  }
+  onSuggestionsFetchRequested = ({ value }) => {
+    search(value).then(data => {
+      results = data;
+      this.setState({
+        suggestions: Object.keys(data)
+      });
+    })
+  };
+  
+  renderSuggestion = suggestion => {
+    return (
+      <div>
+        {suggestion}
+      </div>
+    )
+  };
 
-  handleSelection = (value) => {
-    if (value) {
-      let data = this.state.results[value];
+  onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+    if (suggestion) {
+      let data = results[suggestion];
       console.log(data);
       history.push('/main/' + data.id);
     }
   }
 
-  handleSearch = (input) => {
-    search(input).then(data => {
-      this.setState({
-        suggestions: Object.keys(data),
-        results: data
-      });
-    })
+  getSuggestionValue = (suggestion) => {
+    return suggestion;
   }
 
-  suggestionRenderer = (suggestion, searchTerm) => {
-    return (
-      <span>
-        <span>{suggestion}</span>
-      </span>
-    );
+  shouldRenderSuggestions = (value) => {
+    return value.trim().length > 2;
   }
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    });
+  };
 
   render () {
+    const { value, suggestions } = this.state;
+
+    const inputProps = {
+      placeholder: "Search for a song, show, tour or venue.",
+      value,
+      onChange: this.onChange
+    };
+
     return (
-      <div className="searchBar"> 
-        <SearchBar
-          placeholder="Search for a song, show (Format: 1997-11-17), tour or venue."
-          delay={200}
-          onChange={this.handleChange}
-          onClear={this.handleClear}
-          onSelection={this.handleSelection}
-          onSearch={this.handleSearch}
+      <div>
+        <Autosuggest
+          highlightFirstSuggestion={true}
+          shouldRenderSuggestions={this.shouldRenderSuggestions}
           suggestions={this.state.suggestions}
-          suggestionRenderer={this.suggestionRenderer}
-          styles={styles}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={this.getSuggestionValue}
+          renderSuggestion={this.renderSuggestion}
+          onSuggestionSelected={this.onSuggestionSelected}
+          inputProps={inputProps}
         />
       </div>
     )
