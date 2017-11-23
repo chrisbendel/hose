@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import history from './../../History';
 import {search} from './../../api/phishin.js';
 import './../../css/Search.css';
 import Autosuggest from 'react-autosuggest';
@@ -9,11 +8,11 @@ let results = {}
 export default class GlobalSearch extends Component {
   constructor(props) {
     super(props);
-
+    console.log(this.props);
     this.state = {
       value: '',
       suggestions: []
-    };
+    }; 
   }
 
   onChange = (event, { newValue, method }) => {
@@ -42,8 +41,7 @@ export default class GlobalSearch extends Component {
   onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
     if (suggestion) {
       let data = results[suggestion];
-      console.log(data);
-      history.push('/main/' + data.id);
+      this.props.history.push(data.path);
     }
   }
 
@@ -65,7 +63,7 @@ export default class GlobalSearch extends Component {
     const { value, suggestions } = this.state;
 
     const inputProps = {
-      placeholder: "Search for a song, show, tour or venue.",
+      placeholder: "Search for a song, date, tour or venue.",
       value,
       onChange: this.onChange
     };

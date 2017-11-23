@@ -2,10 +2,11 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Main from './components/Main/Main';
 
+//Unused for now, might move routes to here for simplicity.
 const routes = (
-  <Route>
-    <Route path="/main/:year" component={Main}/>
-  </Route>
+  <div>
+    <Route path="main/:id" component={Main}/>
+  </div>
 );
 
 export default routes;

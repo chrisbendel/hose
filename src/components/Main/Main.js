@@ -1,22 +1,24 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
 import './../../css/Main.css';
+import { withRouter } from 'react-router-dom';
 
-export default class Main extends Component {
+class Main extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
+    console.log('hi');
   }
 
   componentWillMount = () => {
-    
+    console.log(this.props);
   }
 
   render() {
     return (
       <div>
-
+        hello
       </div>
     );
   }
 }
+
+export default Main;
