@@ -21,14 +21,14 @@ export default class App extends Component {
           <div className="top-container">
             <GlobalSearch history={history}/>
             <Header className="header" />
-            <main className="content">
-              <Route path="/shows/:id" component={Shows}/>
-              <Route path="/songs/:id" component={Songs}/>
-              <Route path="/eras/:id" component={Eras}/>
-            </main>
           </div>
+          <main className="content">
+            <Route path="/shows/:id" component={Shows}/>
+            <Route path="/songs/:id" component={Songs}/>
+            <Route path="/eras/:id" component={Eras}/>
+          </main>
           <footer className="player">
-            <Player /> 
+            <Player />
           </footer>
         </div>
       </Router>

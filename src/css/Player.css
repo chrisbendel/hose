@@ -1,6 +1,7 @@
 .Player {
   height: 100%;
 }
+
 .controls-container {
   display: flex;
   flex-direction: row;

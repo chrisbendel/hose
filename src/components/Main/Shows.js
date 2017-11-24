@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './../../css/Main.css';
+import './../../css/Shows.css';
 import { withRouter } from 'react-router-dom';
 import { show } from './../../api/phishin';
 
@@ -32,7 +32,7 @@ class Main extends Component {
     
     console.log(show);
     return (
-      <div >
+      <div>
         <div className="show-details">
           {show.date}
         </div>
