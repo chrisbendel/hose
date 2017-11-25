@@ -13,22 +13,30 @@ html > * {
 
 .app {
   height: 100%;
-  display: flex;
-  flex-direction: column;
+
 }
 
 .top-container {
   height: calc(100vh - 100px);
-  margin-left: 150px;
   width: calc(100% - 150px);
-  padding: 1rem;
   height: 100%;
-  flex: 1;
+  padding: 1rem;
   box-sizing: border-box;
 }
 
+.content-container {
+  margin-left: 150px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
 .content {
-  height: calc(100vh - 100px) !important;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  height: 100%;
+  margin-bottom: 100px;
 }
 
 .header {

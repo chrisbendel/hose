@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import GlobalSearch from './GlobalSearch';
 
 const years = [
   {"year": "1983-1987", "short": "83-87"},

@@ -1,5 +1,5 @@
 .sidenav {
-  height: calc(100% - 100px) !important;
+  height: 100%;
   width: 150px;
   position: fixed;
   top: 0;
