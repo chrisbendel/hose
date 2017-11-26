@@ -23,13 +23,13 @@ export default class App extends Component {
           <header className="header">
             <GlobalSearch history={history}/>
           </header>
-          <div className="content">
+          <main className="content">
             <div>
               <Route path="/show/:id" component={Show}/>
               <Route path="/shows" component={Shows}/>
               <Route path="/song/:id" component={Show}/>
             </div>
-          </div>
+          </main>
           <footer className="footer">
             <Player />
           </footer>
