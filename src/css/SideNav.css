@@ -1,22 +1,17 @@
 .sidenav {
-  height: 100%;
-  width: 150px;
-  position: fixed;
   top: 0;
   left: 0;
-  background-color: #111; /* Black*/
-  overflow-x: hidden; /* Disable horizontal scroll */
-  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  background-color: #111;
+  overflow-x: hidden;
 }
 
 .sidenav a {
   margin-top: 25px;
-  padding: 8px 8px 8px 32px;
+  padding: 1rem;
   text-decoration: none;
-  font-size: 25px;
+  font-size: 15px;
   color: #BDBDBD;
   display: block;
-  transition: 0.3s
 }
 
 .sidenav a.active {
@@ -24,6 +19,6 @@
 }
 
 .sidenav a:hover, .offcanvas a:focus{
-  color: #BDBDBD;
+  color: #FFF;
 }
 

@@ -21,13 +21,12 @@
 
 .shows-container {
   display: flex;
-  flex-flow: column wrap;
   height: 100%;
 }
 
 .year-filter {
-  align-self: center;
-  flex-grow: 1
+  position: relative;
+  float: left;
 }
 
 .year-list {
@@ -39,7 +38,7 @@
 }
 
 .year-list-item {
-  float: left;
+  display:block;
   padding: 5px 10px;
 }
 

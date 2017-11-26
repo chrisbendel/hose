@@ -19,33 +19,55 @@ html > * {
   box-sizing: border-box;
 }
 
-.content-container {
-  margin-left: 150px;
+.left {
+  position: fixed;
+  left: 0;
+  width: 100px;
+  height: 100%;
+  background-color: #111;
+  overflow-x: hidden;
+}
+
+.right {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100px;
+  height: 100%;
+  background-color: #111;
+  overflow-x: hidden;
 }
 
 .header {
   position: fixed;
-  width: 100%;
+  width: calc(100% - 200px);
+  height: 50px;
   background:pink;
-  padding: 1rem;
+  left: 100px;
+  right: 100px;
   top: 0;
+  padding: 1rem 0;
+  z-index: 100;
 }
 
 .content {
   position: absolute;
-  top: 100px;
-  bottom: 100px;
-  padding: 1rem;
+  top: calc(50px + 1rem);
+  bottom: calc(50px + 1rem);
+  right: 100px;
+  left: 100px;
+  padding: 1rem 0;
   box-sizing: border-box;
-  width: calc(100% - 150px);
   overflow-y: auto;
 }
 
 .footer {
   position: fixed;
-  position:fixed;
-  width:100%;
-  background:pink;
-  padding: 1rem;
+  left: 100px;
+  right: 100px;
+  height: 50px;
   bottom: 0px;
+  width: calc(100% - 200px);
+  background:pink;
+  padding: 1rem 0;
 }

@@ -5,6 +5,7 @@ import Player from './components/Footer/Player';
 import Show from './components/Main/Show';
 import Shows from './components/Main/Shows';
 import Songs from './components/Main/Songs';
+import Playlist from './components/Playlist';
 import createHistory from 'history/createBrowserHistory';
 import GlobalSearch from './components/Header/GlobalSearch';
 import './css/Main.css';
@@ -15,23 +16,26 @@ export default class App extends Component {
   render() {
     return (
       <Router history={history}>
-        <div className="app">
-          <SideNav />
-          <div className="content-container">
-            <header className="header">
-              <GlobalSearch history={history}/>
-            </header>
-            <main className="content">
-              <div>
-                <Route path="/show/:id" component={Show}/>
-                <Route path="/shows" component={Shows}/>
-                <Route path="/song/:id" component={Show}/>
-              </div>
-            </main>
-            <footer className="footer">
-              <Player />
-            </footer>
+        <div>
+          <nav className="left">
+            <SideNav />
+          </nav>
+          <header className="header">
+            <GlobalSearch history={history}/>
+          </header>
+          <div className="content">
+            <div>
+              <Route path="/show/:id" component={Show}/>
+              <Route path="/shows" component={Shows}/>
+              <Route path="/song/:id" component={Show}/>
+            </div>
           </div>
+          <footer className="footer">
+            <Player />
+          </footer>
+          <nav className="right">
+            <Playlist />
+          </nav>
         </div>
       </Router>
     );

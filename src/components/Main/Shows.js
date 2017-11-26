@@ -113,14 +113,16 @@ export default class Shows extends Component {
     console.log(shows);
 
     return (
-      <div className="shows-container">
+      <div>
         <div className="year-filter">
           <ul className="year-list">
             {this.renderYears()} 
           </ul>
         </div>
-        <div className="show-gallery">
-          {this.renderShows(shows)}
+        <div className="shows-container">
+          <div className="show-gallery">
+            {this.renderShows(shows)}
+          </div>
         </div>
       </div>
     );
