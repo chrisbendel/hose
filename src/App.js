@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Router } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import SideNav from './components/SideNav/SideNav';
 import Player from './components/Footer/Player';
-import Routes from './Routes';
+import Show from './components/Main/Show';
+import Shows from './components/Main/Shows';
+import Songs from './components/Main/Songs';
 import createHistory from 'history/createBrowserHistory';
 import GlobalSearch from './components/Header/GlobalSearch';
 import './css/Main.css';
@@ -20,7 +22,11 @@ export default class App extends Component {
               <GlobalSearch history={history}/>
             </header>
             <main className="content">
-              {Routes}
+              <div>
+                <Route path="/show/:id" component={Show}/>
+                <Route path="/shows" component={Shows}/>
+                <Route path="/song/:id" component={Show}/>
+              </div>
             </main>
             <footer className="footer">
               <Player />

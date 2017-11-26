@@ -35,7 +35,7 @@ const years = [
 export default class Shows extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       shows: null
     }
@@ -64,7 +64,7 @@ export default class Shows extends Component {
     return shows.map(function (show) {
       console.log(show);
       return (
-        <div key={show.id} className="image-container" onClick={(e) => console.log(show.date)}>
+        <div key={show.id} className="image-container" onClick={() => this.props.history.push('show/' + show.id)}>
           <img 
             src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
             id={show.id}

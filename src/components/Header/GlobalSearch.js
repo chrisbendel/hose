@@ -3,7 +3,6 @@ import {search} from './../../api/phishin.js';
 import './../../css/Search.css';
 import Autosuggest from 'react-autosuggest';
 
-// let results = {};
 let results = [];
 
 String.prototype.fuzzy = function (s) {
@@ -84,7 +83,9 @@ export default class GlobalSearch extends Component {
     };
 
     return (
-      <div>
+      <div className="nav">
+        <a onClick={() => {this.props.history.goBack()}} className="prev">&#8249;</a>
+        <a onClick={() => {this.props.history.goForward()}} className="next">&#8250;</a>
         <Autosuggest
           highlightFirstSuggestion={true}
           shouldRenderSuggestions={this.shouldRenderSuggestions}

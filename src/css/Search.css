@@ -1,5 +1,23 @@
+.prev, .next {
+  text-decoration: none;
+  padding: 15px;
+  width: 30px;
+  font-size: 18px;
+  color: #fff !important;
+  text-align: center;
+  margin: 0 10px;
+  background-color: #000 !important;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.nav {
+  display: flex;
+}
+
 .react-autosuggest__container {
   position: relative;
+  width: 80vw;
 }
 
 .react-autosuggest__input {

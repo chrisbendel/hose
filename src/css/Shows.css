@@ -49,10 +49,9 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 8px;
-  max-width: calc(100% - 50px);
+  max-width: calc(100% - 10px);
   width: 100%;
   margin: 0 auto;
-  padding: 1rem;
 }
 
 .show-gallery img {
