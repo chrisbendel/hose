@@ -21,10 +21,13 @@
 
 .year-list {
   list-style-type: none;
-  margin: 0;
+  position: fixed;
+  margin: 0 auto;
   padding: 0;
   overflow: hidden;
   cursor: pointer;
+  position: fixed;
+  height: 20px;
 }
 
 .year-list-item {
@@ -36,7 +39,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 8px;
-  max-width: 1200px;
+  max-width: calc(100% - 50px);
   width: 100%;
   margin: 0 auto;
   padding: 1rem;

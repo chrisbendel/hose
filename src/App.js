@@ -16,13 +16,13 @@ export default class App extends Component {
         <div className="app">
           <SideNav />
           <div className="content-container">
-            <header className="top-container">
+            <header className="header">
               <GlobalSearch history={history}/>
             </header>
             <main className="content">
               {Routes}
             </main>
-            <footer className="player">
+            <footer className="footer">
               <Player />
             </footer>
           </div>
