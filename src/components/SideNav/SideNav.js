@@ -5,8 +5,8 @@ import styles from './../../css/SideNav.css'
 const items = [
   {
     "id": 0,
-    "name": "Years",
-    "path": "/years"
+    "name": "Tours",
+    "path": "/tours"
   },
   {
     "id": 1,
@@ -49,7 +49,7 @@ export default class SideNav extends Component {
 
   render() {
     return (
-      <div id="mySidenav" className="sidenav">
+      <div className="sidenav">
         {this.renderList}
       </div>
     );

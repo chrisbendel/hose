@@ -31,11 +31,6 @@ html > * {
   margin-bottom: 100px;
 }
 
-.header {
-  position: fixed;
-  top: 0;
-}
-
 .player {
   position: fixed;
   bottom: 0;

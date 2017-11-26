@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import './../../css/Main.css';
 import { withRouter } from 'react-router-dom';
 
-class Main extends Component {
+export default class Venues extends Component {
   constructor(props) {
     super(props);
-    console.log('hi');
   }
 
   componentWillMount = () => {
@@ -20,5 +19,3 @@ class Main extends Component {
     );
   }
 }
-
-export default Main;

@@ -1,11 +1,15 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import Main from './components/Main/Main';
+import Show from './components/Main/Show';
+import Shows from './components/Main/Shows';
+import Songs from './components/Main/Songs';
 
-//Unused for now, might move routes to here for simplicity.
 const routes = (
   <div>
-    <Route path="main/:id" component={Main}/>
+    <Route path="/show/:id" component={Show}/>
+    <Route path="/shows" component={Shows}/>
+    <Route path="/venues" component={Show}/>
+    <Route path="/songs/:id" component={Songs}/>
   </div>
 );
 

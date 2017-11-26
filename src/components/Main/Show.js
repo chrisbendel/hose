@@ -14,10 +14,12 @@ export default class Show extends Component {
 
   fetchShow(id) {
     show(id).then(show => {
-      this.setState({
-        show: show,
-        image: process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'
-      })
+      if (show) {
+        this.setState({
+          show: show,
+          image: process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'
+        })
+      }
     });
   }
 

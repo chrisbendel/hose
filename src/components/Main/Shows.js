@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { shows } from './../../api/phishin';
 
 const years = [
   {"year": "1983-1987", "short": "83-87"},
@@ -30,26 +30,52 @@ const years = [
   {"year": "2017", "short": "'17", "era": "3.0"}
 ]
 
-const renderList = years.map(function(year) {
+const renderYears = years.map(function(year) {
   return (
     <li className="yearListItem" key={year.year}>
-      <Link key={year.year} to={year.year}>
-        <span>{year.short}</span>
-      </Link>
+      <span>{year.short}</span>
     </li>
   );
 });
 
-export default class Header extends Component {
+export default class Shows extends Component {
   constructor(props) {
     super(props);
+    
+    this.state = {
+      shows: null
+    }
+  }
+
+  fetchShows = () => {
+    shows().then(shows => {
+      this.setState({
+        shows: shows
+      })
+    })
+  }
+
+  componentWillMount = () => {
+    this.fetchShows();
   }
 
   render() {
+    let shows = this.state.shows;
+    
+    if (!shows) {
+      return (
+        <div>
+          Loading ...
+        </div>
+      )
+    }
+
+    console.log(shows);
+
     return (
       <div>
         <ul className="yearList"> 
-          {renderList} 
+          {renderYears} 
         </ul>
       </div>
     );
