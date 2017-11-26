@@ -3,16 +3,30 @@ import {search} from './../../api/phishin.js';
 import './../../css/Search.css';
 import Autosuggest from 'react-autosuggest';
 
-let results = {}
+// let results = {};
+let results = [];
+
+String.prototype.fuzzy = function (s) {
+  var hay = this.toLowerCase(), i = 0, n = 0, l;
+  s = s.toLowerCase();
+  for (; l = s[i++] ;) if ((n = hay.indexOf(l, n)) === -1) return false;
+  return true;
+};
 
 export default class GlobalSearch extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
+
     this.state = {
       value: '',
       suggestions: []
     }; 
+  }
+
+  getSuggestions = (value) => {
+    return results.filter(function (res) {
+      return res.display.fuzzy(value);
+    });
   }
 
   onChange = (event, { newValue, method }) => {
@@ -25,28 +39,28 @@ export default class GlobalSearch extends Component {
     search(value).then(data => {
       results = data;
       this.setState({
-        suggestions: Object.keys(data)
+        suggestions: this.getSuggestions(value)
       });
     })
   };
   
   renderSuggestion = suggestion => {
+    console.log(suggestion);
     return (
       <div>
-        {suggestion}
+        {suggestion.display}
       </div>
     )
   };
 
   onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
     if (suggestion) {
-      let data = results[suggestion];
-      this.props.history.push(data.path);
+      this.props.history.push(suggestion.path);
     }
   }
 
   getSuggestionValue = (suggestion) => {
-    return suggestion;
+    return suggestion.display;
   }
 
   shouldRenderSuggestions = (value) => {

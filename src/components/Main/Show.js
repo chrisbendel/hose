@@ -51,7 +51,7 @@ export default class Show extends Component {
     return (
       <div>
         <div className="show-overview">
-          <img onError={this.getDefaultImage} className="art" src={this.state.image}/>
+          <img onError={this.getDefaultImage} className="art" alt={show.date} src={this.state.image}/>
           <div className="show-details">
             <p> test </p>
             <p> test1234234 </p>

@@ -22,24 +22,30 @@ export const tracks = async() => {
 export const search = async(query) => {
   let data = await (await fetch(base + 'search/' + query)).json();
 
-  let terms = {};
+  let terms = [];
 
   if (!data.data) {
     return terms;
   }
 
+  console.log(data.data);
+
   let show = data.data.show;
   if (show) {
-    terms[show.date + " " + show.venue_name + ", " + show.location] = show;
-    terms[show.date + " " + show.venue_name + ", " + show.location]['path'] = '/shows/' + show.id;
+    show.path = '/show/' + show.id;
+    show.type = 'show';
+    show.display = show.date + " " + show.venue_name + " " + show.location;    
+    terms.push(show);
   }
 
   let otherShows = data.data.other_shows;
   if (otherShows) {
     Object.keys(otherShows).forEach(function(show) {
       let values = otherShows[show];
-      terms[values.date + " " + values.venue_name + ", " + values.location] = values;
-      terms[values.date + " " + values.venue_name + ", " + values.location]['path'] = '/shows/' + values.id;
+      values.path = '/show/' + values.id;
+      values.type = 'show';
+      values.display = values.date + " " + values.venue_name + " " + values.location;
+      terms.push(values);
     });
   }
 
@@ -47,12 +53,14 @@ export const search = async(query) => {
   if (songs) {
     Object.keys(songs).forEach(function(song) {
       let values = songs[song];
+      values.type = 'song';
+      values.display = values.title;
       if (values.alias_for) {
-        //ignore aliases for now
+        values.path = '/song/' + values.alias_for;
       } else {
-        terms[values.title] = values;
-        terms[values.title]['path'] = '/songs/' + values.id;
+        values.path = '/song/' + values.id;
       }
+      terms.push(values);
     });
   }
 
@@ -60,8 +68,10 @@ export const search = async(query) => {
   if (tours) {
     Object.keys(tours).forEach(function(tour) {
       let values = tours[tour];
-      terms[values.name] = values;
-      terms[values.name]['path'] = '/tours/' + values.id;
+      values.path = '/tour/' + values.id;
+      values.type = 'tour';
+      values.display = values.name;
+      terms.push(values);
     });
   }
 
@@ -69,11 +79,16 @@ export const search = async(query) => {
   if (venues) {
     Object.keys(venues).forEach(function(venue) {
       let values = venues[venue];
-      terms[values.name + " " + values.location] = values;
-      terms[values.name + " " + values.location]['path'] = '/venues/' + values.id;
+      values.path = '/venue/' + values.id;
+      values.type = 'venue';
+      if (values.past_names) {
+        values.display = values.name + " " + values.location + " (" + values.past_names + ")";
+      } else {
+        values.display = values.name + " " + values.location;
+      }
+      terms.push(values);
     });
   }
 
-  //Maybe return top 10 or so
   return terms;
 }

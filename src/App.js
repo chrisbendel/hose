@@ -25,7 +25,7 @@ export default class App extends Component {
               <Header className="header" />
             </header>
             <main className="content">
-              <Route path="/shows/:id" component={Show}/>
+              <Route path="/show/:id" component={Show}/>
               <Route path="/songs/:id" component={Songs}/>
               <Route path="/eras/:id" component={Eras}/>
             </main>
