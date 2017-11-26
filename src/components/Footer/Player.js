@@ -1,13 +1,45 @@
 import React, { Component } from 'react';
 import './../../css/Player.css'
+import Audio from 'react-audioplayer';
+import { show } from './../../api/phishin';
 
 export default class Player extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      tracks: null,
+      show: null
+    }
+  }
+  componentWillMount() {
+    show(665).then(show => {
+      console.log(show);
+      let tracks = [];
+      show.tracks.forEach(function (track) {
+        tracks.push({name: track.title, src: track.mp3});
+      })
+
+      this.setState({
+        tracks: tracks,
+        show: show
+      })
+    })
+  }
+
   render() {
+    if (!this.state.tracks) {
+      return (<div> loading </div>);
+    }
+
     return (
       <div className="controls-container">
-        <button className="button lg">
-          <img className="icon play" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAG8SURBVGhD7ZqtT8NAGMYLISQkCAQ4QkKybG0NweFAIfgPsCiCA0TbTdTgSHBIJMhZJP8BKBQKgyEEt4QsvLen9C2dIHx014/3uCd5xLbevffLffTeuzlWVlaTyQtp34/I549yBZBLN6ShF9F5+0gt8tfylIB4kVKJAfQCH2zGaoZ/lqNxkDGge3ibH5Ghr0ByU98PqcWPNlvfg3z0zpsb0akfq3ku0kz9BPLpkJ68Lu05sZrmos3Sr0HY6J1bt0sbXLw5+itIaiL4yg/UCldTv4qBZKYByveWD2mOq6tPk4GkxnB7xKKw6zhqiqutXjpActONF9A6V12t9ILAIb2jdy5aES1xiGqkHYQNmNdORMd4/8xyqHJVFkhmzJ8HxNjhcOWpbJDMALouNV2oCiQxhtsQ8c7WYrXA4fWpSpDc9AwovelCPSCpAXPXCdQWN2Uy1QmSm/rtHq1yk4qpGSCJaYAF4aRwumBBtFr40DJgsgtffo14IYrfoojfNGIYCd/Gm5FYCU91MQ+kHz6IPw4y4IAOw0j4kan0Q2xMYhOuFYRf9KAXZF+9ofGyL0PReCOup834w4CV1b+W44wA0zYhqYQBXh4AAAAASUVORK5CYII=" />
-        </button>
+        <Audio
+          width={600}
+          height={100}
+          autoPlay={true}
+          playlist={this.state.tracks}
+        />
       </div>
     );
   }

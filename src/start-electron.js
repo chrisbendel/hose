@@ -8,15 +8,15 @@ let mainWindow;
 function createWindow() {
     mainWindow = new BrowserWindow({
       title: 'Hose',
-      width: 1000, 
-      height: 800,
-      minWidth: 1000,
-      minHeight: 800,
+      width: 1400, 
+      height: 900,
+      minWidth: 1400,
+      minHeight: 900,
       darkTheme: true
     });
     mainWindow.loadURL('http://localhost:3000');
 
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     mainWindow.on('closed', function () {
         mainWindow = null
