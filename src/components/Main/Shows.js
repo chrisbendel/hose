@@ -68,7 +68,6 @@ export default class Shows extends Component {
           <img 
             src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
             id={show.id}
-            
           />
           <p> {show.date}  </p>
           <p> {show.venue_name} {show.location} </p>
@@ -116,10 +115,12 @@ export default class Shows extends Component {
     console.log(shows);
 
     return (
-      <div>
-        <ul className="year-list">
-          {this.renderYears()} 
-        </ul>
+      <div className="shows-container">
+        <div className="year-filter">
+          <ul className="year-list">
+            {this.renderYears()} 
+          </ul>
+        </div>
         <div className="show-gallery">
           {this.renderShows(shows)}
         </div>

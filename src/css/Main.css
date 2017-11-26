@@ -11,6 +11,10 @@ html, body {
   overflow: hidden;
 }
 
+::-webkit-scrollbar { 
+  display: none; 
+}
+
 html > * {
   box-sizing: border-box;
 }
@@ -25,16 +29,6 @@ html > * {
   background:pink;
   padding: 1rem;
   top: 0px;
-  /* position: fixed;
-  z-index: 21;
-  height: 100px;
-  background-color: #FFF;
-  top: 0;
-  border-bottom: 1px solid #DDD;
-  width: 100%;
-  padding: 1rem;
-  overflow: hiddem;
-  box-sizing: border-box; */
 }
 
 .content {
@@ -45,18 +39,6 @@ html > * {
   box-sizing: border-box;
   width: calc(100% - 150px);
   overflow-y: auto;
-  /* position: relative;
-  z-index: 2;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 100px;
-  margin-top: 100px;
-  overflow: auto;
-  width: 80%; */
-  /* overflow: scroll;
-  
-  margin-top: 100px;
-  margin-bottom: 100px; */
 }
 
 .footer {
@@ -66,12 +48,4 @@ html > * {
   background:pink;
   padding: 1rem;
   bottom: 0px;
-  /* overflow: hidden;
-  position: fixed;
-  bottom: 0;
-  background-color: #FFF;
-  height: 100px;
-  width: 100%;
-  border-top: 1px solid #DDD;
-  box-sizing: border-box; */
 }

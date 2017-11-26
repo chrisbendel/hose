@@ -19,25 +19,35 @@
   width: 25%;
 }
 
+.shows-container {
+  display: flex;
+  flex-flow: column wrap;
+  height: 100%;
+}
+
+.year-filter {
+  align-self: center;
+  flex-grow: 1
+}
+
 .year-list {
   list-style-type: none;
-  position: fixed;
   margin: 0 auto;
   padding: 0;
   overflow: hidden;
   cursor: pointer;
-  position: fixed;
-  height: 20px;
 }
 
 .year-list-item {
   float: left;
-  padding-right: 3px;
+  padding: 5px 10px;
 }
 
 .show-gallery {
+  flex-grow: 5;
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-gap: 8px;
   max-width: calc(100% - 50px);
   width: 100%;
