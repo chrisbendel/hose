@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './../../css/Shows.css';
-import { withRouter } from 'react-router-dom';
 import { show } from './../../api/phishin';
 
 export default class Show extends Component {
@@ -24,7 +23,7 @@ export default class Show extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.match.params.id != this.props.match.params.id) {
+    if (nextProps.match.params.id !== this.props.match.params.id) {
       this.fetchShow(nextProps.match.params.id);
     }
   }

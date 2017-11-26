@@ -88,7 +88,7 @@ export default class GlobalSearch extends Component {
         <Autosuggest
           highlightFirstSuggestion={true}
           shouldRenderSuggestions={this.shouldRenderSuggestions}
-          suggestions={this.state.suggestions}
+          suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           getSuggestionValue={this.getSuggestionValue}

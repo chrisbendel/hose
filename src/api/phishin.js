@@ -4,8 +4,14 @@ export const show = async(id) => {
   let data = await (await fetch(base + 'shows/' + id)).json();
   return data.data;
 }
+
 export const shows = async() => {
   let data = await (await fetch(base + 'shows')).json();
+  return data.data;
+}
+
+export const showsByYear = async(year) => {
+  let data = await (await fetch(base + 'years/' + year)).json();
   return data.data;
 }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { shows } from './../../api/phishin';
+import { shows, showsByYear } from './../../api/phishin';
 
 const years = [
   {"year": "1983-1987", "short": "83-87"},
@@ -32,7 +32,7 @@ const years = [
 
 const renderYears = years.map(function(year) {
   return (
-    <li className="yearListItem" key={year.year}>
+    <li className="year-list-item" key={year.year}>
       <span>{year.short}</span>
     </li>
   );
@@ -45,6 +45,25 @@ export default class Shows extends Component {
     this.state = {
       shows: null
     }
+  }
+
+  renderYears = () => {
+    return years.map(function(year) {
+      console.log(year);
+      return (
+        <a onClick={() => {this.fetchShowByYear(year.year)}} className="year-list-item" key={year.year}>
+          <span>{year.short}</span>
+        </a>
+      );
+    }, this);
+  }
+
+  fetchShowByYear = (year) => {
+    showsByYear(year).then(shows => {
+      this.setState({
+        shows: shows
+      })
+    })
   }
 
   fetchShows = () => {
@@ -74,8 +93,8 @@ export default class Shows extends Component {
 
     return (
       <div>
-        <ul className="yearList"> 
-          {renderYears} 
+        <ul className="year-list">
+          {this.renderYears()} 
         </ul>
       </div>
     );

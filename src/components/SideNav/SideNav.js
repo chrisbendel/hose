@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import styles from './../../css/SideNav.css'
+import './../../css/SideNav.css'
 
 const items = [
   {
