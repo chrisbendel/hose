@@ -43,7 +43,6 @@ export default class Shows extends Component {
 
   renderYears = () => {
     return years.map(function(year) {
-      console.log(year);
       if (year.year === "All") {
         return (
           <a onClick={() => {this.fetchShows()}} className="year-list-item" key={year.year}>
@@ -62,7 +61,6 @@ export default class Shows extends Component {
 
   renderShows = (shows) => {
     return shows.map(function (show) {
-      console.log(show);
       return (
         <div key={show.id} className="image-container" onClick={() => this.props.history.push('show/' + show.id)}>
           <img 
