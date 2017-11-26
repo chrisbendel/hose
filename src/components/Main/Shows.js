@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { shows, showsByYear } from './../../api/phishin';
+import './../../css/Shows.css';
 
 const years = [
-  {"year": "1983-1987", "short": "83-87"},
+  {"year": "All", "short": "All", "era": "All"},
+  {"year": "1983-1987", "short": "83-87", "era": "1.0"},
   {"year": "1988", "short": "'88", "era": "1.0"},
   {"year": "1989", "short": "'89", "era": "1.0"},
   {"year": "1990", "short": "'90", "era": "1.0"},
@@ -30,14 +32,6 @@ const years = [
   {"year": "2017", "short": "'17", "era": "3.0"}
 ]
 
-const renderYears = years.map(function(year) {
-  return (
-    <li className="year-list-item" key={year.year}>
-      <span>{year.short}</span>
-    </li>
-  );
-});
-
 export default class Shows extends Component {
   constructor(props) {
     super(props);
@@ -50,10 +44,40 @@ export default class Shows extends Component {
   renderYears = () => {
     return years.map(function(year) {
       console.log(year);
+      if (year.year === "All") {
+        return (
+          <a onClick={() => {this.fetchShows()}} className="year-list-item" key={year.year}>
+            <span>{year.short}</span>
+          </a>
+        );
+      } else {
+        return (
+          <a onClick={() => {this.fetchShowByYear(year.year)}} className="year-list-item" key={year.year}>
+            <span>{year.short}</span>
+          </a>
+        );
+      }
+    }, this);
+  }
+
+  renderShows = (shows) => {
+    return shows.map(function (show) {
+      console.log(show);
       return (
-        <a onClick={() => {this.fetchShowByYear(year.year)}} className="year-list-item" key={year.year}>
-          <span>{year.short}</span>
-        </a>
+        <div key={show.id} className="image-container" onClick={(e) => console.log(show.date)}>
+          <img 
+            src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
+            id={show.id}
+            
+          />
+          <p> {show.date}  </p>
+          <p> {show.venue_name} {show.location} </p>
+          <p> Likes: {show.likes_count} </p>
+
+          {show.remastered ? <p> Remastered: yes </p> : null}
+          {show.sbd ? <p> Soundboard: yes </p> : null}
+
+        </div>
       );
     }, this);
   }
@@ -96,6 +120,9 @@ export default class Shows extends Component {
         <ul className="year-list">
           {this.renderYears()} 
         </ul>
+        <div className="show-gallery">
+          {this.renderShows(shows)}
+        </div>
       </div>
     );
   }

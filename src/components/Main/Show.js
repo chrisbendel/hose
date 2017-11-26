@@ -15,8 +15,7 @@ export default class Show extends Component {
     show(id).then(show => {
       if (show) {
         this.setState({
-          show: show,
-          image: process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'
+          show: show
         })
       }
     });
@@ -32,11 +31,14 @@ export default class Show extends Component {
     this.fetchShow(this.props.match.params.id);
   }
 
-  getDefaultImage = () => {
-    this.setState({
-      image: process.env.PUBLIC_URL + '/art/default.jpg'
-    });
-  }
+  // Don't think we'll need to default to an image
+  // Every show should have a corresponding picture
+  // If we run into an error, add onError={() => {this.getDefaultImage()}} to image tag
+  // getDefaultImage = () => {
+  //   this.setState({
+  //     image: process.env.PUBLIC_URL + '/art/default.jpg'
+  //   });
+  // }
 
   render() {
     let show = this.state.show;
@@ -52,7 +54,10 @@ export default class Show extends Component {
     return (
       <div>
         <div className="show-overview">
-          <img onError={this.getDefaultImage} className="art" alt={show.date} src={this.state.image}/>
+          <img 
+            className="art" 
+            alt={show.date} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
+          />
           <div className="show-details">
             <p> test </p>
             <p> test1234234 </p>

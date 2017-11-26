@@ -8,8 +8,6 @@ const routes = (
   <div>
     <Route path="/show/:id" component={Show}/>
     <Route path="/shows" component={Shows}/>
-    <Route path="/venues" component={Show}/>
-    <Route path="/venues" component={Show}/>
     <Route path="/song/:id" component={Show}/>
   </div>
 );

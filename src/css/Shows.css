@@ -18,3 +18,71 @@
   object-fit: contain;
   width: 25%;
 }
+
+.year-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.year-list-item {
+  float: left;
+  padding-right: 3px;
+}
+
+.show-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 8px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.show-gallery img {
+  width: 100%;
+  transition: .5s ease;
+  opacity: 1;
+}
+
+.image-container {
+  text-align: center;
+}
+
+.show-gallery div {
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.show-gallery div :before, :after {
+  transition: .3s opacity ease;
+  opacity: 0;
+}
+
+.show-gallery div :after {
+  font-size: 80px;
+  position: absolute;
+  transform: translate3d(-50%, -50%, 0) rotate(-45deg);
+  color: #fff;
+  left: 50%;
+  top: 50%;
+  display: block;
+}
+
+.show-gallery :before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(#222, 0.5);
+  display: block;
+}
+
+.show-gallery :hover {
+  opacity: 1;
+  transition: .3s opacity ease;
+}
