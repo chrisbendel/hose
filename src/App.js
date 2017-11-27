@@ -5,7 +5,6 @@ import Player from './components/Footer/Player';
 import Show from './components/Main/Show';
 import Shows from './components/Main/Shows';
 import Songs from './components/Main/Songs';
-import Playlist from './components/Playlist';
 import createHistory from 'history/createBrowserHistory';
 import GlobalSearch from './components/Header/GlobalSearch';
 import {EventEmitter} from 'fbemitter';
@@ -28,7 +27,10 @@ export default class App extends Component {
           </header>
           <main className="content">
             <div>
-              <Route path="/show/:id" component={Show}/>
+              <Route path="/show/:id" render={(props) =>
+                  <Show emitter={emitter} {...props}/>
+                }
+              />
               <Route path="/shows" render={(props) =>
                   <Shows emitter={emitter} {...props}/>
                 }

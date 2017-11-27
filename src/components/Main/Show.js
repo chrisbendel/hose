@@ -31,6 +31,23 @@ export default class Show extends Component {
     this.fetchShow(this.props.match.params.id);
   }
 
+  renderSongs = () => {
+    let show = this.state.show;
+    let tracks = show.tracks;
+    let emitter = this.props.emitter;
+    return tracks.map(function (track, index) {
+      return (
+        <div onClick={() => {
+          emitter.emit('playlistUpdate', show.id, index)
+        }}> 
+          {track.title}
+          {track.likes_count}
+        </div>
+
+      )
+    });
+  }
+
   // Don't think we'll need to default to an image
   // Every show should have a corresponding picture
   // If we run into an error, add onError={() => {this.getDefaultImage()}} to image tag
@@ -64,7 +81,9 @@ export default class Show extends Component {
           </div>
         </div>
         <div className="show-list">
-            list
+          <ul>
+            {this.renderSongs()}
+          </ul>
         </div>
       </div>
     );

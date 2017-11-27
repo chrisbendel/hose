@@ -18,36 +18,16 @@ export default class Player extends Component {
       downloading: false
     }
 
-    this.props.emitter.addListener('playlistUpdate', (showId, trackId = null) => {
-      this.fetchShowTracks(showId, trackId);
+    this.props.emitter.addListener('playlistUpdate', (showId, position = 0) => {
+      this.fetchShowTracks(showId, position);
     });
   }
-
-  setTrack = (trackId, playlist) => {
-    let foundSong = false;
-    while(foundSong) {
-      for (let playlistTrack of this.player.props.playlist) {
-        if (playlistTrack.id === trackId) {
-          foundSong = true;
-          break;
-        }
-        ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
-      }
-    }
-  }
-
-  //Use an event emitter here to catch any updates to playlists
-  componentDidUpdate() {
-    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
-    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
-    console.log(this.player);
-    console.log(this.state);
-    // let trackId = '13504';
-    // let playlist = this.player.props.playlist;
-    // this.setTrack(trackId, playlist);
-  }
   
-  fetchShowTracks = (showId, trackId = null) => {
+  fetchShowTracks = (showId, position) => {
+    if (this.state.show && (showId === this.state.show.id)) {
+      this.setPlaylistPosition(position);
+    }
+
     show(showId).then(show => {
       let tracks = [];
 
@@ -58,16 +38,16 @@ export default class Player extends Component {
       this.setState({
         tracks: tracks,
         show: show
-      })
-    }).then(() => {
-      if (trackId) {
-        this.setTrack(trackId);
-      }
-    })
+      });
+      this.setPlaylistPosition(position);
+    });
   }
 
-  componentWillMount() {
-    // this.fetchShowTracks(665);
+  setPlaylistPosition = (index) => {
+    this.player.state.currentPlaylistPos = index;
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
   }
 
   downloadShow = () => {
@@ -122,7 +102,7 @@ export default class Player extends Component {
           animation={'fade'}
           html={<ul> {this.renderPlaylistContent()} </ul>}
         >
-          <Ionicon className="clickable" icon="ios-list" fontSize="60px" onClick={() => console.log(this.player)}/>
+          <Ionicon className="clickable" icon="ios-list" fontSize="60px" onClick={() => this.setPlaylistPosition(0)}/>
         </Tooltip>
         <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
         <Ionicon className={this.state.downloading ? "hidden" : "clickable"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download this show?") ? this.downloadShow() : null}/>
