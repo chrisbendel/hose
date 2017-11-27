@@ -8,13 +8,16 @@ import Songs from './components/Main/Songs';
 import Playlist from './components/Playlist';
 import createHistory from 'history/createBrowserHistory';
 import GlobalSearch from './components/Header/GlobalSearch';
+import {EventEmitter} from 'fbemitter';
 import './css/Main.css';
 
 const history = createHistory();
+const emitter = new EventEmitter();
 
 export default class App extends Component {
   render() {
     return (
+      <div>
       <Router history={history}>
         <div>
           <nav className="left">
@@ -26,19 +29,21 @@ export default class App extends Component {
           <main className="content">
             <div>
               <Route path="/show/:id" component={Show}/>
-              <Route path="/shows" component={Shows}/>
+              <Route path="/shows" render={(props) =>
+                  <Shows emitter={emitter} {...props}/>
+                }
+              />
               <Route path="/song/:id" component={Show}/>
               <Route path="/play/:id" component={Player}/>
             </div>
           </main>
-          <footer className="footer">
-            <Player />
-          </footer>
-          <nav className="right">
-            <Playlist />
-          </nav>
+
         </div>
       </Router>
+        <footer className="footer">
+          <Player emitter={emitter}/>
+        </footer>
+      </div>
     );
   }
 }

@@ -40,11 +40,10 @@ html > * {
 
 .header {
   position: fixed;
-  width: calc(100% - 200px);
+  width: calc(100% - 100px);
   height: 50px;
   background:pink;
   left: 100px;
-  right: 100px;
   top: 0;
   padding: 1rem 0;
   z-index: 100;
@@ -53,8 +52,7 @@ html > * {
 .content {
   position: absolute;
   top: calc(50px + 1rem);
-  bottom: calc(50px + 1rem);
-  right: 100px;
+  bottom: calc(150px + 1rem);
   left: 100px;
   padding: 1rem;
   box-sizing: border-box;
@@ -64,10 +62,9 @@ html > * {
 .footer {
   position: fixed;
   left: 100px;
-  right: 100px;
-  height: 50px;
+  height: 150px;
   bottom: 0px;
-  width: calc(100% - 200px);
+  width: calc(100% - 100px);
   background:pink;
   padding: 1rem 0;
 }

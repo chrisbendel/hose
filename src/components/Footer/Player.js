@@ -4,31 +4,30 @@ import Audio from 'react-audioplayer';
 import { show } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
 import ReactDOM from 'react-dom';
-import {EventEmitter} from 'fbemitter';
 
-
-
+//TODO Event emitter listeners, then implement whenever clicking "play" on a song or show
+//maybe support one custom playlist and one current show playlist
 export default class Player extends Component {
   constructor(props) {
     super(props);
-    let emitter = new EventEmitter();
-    emitter.addListener('playlistUpdate')
+
+    this.props.emitter.addListener('playlistUpdate', (showId, trackId = null) => {
+      // if (trackId) {
+        this.fetchShowTracks(showId, trackId);
+      // } else {
+      //   this.fetchShowTracks(showId);
+      // }
+    });
     this.state = {
       tracks: null,
       show: null,
       height: 0
     }
   }
-  
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.match.params.id !== this.props.match.params.id) {
-      this.fetchShow(nextProps.match.params.id);
-    }
-  }
 
-  setTrack(trackId, playlist) {
-    for (let playlistTrack of playlist) {
-      if (playlistTrack.id == trackId) {
+  setTrack = (trackId, playlist) => {
+    for (let playlistTrack of this.player.props.playlist) {
+      if (playlistTrack.id === trackId) {
         break;
       }
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
@@ -42,8 +41,8 @@ export default class Player extends Component {
     this.setTrack(trackId, playlist);
   }
   
-  fetchShowTracks = (id) => {
-    show(id).then(show => {
+  fetchShowTracks = (showId, trackId = null) => {
+    show(showId).then(show => {
       console.log(show);
       let tracks = [];
 
@@ -55,27 +54,33 @@ export default class Player extends Component {
         tracks: tracks,
         show: show
       })
+    }).then(() => {
+      if (trackId) {
+        this.setTrack(trackId);
+      }
     })
   }
 
   componentWillMount() {
-    this.fetchShowTracks(665);
+    // this.fetchShowTracks(665);
   }
 
+  //TODO render the list of tracks currently in the playlist somehow, we can prob use a modal
+  //clicking a song in the playlist will call setTrack with the track id
   render() {
     if (!this.state.tracks) {
-      return (<div> loading </div>);
+      return (<div> Pick a show or song to start listening </div>);
     }
     // console.log(ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next')))
     return (
       <div className="controls-container">
-        <Ionicon icon="ios-add-circle" fontSize="35px" onClick={() => console.log(this.player)} color="red"/>
+        <Ionicon icon="ios-list" fontSize="35px" onClick={() => console.log(this.player)} color="red"/>
         <Audio
-          // fullPlayer={true}
+          fullPlayer={true}
           ref={audioComponent => { this.player = audioComponent; }}
-          width={600}
-          height={50}
-          autoPlay={false}
+          width={800}
+          height={150}
+          autoPlay={true}
           playlist={this.state.tracks}
         />
       </div>

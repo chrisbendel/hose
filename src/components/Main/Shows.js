@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { shows, showsByYear } from './../../api/phishin';
 import './../../css/Shows.css';
+import Ionicon from 'react-ionicons';
 
 const years = [
   {"year": "All", "short": "All", "era": "All"},
@@ -35,7 +36,8 @@ const years = [
 export default class Shows extends Component {
   constructor(props) {
     super(props);
-
+    
+    
     this.state = {
       shows: null
     }
@@ -62,12 +64,21 @@ export default class Shows extends Component {
   renderShows = (shows) => {
     return shows.map(function (show) {
       return (
-        <div key={show.id} className="image-container" onClick={() => this.props.history.push('show/' + show.id)}>
+        <div key={show.id} className="image-container" onClick={() => {
+          this.props.history.push('show/' + show.id)}
+        }>
           <img 
             src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
             alt={show.id}
             id={show.id}
           />
+          <Ionicon 
+            icon="ios-play" 
+            fontSize="60px" 
+            onClick={() => this.props.emitter.emit('playlistUpdate', show.id)} 
+            color="red"
+          />
+
           <p> {show.date}  </p>
           <p> {show.venue_name} {show.location} </p>
           <p> Likes: {show.likes_count} </p>
@@ -110,8 +121,6 @@ export default class Shows extends Component {
         </div>
       )
     }
-
-    console.log(shows);
 
     return (
       <div>
