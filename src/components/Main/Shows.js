@@ -65,6 +65,7 @@ export default class Shows extends Component {
         <div key={show.id} className="image-container" onClick={() => this.props.history.push('show/' + show.id)}>
           <img 
             src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
+            alt={show.id}
             id={show.id}
           />
           <p> {show.date}  </p>

@@ -28,6 +28,7 @@ export default class App extends Component {
               <Route path="/show/:id" component={Show}/>
               <Route path="/shows" component={Shows}/>
               <Route path="/song/:id" component={Show}/>
+              <Route path="/play/:id" component={Player}/>
             </div>
           </main>
           <footer className="footer">

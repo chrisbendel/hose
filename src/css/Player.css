@@ -6,6 +6,7 @@
   justify-content: center;
 }
 
+/* 
 .button {
   display: flex;
   justify-content: center;
@@ -44,4 +45,4 @@
 
 .button:hover .icon {
   transform: scale(1.1);
-}
+} */
