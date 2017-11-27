@@ -6,6 +6,9 @@ const url = require('url');
 const {ipcMain} = require('electron');
 const {download} = require('electron-dl');
 let mainWindow;
+const DownloadManager = require("electron-download-manager");
+
+DownloadManager.register();
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -29,16 +32,8 @@ function createWindow() {
     });
 }
 
-ipcMain.on('download', (url, options) => {
-  console.log(options);
-	download(BrowserWindow.getFocusedWindow(), url, options)
-		.then(dl => console.log(dl.getSavePath()))
-		.catch(console.error);
-});
-
 app.on('ready', () => {
   createWindow();
-
 });
 
 app.on('window-all-closed', function () {

@@ -5,12 +5,6 @@ import { show } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
 import ReactDOM from 'react-dom';
 import { Tooltip } from 'react-tippy';
-import JSZip from 'jszip';
-import JSZipUtils from 'jszip-utils';
-import {saveAs} from 'file-saver'
-import ReactConfirmAlert, { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
-
 
 //TODO Event emitter listeners, then implement whenever clicking "play" on a song or show
 //maybe support one custom playlist and one current show playlist
@@ -24,7 +18,6 @@ export default class Player extends Component {
     this.state = {
       tracks: null,
       show: null,
-      confirm: false,
       downloading: false
     }
   }
@@ -72,33 +65,21 @@ export default class Player extends Component {
     // this.fetchShowTracks(665);
   }
 
-  downloadShow() {
-    var zip = new JSZip();
+  downloadShow = () => {
+    this.setState({downloading: true})
     let tracks = this.state.tracks;
     let show = this.state.show;
-    let showName = show.date +  " " + show.venue.name + " " + show.venue.location;
-    
-    let count = 0;
 
-
+    let options = {};
+    options.urls = [];
+    options.path = show.date;
     tracks.forEach(function (track) {
-      let filename = track.name + ".mp3";
-
-      JSZipUtils.getBinaryContent(track.src, function (err, data) {
-        zip.file(filename, data, {binary:true});
-        count++;
-        if (count == tracks.length) {
-          zip.generateAsync({type:'blob'}).then(function(content) {
-            let url = URL.createObjectURL(content);
-            let options = [{fileName: showName}];
-            window.ipcRenderer.send('download', url, options);
-            // saveAs(content, showName + ".zip");
-          });
-        }
-      });
+      options.urls.push(track.src);
     });
-
-    this.setState({downloading: false});
+    let that = this;
+    window.require("electron").remote.require("electron-download-manager").bulkDownload(options, function(error, finished, errors){
+      that.setState({downloading: false})
+    });
   }
 
   renderPlaylistContent = () => {
@@ -134,23 +115,10 @@ export default class Player extends Component {
           animation={'fade'}
           html={<ul> {this.renderPlaylistContent()} </ul>}
         >
-        <Ionicon className="clickable" icon="ios-list" fontSize="60px" onClick={() => console.log(this.player)}/>
+          <Ionicon className="clickable" icon="ios-list" fontSize="60px" onClick={() => console.log(this.player)}/>
         </Tooltip>
-        {
-          this.state.confirm &&
-          <ReactConfirmAlert
-            title={show.date +  " " + show.venue.name + " " + show.venue.location}
-            message="Download this show?"
-            confirmLabel="Download"
-            cancelLabel="Cancel"
-            onConfirm={() => {
-              this.setState({downloading: true, confirm: false});
-              this.downloadShow()
-            }}
-            onCancel={() => this.setState({confirm: false})}
-          />
-        }
-        <Ionicon shake={this.state.downloading} className={this.state.downloading ? "disabled" : "clickable" } icon="ios-cloud-download" fontSize="60px" onClick={() => this.setState({confirm: true})}/>
+        <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
+        <Ionicon className={this.state.downloading ? "hidden" : "clickable"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download this show?") ? this.downloadShow() : null}/>
       </div>
     );
   }
