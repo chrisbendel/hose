@@ -38,7 +38,7 @@ export default class Show extends Component {
     let emitter = this.props.emitter;
     return tracks.map(function (track, index) {
       return (
-        <div> 
+        <div key={track.id}> 
           {track.title}
           <Ionicon 
             style={{cursor: 'pointer'}}
