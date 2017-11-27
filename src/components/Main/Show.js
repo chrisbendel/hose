@@ -75,6 +75,7 @@ export default class Show extends Component {
             alt={show.date} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
           />
           <div className="show-details">
+            <p>JONAH: make this section fixed and the songs below scrollable</p>
             <p> {show.date} </p>
             <p> {show.venue.name} </p>
             <p> {show.venue.location} </p>
