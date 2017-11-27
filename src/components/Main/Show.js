@@ -39,7 +39,6 @@ export default class Show extends Component {
     return tracks.map(function (track, index) {
       return (
         <div key={track.id}> 
-          {track.title}
           <Ionicon 
             style={{cursor: 'pointer'}}
             icon="ios-play"
@@ -48,20 +47,12 @@ export default class Show extends Component {
               emitter.emit('playlistUpdate', show.id, index)
             }}
           />
+          {track.title}
         </div>
 
       )
     });
   }
-
-  // Don't think we'll need to default to an image
-  // Every show should have a corresponding picture
-  // If we run into an error, add onError={() => {this.getDefaultImage()}} to image tag
-  // getDefaultImage = () => {
-  //   this.setState({
-  //     image: process.env.PUBLIC_URL + '/art/default.jpg'
-  //   });
-  // }
 
   render() {
     let show = this.state.show;
@@ -74,6 +65,8 @@ export default class Show extends Component {
       )
     }
 
+    console.log(show);
+
     return (
       <div>
         <div className="show-overview">
@@ -82,8 +75,16 @@ export default class Show extends Component {
             alt={show.date} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
           />
           <div className="show-details">
-            <p> test </p>
-            <p> test1234234 </p>
+            <p> {show.date} </p>
+            <p> {show.venue.name} </p>
+            <p> {show.venue.location} </p>
+
+            <p> {show.date} </p>
+            <p> {show.tags} </p>
+            <p> {show.remastered ? "Remastered" : null} </p>
+            <p> {show.sbd ? "Soundboard" : null} </p>
+            <p> Tour : {show.tour} (we can fetch this tour and show information about the tour, possibly using a component) this will link to the tour page with all the shows from that tour</p>
+            
           </div>
         </div>
         <div className="show-list">

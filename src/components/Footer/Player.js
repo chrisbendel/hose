@@ -89,10 +89,10 @@ export default class Player extends Component {
     return (
       <div className="controls-container">
         <Audio
-          fullPlayer={true}
+          // fullPlayer={true}
           ref={audioComponent => { this.player = audioComponent; }}
           width={500}
-          height={150}
+          height={50}
           autoPlay={true}
           playlist={tracks}
         />
