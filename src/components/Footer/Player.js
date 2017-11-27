@@ -12,14 +12,15 @@ export default class Player extends Component {
   constructor(props) {
     super(props);
 
-    this.props.emitter.addListener('playlistUpdate', (showId, trackId = null) => {
-      this.fetchShowTracks(showId, trackId);
-    });
     this.state = {
       tracks: null,
       show: null,
       downloading: false
     }
+
+    this.props.emitter.addListener('playlistUpdate', (showId, trackId = null) => {
+      this.fetchShowTracks(showId, trackId);
+    });
   }
 
   setTrack = (trackId, playlist) => {
@@ -37,9 +38,13 @@ export default class Player extends Component {
 
   //Use an event emitter here to catch any updates to playlists
   componentDidUpdate() {
-    let trackId = '13504';
-    let playlist = this.player.props.playlist;
-    this.setTrack(trackId, playlist);
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
+    console.log(this.player);
+    console.log(this.state);
+    // let trackId = '13504';
+    // let playlist = this.player.props.playlist;
+    // this.setTrack(trackId, playlist);
   }
   
   fetchShowTracks = (showId, trackId = null) => {
@@ -49,7 +54,7 @@ export default class Player extends Component {
       show.tracks.forEach(function (track) {
         tracks.push({id: track.id, name: track.title, src: track.mp3, img: process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'});
       });
-
+      
       this.setState({
         tracks: tracks,
         show: show
@@ -76,6 +81,7 @@ export default class Player extends Component {
     tracks.forEach(function (track) {
       options.urls.push(track.src);
     });
+
     let that = this;
     window.require("electron").remote.require("electron-download-manager").bulkDownload(options, function(error, finished, errors){
       that.setState({downloading: false})
@@ -95,6 +101,7 @@ export default class Player extends Component {
   render() {
     let show = this.state.show;
     let tracks = this.state.tracks;
+
     if (!tracks) {
       return (<div> Pick a show or song to start listening </div>);
     }
@@ -104,10 +111,10 @@ export default class Player extends Component {
         <Audio
           fullPlayer={true}
           ref={audioComponent => { this.player = audioComponent; }}
-          width={800}
+          width={500}
           height={150}
           autoPlay={true}
-          playlist={this.state.tracks}
+          playlist={tracks}
         />
         <Tooltip
           trigger="click"
