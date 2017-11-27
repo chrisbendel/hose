@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './../../css/Shows.css';
 import { show } from './../../api/phishin';
+import Ionicon from 'react-ionicons';
 
 export default class Show extends Component {
   constructor(props) {
@@ -37,11 +38,16 @@ export default class Show extends Component {
     let emitter = this.props.emitter;
     return tracks.map(function (track, index) {
       return (
-        <div onClick={() => {
-          emitter.emit('playlistUpdate', show.id, index)
-        }}> 
+        <div> 
           {track.title}
-          {track.likes_count}
+          <Ionicon 
+            style={{cursor: 'pointer'}}
+            icon="ios-play"
+            font-size="60px"
+            onClick={() => {
+              emitter.emit('playlistUpdate', show.id, index)
+            }}
+          />
         </div>
 
       )
