@@ -22,6 +22,16 @@ const items = [
     "id": 3,
     "name": "Venues",
     "path": "/venues"
+  },
+  {
+    "id": 4,
+    "name": "Settings",
+    "path": "/settings"
+  },
+  {
+    "id": 5,
+    "name": "Profile",
+    "path": "/profile"
   }
 ]
 

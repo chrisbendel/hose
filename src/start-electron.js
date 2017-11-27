@@ -3,6 +3,8 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
+const {ipcMain} = require('electron');
+const {download} = require('electron-dl');
 let mainWindow;
 
 function createWindow() {
@@ -12,16 +14,27 @@ function createWindow() {
       height: 900,
       minWidth: 1400,
       minHeight: 900,
-      darkTheme: true
+      darkTheme: true,
+      webPreferences: {
+        nodeIntegration: false,
+        preload: __dirname + '/preload.js'
+      }
     });
     mainWindow.loadURL('http://localhost:3000');
 
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     mainWindow.on('closed', function () {
         mainWindow = null
     });
 }
+
+ipcMain.on('download', (url, options) => {
+  console.log(options);
+	download(BrowserWindow.getFocusedWindow(), url, options)
+		.then(dl => console.log(dl.getSavePath()))
+		.catch(console.error);
+});
 
 app.on('ready', () => {
   createWindow();

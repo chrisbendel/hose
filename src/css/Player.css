@@ -6,43 +6,15 @@
   justify-content: center;
 }
 
-/* 
-.button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  transition: border-color .15s ease;
-  outline: none;
+.playlist-container {
+  background-color: #be0e75;
+}
+
+.clickable {
   cursor: pointer;
 }
 
-.button.lg {
-  height: 50px;
-  width: 50px;
-  border: 1px solid #448AFF;
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
-
-.button.sm {
-  height: 30px; 
-  width: 30px;
-}
-
-.button:hover {
-  border-color: #2979FF;
-}
-
-.button .icon {
-  transition: transform .15s ease;
-  height: 30px;
-  width: 30px;  
-  display: block;
-}
-
-.button .icon.play {
-  margin-left: 3px;
-}
-
-.button:hover .icon {
-  transform: scale(1.1);
-} */

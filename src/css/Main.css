@@ -53,6 +53,7 @@ html > * {
   position: absolute;
   top: calc(50px + 1rem);
   bottom: calc(150px + 1rem);
+  width: calc(100% - 100px);
   left: 100px;
   padding: 1rem;
   box-sizing: border-box;

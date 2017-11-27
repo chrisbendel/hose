@@ -1,6 +1,7 @@
 .show-overview {
-  border: 1px solid blue;
+  border: 3px solid blue;
   width: 100%;
+  height: 60%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -15,8 +16,8 @@
 }
 
 .art {
-  object-fit: contain;
   width: 25%;
+  height: 25%;
 }
 
 .shows-container {

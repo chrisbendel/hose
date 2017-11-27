@@ -55,7 +55,7 @@ export default class Show extends Component {
       <div>
         <div className="show-overview">
           <img 
-            className="art" 
+            className="art"
             alt={show.date} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
           />
           <div className="show-details">
