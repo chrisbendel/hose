@@ -7,7 +7,22 @@
 }
 
 .playlist-container {
-  background-color: #be0e75;
+  border-radius: 25px;
+  height: 500px;
+  text-align: left;
+  overflow: auto;
+  padding: .5rem;
+}
+
+.playlist-section {
+  list-style-type: none;
+}
+
+.playlist-container-item {
+  cursor: pointer;
+  border-bottom: 1px solid blue;
+  margin: 5px;
+  padding: .5rem 0;
 }
 
 .clickable {

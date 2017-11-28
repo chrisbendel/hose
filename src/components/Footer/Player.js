@@ -5,6 +5,7 @@ import { show } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
 import ReactDOM from 'react-dom';
 import { Tooltip } from 'react-tippy';
+import 'react-tippy/dist/tippy.css'
 
 //TODO Event emitter listeners, then implement whenever clicking "play" on a song or show
 //maybe support one custom playlist and one current show playlist
@@ -44,6 +45,7 @@ export default class Player extends Component {
   }
 
   setPlaylistPosition = (index) => {
+    console.log(this.player);
     this.player.state.currentPlaylistPos = index;
     ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
     ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
@@ -68,14 +70,38 @@ export default class Player extends Component {
     });
   }
 
-  renderPlaylistContent = () => {
-    return this.state.tracks.map(function(track, index) {
+  renderPlaylistContent = (set) => {
+    return this.state.show.tracks.filter(track => {
+      return track.set_name === set;
+    }).map(track => {
+      console.log(track);
       return (
-        <li key={track.src}>
-          <span>{index} {track.name}</span>
+        <li 
+          className="playlist-container-item" 
+          key={track.src}
+          onClick={() => {
+            this.setPlaylistPosition(track.position - 1);
+          }}
+        >
+          <span> {track.position} - </span>
+          <span>{track.title}</span>
         </li>
       );
     });
+  }
+
+  renderPlaylistContainer = () => {
+    let that = this;
+    const sets = [...new Set(this.state.show.tracks.map(track => track.set_name))];
+    return sets.map(set => {
+      return (
+        <div>
+          <p> {set} </p>
+          <ul className="playlist-section"> {that.renderPlaylistContent(set)} </ul>
+        </div>
+      )
+    });
+
   }
   
   render() {
@@ -88,6 +114,8 @@ export default class Player extends Component {
 
     return (
       <div className="controls-container">
+        <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
+        <Ionicon className={this.state.downloading ? "hidden" : "clickable"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download this show?") ? this.downloadShow() : null}/>
         <Audio
           // fullPlayer={true}
           ref={audioComponent => { this.player = audioComponent; }}
@@ -99,13 +127,16 @@ export default class Player extends Component {
         <Tooltip
           trigger="click"
           interactive
-          animation={'fade'}
-          html={<ul> {this.renderPlaylistContent()} </ul>}
+          inertia={true}
+          arrow={true}
+          animation="scale"
+          arrowSize={"big"}
+          duration={200}
+          html={<div className="playlist-container">{this.renderPlaylistContainer()}</div>}
         >
-          <Ionicon className="clickable" icon="ios-list" fontSize="60px" onClick={() => this.setPlaylistPosition(0)}/>
+          <Ionicon className="clickable" icon="ios-list-box" fontSize="60px"/>
         </Tooltip>
-        <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
-        <Ionicon className={this.state.downloading ? "hidden" : "clickable"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download this show?") ? this.downloadShow() : null}/>
+        
       </div>
     );
   }
