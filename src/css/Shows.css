@@ -27,6 +27,24 @@
   transition: .15s ease opacity; 
 }
 
+.is-soundboard {
+  padding: 4px 2px;
+  background-color: #CFD8DC;
+  color: #000;
+  font-size: 14px;
+  text-transform: uppercase;
+  position: absolute;
+  border-radius: 2px;
+  top: 6px;
+  left: 6px;
+  font-size: 9px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  text-rendering: optimizeLegibility;
+  box-shadow: 0 0 8px 0px rgba(0,0,0,0.4);
+  z-index: 99;
+}
+
 .show-information:hover {
   opacity: 1;
 }
@@ -141,7 +159,23 @@
 }
 
 .image-container {
-  text-align: center;
+  text-align: left;
+}
+
+.show-date,
+.show-venue  {
+  margin: .5rem 0;
+  display: block;
+  cursor: pointer;
+}
+
+.show-venue {
+  color: #999;
+}
+
+.show-date:hover,
+.show-venue:hover {
+  text-decoration: underline;
 }
 
 .show-gallery div :before, :after {

@@ -95,6 +95,7 @@ export default class Shows extends Component {
       return (
         <div key={index} className="image-container">
           <div className="show-information-control">
+            {show.sbd ? <div className="is-soundboard">Soundboard</div> : null}
             <img 
               src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
               alt={show.id}
@@ -125,18 +126,17 @@ export default class Shows extends Component {
               </div>
             </div>
           </div>
-          <p 
+          <span 
             onClick={() => {
               this.props.history.push('show/' + show.id)}
             }
+            className="show-date"
           > 
             {date.toDateString()} 
-          </p>
-          <p> {show.venue_name} {show.location} </p>
+          </span>
+          <span className="show-venue"> {show.venue_name} {show.location} </span>
 
           {show.remastered ? <p> Remastered: yes </p> : null}
-          {show.sbd ? <p> Soundboard: yes </p> : null}
-
         </div>
       );
     }, this);
