@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import './../../css/Shows.css';
 import Ionicon from 'react-ionicons';
 import Filter from './Filter';
-import Infinite from 'react-infinite';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
@@ -116,7 +115,7 @@ export default class Shows extends Component {
                   <Ionicon 
                     icon="ios-thumbs-up" 
                     fontSize="18px" 
-                    onClick={() => this.props.emitter.emit('playlistUpdate', show.id)}
+                    onClick={() => console.log('like clicked')}
                     color="white"
                   />
                   <span className="likes-num"> 
@@ -253,7 +252,7 @@ export default class Shows extends Component {
             className="clickable" 
             icon="ios-arrow-dropup-circle" 
             fontSize="60px"
-            onClick={() => {this.refs.shows.scroll({top: 0, behavior:"smooth"})}}
+            onClick={() => {console.log(this.refs.shows); this.refs.shows.scroll({top: 0, behavior:"smooth"})}}
           />
           <div className="search-filter">
             <Select
@@ -272,12 +271,11 @@ export default class Shows extends Component {
           <Filter />
           <Filter />
         </div>
-
-          <div className="shows-container" ref="shows">
-            <div className="show-gallery">
-              {this.renderShows(shows)}
-            </div>
+        <div className="shows-container" ref="shows">
+          <div className="show-gallery">
+            {this.renderShows(shows)}
           </div>
+        </div>
       </div>
     );
   }

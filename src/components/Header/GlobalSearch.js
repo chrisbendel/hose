@@ -44,7 +44,6 @@ export default class GlobalSearch extends Component {
   };
   
   renderSuggestion = suggestion => {
-    console.log(suggestion);
     return (
       <div>
         {suggestion.display}
