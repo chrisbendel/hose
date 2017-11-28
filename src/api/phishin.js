@@ -11,7 +11,7 @@ export const show = async(id) => {
 }
 
 export const shows = async(page = 1) => {
-  let data = await (await fetch(base + 'shows?per_page=50&page=' + page)).json();
+  let data = await (await fetch(base + 'shows?per_page=100&page=' + page)).json();
   return data.data;
 }
 
