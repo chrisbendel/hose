@@ -10,8 +10,8 @@ export const show = async(id) => {
   return data.data;
 }
 
-export const shows = async() => {
-  let data = await (await fetch(base + 'shows?per_page=200')).json();
+export const shows = async(page = 1) => {
+  let data = await (await fetch(base + 'shows?per_page=50&page=' + page)).json();
   return data.data;
 }
 

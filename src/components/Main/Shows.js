@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import './../../css/Shows.css';
 import Ionicon from 'react-ionicons';
 import Filter from './Filter';
+import Infinite from 'react-infinite';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
@@ -15,7 +16,8 @@ export default class Shows extends Component {
     this.state = {
       shows: null,
       path: 'shows',
-      filterOption: ''
+      filterOption: '',
+      page: 1
     }
   }
 
@@ -57,40 +59,40 @@ export default class Shows extends Component {
 
   }
 
-  renderYears = () => {
-    return years.map(function(year) {
-      if (year.year === "All") {
-        return (
-          <a onClick={() => {
-            this.props.history.push('/shows' + year.path);
-              // this.fetchShows()
-            }} 
-            className="year-list-item" 
-            key={year.year}
-          >
-            <span>{year.short}</span>
-          </a>
-        );
-      } else {
-        return (
-          <a onClick={() => {
-            this.props.history.push('/shows/year/' + year.year);
-              // this.fetchShowByYear(year.year)
-            }}
-            className="year-list-item" 
-            key={year.year}
-          >
-            <span>{year.short}</span>
-          </a>
-        );
-      }
-    }, this);
-  }
+  // renderYears = () => {
+  //   return years.map(function(year) {
+  //     if (year.year === "All") {
+  //       return (
+  //         <a onClick={() => {
+  //           this.props.history.push('/shows' + year.path);
+  //             // this.fetchShows()
+  //           }} 
+  //           className="year-list-item" 
+  //           key={year.year}
+  //         >
+  //           <span>{year.short}</span>
+  //         </a>
+  //       );
+  //     } else {
+  //       return (
+  //         <a onClick={() => {
+  //           this.props.history.push('/shows/year/' + year.year);
+  //             // this.fetchShowByYear(year.year)
+  //           }}
+  //           className="year-list-item" 
+  //           key={year.year}
+  //         >
+  //           <span>{year.short}</span>
+  //         </a>
+  //       );
+  //     }
+  //   }, this);
+  // }
 
   renderShows = (shows) => {
     return shows.map(function (show) {
       return (
-        <div key={show.id} className="image-container" onClick={() => {
+        <div key={show.date} className="image-container" onClick={() => {
           this.props.history.push('show/' + show.id)}
         }>
           <img 
@@ -190,6 +192,25 @@ export default class Shows extends Component {
     this.setState({ filterOption: filterOption });
   }
 
+  handleScroll = () => {
+    setTimeout(() => {
+      let el = this.refs.shows;
+      if (el.scrollTop >= (el.scrollHeight - el.offsetHeight - 300)) {
+        let page = this.state.page + 1;
+        shows(page).then(shows => {
+          this.setState({
+            page: page,
+            shows: this.state.shows.concat(shows)
+          });
+        });
+      }
+    }, 400);
+  }
+
+  componentDidUpdate() {
+    let list = this.refs.shows;
+    list.addEventListener('scroll', this.handleScroll);
+  }
 
   render() {
     let shows = this.state.shows;
@@ -228,11 +249,12 @@ export default class Shows extends Component {
           <Filter />
           <Filter />
         </div>
-        <div className="shows-container" ref="shows">
-          <div className="show-gallery">
-            {this.renderShows(shows)}
+
+          <div className="shows-container" ref="shows">
+            <div className="show-gallery">
+              {this.renderShows(shows)}
+            </div>
           </div>
-        </div>
       </div>
     );
   }
