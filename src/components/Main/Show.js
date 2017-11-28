@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import './../../css/Shows.css';
+import './../../css/Show.css';
 import { show, randomShow } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
+import ReactTable from 'react-table';
 
 export default class Show extends Component {
   constructor(props) {
@@ -72,6 +73,21 @@ export default class Show extends Component {
 
   render() {
     let show = this.state.show;
+    const columns = [{
+      Header: '#',
+      accessor: 'number' // String-based value accessors!
+    }, {
+      Header: 'TITLE',
+      accessor: 'title'
+      // Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
+    }, {
+      id: 'Length', // Required because our accessor is not a string
+      Header: 'Friend Name',
+      accessor: d => d.friend.name // Custom value accessors!
+    }, {
+      Header: props => <span>Friend Age</span>, // Custom header components!
+      accessor: 'friend.age'
+    }]
 
     if (!show) {
       return (
@@ -84,14 +100,13 @@ export default class Show extends Component {
     console.log(show);
 
     return (
-      <div>
+      <div className="show-container">
         <div className="show-overview">
           <img 
             className="art"
             alt={show.date} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
           />
           <div className="show-details">
-            <p>JONAH: make this section fixed and the songs below scrollable</p>
             <p> {show.date} </p>
             <p> {show.venue.name} </p>
             <p> {show.venue.location} </p>
@@ -105,12 +120,16 @@ export default class Show extends Component {
           </div>
         </div>
         <div className="show-tracks">
-          <ul>
+          <ReactTable
+            data={show}
+            columns={columns}
+          />
+          {/* <ul>
             {this.renderSongs()}
           </ul>
           <ul>
             {this.renderSongs()}
-          </ul>
+          </ul> */}
         </div>
       </div>
     );

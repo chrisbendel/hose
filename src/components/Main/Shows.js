@@ -106,7 +106,7 @@ export default class Shows extends Component {
                 <div className="play-button">
                   <Ionicon 
                     icon="ios-play" 
-                    fontSize="40px" 
+                    fontSize="35px" 
                     onClick={() => this.props.emitter.emit('playlistUpdate', show.id)}
                     color="white"
                     className="left-10"
