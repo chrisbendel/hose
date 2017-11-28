@@ -93,18 +93,22 @@ export default class Shows extends Component {
         <div key={show.id} className="image-container" onClick={() => {
           this.props.history.push('show/' + show.id)}
         }>
-          <img 
-            src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
-            alt={show.id}
-            id={show.id}
-          />
-          <Ionicon 
-            icon="ios-play" 
-            fontSize="60px" 
-            onClick={() => this.props.emitter.emit('playlistUpdate', show.id)}
-            color="red"
-          />
-
+          <div className="show-information-control">
+            <img 
+              src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
+              alt={show.id}
+              id={show.id}
+            />
+            <div className="show-information">
+              <Ionicon 
+                icon="ios-play" 
+                fontSize="60px" 
+                onClick={() => this.props.emitter.emit('playlistUpdate', show.id)}
+                color="white"
+                className="center-abs"
+              />
+            </div>
+          </div>
           <p> {show.date}  </p>
           <p> {show.venue_name} {show.location} </p>
           <p> Likes: {show.likes_count} </p>
