@@ -26,7 +26,6 @@ export default class App extends Component {
             <GlobalSearch history={history}/>
           </header>
           <main className="content">
-            <div>
               <Route path="/show/:id" render={(props) =>
                   <Show emitter={emitter} {...props}/>
                 }
@@ -37,9 +36,7 @@ export default class App extends Component {
               />
               <Route path="/song/:id" component={Show}/>
               <Route path="/play/:id" component={Player}/>
-            </div>
           </main>
-
         </div>
       </Router>
         <footer className="footer">

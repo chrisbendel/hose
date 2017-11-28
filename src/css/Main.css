@@ -56,7 +56,7 @@ html > * {
   bottom: calc(50px + 1rem);
   width: calc(100% - 100px);
   left: 100px;
-  padding: 1rem;
+  padding: 1rem 0;
   box-sizing: border-box;
   overflow-y: scroll;
 }
