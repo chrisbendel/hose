@@ -26,8 +26,8 @@
 }
 
 .year-filter {
-  position: relative;
-  float: left;
+  /* position: relative; */
+  /* float: left; */
 }
 
 .year-list {
@@ -39,7 +39,7 @@
 }
 
 .year-list-item {
-  display:block;
+  display: inline-block;
   padding: 5px 10px;
 }
 

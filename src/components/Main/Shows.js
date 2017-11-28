@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { shows, showsByYear } from './../../api/phishin';
+import { shows, showsForYear, showsForVenue, showsToday } from './../../api/phishin';
 import './../../css/Shows.css';
 import Ionicon from 'react-ionicons';
+import SelectSearch from 'react-select-search';
 
 const years = [
   {"year": "All", "short": "All", "era": "All"},
@@ -33,27 +34,51 @@ const years = [
   {"year": "2017", "short": "'17", "era": "3.0"}
 ]
 
+//TODO create default empty state if no shows found
 export default class Shows extends Component {
   constructor(props) {
     super(props);
-    
     
     this.state = {
       shows: null
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps, this.props);
+    if (nextProps.match.params.type === "year") {
+      
+    }
+
+
+    // if (nextProps.match.params.id !== this.props.match.params.id) {
+    //   this.fetchShow(nextProps.match.params.id);
+    // }
+  }
+
   renderYears = () => {
     return years.map(function(year) {
       if (year.year === "All") {
         return (
-          <a onClick={() => {this.fetchShows()}} className="year-list-item" key={year.year}>
+          <a onClick={() => {
+            this.props.history.push('/shows' + year.path);
+              // this.fetchShows()
+            }} 
+            className="year-list-item" 
+            key={year.year}
+          >
             <span>{year.short}</span>
           </a>
         );
       } else {
         return (
-          <a onClick={() => {this.fetchShowByYear(year.year)}} className="year-list-item" key={year.year}>
+          <a onClick={() => {
+            this.props.history.push('/shows/year/' + year.year);
+              // this.fetchShowByYear(year.year)
+            }}
+            className="year-list-item" 
+            key={year.year}
+          >
             <span>{year.short}</span>
           </a>
         );
@@ -91,15 +116,39 @@ export default class Shows extends Component {
     }, this);
   }
 
-  fetchShowByYear = (year) => {
-    showsByYear(year).then(shows => {
+  fetchShowsToday = () => {
+    let today = new Date();
+    // console.log(today.format('m-d'));
+    let day = today.getDate().toString();
+    let month = (today.getMonth() + 1).toString();
+    let date = month + "-" + day;
+    showsToday(date).then(shows => {
+      //fetch all the shows from the show ids passed in from response
+      this.setState({
+        shows: shows
+      })
+    })
+
+  }
+
+  fetchShowsForVenue = (venue) => {
+    showsForVenue(venue).then(showIds => {
+      //fetch all the shows from the show ids passed in from response
       this.setState({
         shows: shows
       })
     })
   }
 
-  fetchShows = () => {
+  fetchShowsForYear = (year) => {
+    showsForYear(year).then(shows => {
+      this.setState({
+        shows: shows
+      })
+    })
+  }
+
+  fetchAllShows = () => {
     shows().then(shows => {
       this.setState({
         shows: shows
@@ -108,7 +157,9 @@ export default class Shows extends Component {
   }
 
   componentWillMount = () => {
-    this.fetchShows();
+    this.fetchShowsToday();
+    console.log(this.props);
+    this.fetchAllShows();
   }
 
   render() {
@@ -121,13 +172,18 @@ export default class Shows extends Component {
         </div>
       )
     }
-
+    const options = [
+      {name: 'Swedish', value: 'sv'},
+      {name: 'English', value: 'en'}
+  ];
     return (
       <div>
         <div className="year-filter">
-          <ul className="year-list">
+          <SelectSearch options={options} value="sv" name="language" placeholder="Choose your language" />
+
+          {/* <ul className="year-list">
             {this.renderYears()} 
-          </ul>
+          </ul> */}
         </div>
         <div className="shows-container">
           <div className="show-gallery">

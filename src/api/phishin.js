@@ -10,8 +10,18 @@ export const shows = async() => {
   return data.data;
 }
 
-export const showsByYear = async(year) => {
+export const showsForVenue = async(venue) => {
+  let data = await (await fetch(base + 'venues/' + venue)).json();
+  return data.data.show_ids;
+}
+
+export const showsForYear = async(year) => {
   let data = await (await fetch(base + 'years/' + year)).json();
+  return data.data;
+}
+
+export const showsToday = async(day) => {
+  let data = await (await fetch(base + 'shows-on-day-of-year/' + day)).json();
   return data.data;
 }
 

@@ -31,8 +31,8 @@ export default class App extends Component {
                   <Show emitter={emitter} {...props}/>
                 }
               />
-              <Route path="/shows" render={(props) =>
-                  <Shows emitter={emitter} {...props}/>
+              <Route path="/shows/:type?/:id?" render={(props) =>
+                  <Shows emitter={emitter} history={history} {...props}/>
                 }
               />
               <Route path="/song/:id" component={Show}/>

@@ -29,6 +29,7 @@ export default class Show extends Component {
   }
 
   componentWillMount() {
+    console.log(this.props);
     this.fetchShow(this.props.match.params.id);
   }
 
