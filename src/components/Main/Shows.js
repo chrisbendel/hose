@@ -91,10 +91,9 @@ export default class Shows extends Component {
 
   renderShows = (shows) => {
     return shows.map(function (show, index) {
+      let date = new Date(show.date);
       return (
-        <div key={index} className="image-container" onClick={() => {
-          this.props.history.push('show/' + show.id)}
-        }>
+        <div key={index} className="image-container">
           <div className="show-information-control">
             <img 
               src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
@@ -102,21 +101,37 @@ export default class Shows extends Component {
               id={show.id}
             />
             <div className="show-information">
-              <div className="play-button">
-                <Ionicon 
-                  icon="ios-play" 
-                  fontSize="40px" 
-                  onClick={() => this.props.emitter.emit('playlistUpdate', show.id)}
-                  color="white"
-                  className="center-abs"
-                />
-              </div>
-              <div className="show-likes">
-                <p> Likes: {show.likes_count} </p>
+              <div className="center-abs">
+                <div className="play-button">
+                  <Ionicon 
+                    icon="ios-play" 
+                    fontSize="40px" 
+                    onClick={() => this.props.emitter.emit('playlistUpdate', show.id)}
+                    color="white"
+                    className="left-10"
+                  />
+                </div>
+                <div className="show-likes">
+                  <Ionicon 
+                    icon="ios-thumbs-up" 
+                    fontSize="18px" 
+                    onClick={() => this.props.emitter.emit('playlistUpdate', show.id)}
+                    color="white"
+                  />
+                  <span className="likes-num"> 
+                    {show.likes_count} 
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-          <p> {show.date}  </p>
+          <p 
+            onClick={() => {
+              this.props.history.push('show/' + show.id)}
+            }
+          > 
+            {date.toDateString()} 
+          </p>
           <p> {show.venue_name} {show.location} </p>
 
           {show.remastered ? <p> Remastered: yes </p> : null}
