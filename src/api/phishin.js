@@ -1,12 +1,17 @@
 const base = 'http://phish.in/api/v1/'
 
+export const randomShow = async() => {
+  let data = await (await fetch(base + 'random-show')).json();
+  return data.data;
+}
+
 export const show = async(id) => {
   let data = await (await fetch(base + 'shows/' + id)).json();
   return data.data;
 }
 
 export const shows = async() => {
-  let data = await (await fetch(base + 'shows')).json();
+  let data = await (await fetch(base + 'shows?per_page=200')).json();
   return data.data;
 }
 

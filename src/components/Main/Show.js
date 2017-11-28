@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './../../css/Shows.css';
-import { show } from './../../api/phishin';
+import { show, randomShow } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
 
 export default class Show extends Component {
@@ -12,7 +12,7 @@ export default class Show extends Component {
     }
   }
 
-  fetchShow(id) {
+  fetchShow = (id) => {
     show(id).then(show => {
       if (show) {
         this.setState({
@@ -22,7 +22,18 @@ export default class Show extends Component {
     });
   }
 
+  fetchRandomShow = () => {
+    randomShow().then(show => {
+      this.setState({
+        show: show
+      })
+    })
+  }
+
   componentWillReceiveProps(nextProps) {
+    if (this.props.match.params.id === 'random') {
+      this.fetchRandomShow();
+    }
     if (nextProps.match.params.id !== this.props.match.params.id) {
       this.fetchShow(nextProps.match.params.id);
     }
@@ -30,7 +41,11 @@ export default class Show extends Component {
 
   componentWillMount() {
     console.log(this.props);
-    this.fetchShow(this.props.match.params.id);
+    if (this.props.match.params.id === 'random') {
+      this.fetchRandomShow();
+    } else {
+      this.fetchShow(this.props.match.params.id);
+    }
   }
 
   renderSongs = () => {
@@ -89,7 +104,10 @@ export default class Show extends Component {
             
           </div>
         </div>
-        <div className="show-list">
+        <div className="show-tracks">
+          <ul>
+            {this.renderSongs()}
+          </ul>
           <ul>
             {this.renderSongs()}
           </ul>

@@ -57,7 +57,7 @@ html > * {
   left: 100px;
   padding: 1rem;
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .footer {

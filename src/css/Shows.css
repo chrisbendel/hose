@@ -1,33 +1,54 @@
 .show-overview {
   border: 3px solid blue;
   width: 100%;
-  height: 60%;
+  height: 200px;
+  position: sticky;
+  top: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.show-list {
+.show-tracks {
   overflow-y: scroll;
+  height: calc(100% - 400px);
+  top: 300px;
+  width: 100%;
+  position: fixed;
 }
 
 .show-details {
   width: 40%;
 }
 
-.art {
-  width: 25%;
-  height: 25%;
+.clickable {
+  cursor: pointer;
 }
 
-.shows-container {
-  display: flex;
+.art {
+  width: 15%;
   height: 100%;
 }
 
-.year-filter {
-  /* position: relative; */
-  /* float: left; */
+.shows-container {
+  height: calc(100% - 250px);
+  overflow: auto;
+  position: fixed;
+  top: 150px;
+}
+
+.filters {
+  position: sticky;
+  display: flex;
+  top: 0;
+  width: 100%;
+  height: 10%;
+  z-index: 999;
+}
+
+.search-filter {
+  padding: 1rem;
+  flex: 1;
 }
 
 .year-list {

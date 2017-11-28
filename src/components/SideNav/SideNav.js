@@ -5,31 +5,36 @@ import './../../css/SideNav.css'
 const items = [
   {
     "id": 0,
-    "name": "Tours",
-    "path": "/tours"
+    "name": "Today in Phistory",
+    "path": "/shows/today"
   },
   {
     "id": 1,
+    "name": "Random Show",
+    "path": "/show/random"
+  },
+  {
+    "id": 2,
     "name": "Shows",
     "path": "/shows"
   },
   {
-    "id": 2,
+    "id": 3,
     "name": "Songs",
     "path": "/songs"
   },
   {
-    "id": 3,
+    "id": 4,
     "name": "Venues",
     "path": "/venues"
   },
   {
-    "id": 4,
+    "id": 5,
     "name": "Settings",
     "path": "/settings"
   },
   {
-    "id": 5,
+    "id": 6,
     "name": "Profile",
     "path": "/profile"
   }
@@ -47,6 +52,7 @@ export default class SideNav extends Component {
   renderList = items.map(function(item, index) {
     return (
       <NavLink 
+        exact
         key={item.id} 
         id={item.id} 
         to={item.path} 
