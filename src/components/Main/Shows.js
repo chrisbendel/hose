@@ -90,9 +90,9 @@ export default class Shows extends Component {
   // }
 
   renderShows = (shows) => {
-    return shows.map(function (show) {
+    return shows.map(function (show, index) {
       return (
-        <div key={show.date} className="image-container" onClick={() => {
+        <div key={index} className="image-container" onClick={() => {
           this.props.history.push('show/' + show.id)}
         }>
           <div className="show-information-control">
@@ -202,10 +202,10 @@ export default class Shows extends Component {
       if (el.scrollTop >= (el.scrollHeight - el.offsetHeight - 300)) {
         let page = this.state.page + 1;
         shows(page).then(shows => {
-          this.setState({
-            page: page,
-            shows: this.state.shows.concat(shows)
-          });
+          this.setState((prevState) => ({
+            shows: prevState.shows.concat(shows),
+            page: prevState.page + 1
+          }));
         });
       }
     }, 400);
