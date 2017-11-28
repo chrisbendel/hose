@@ -102,18 +102,22 @@ export default class Shows extends Component {
               id={show.id}
             />
             <div className="show-information">
-              <Ionicon 
-                icon="ios-play" 
-                fontSize="60px" 
-                onClick={() => this.props.emitter.emit('playlistUpdate', show.id)}
-                color="white"
-                className="center-abs"
-              />
+              <div className="play-button">
+                <Ionicon 
+                  icon="ios-play" 
+                  fontSize="40px" 
+                  onClick={() => this.props.emitter.emit('playlistUpdate', show.id)}
+                  color="white"
+                  className="center-abs"
+                />
+              </div>
+              <div className="show-likes">
+                <p> Likes: {show.likes_count} </p>
+              </div>
             </div>
           </div>
           <p> {show.date}  </p>
           <p> {show.venue_name} {show.location} </p>
-          <p> Likes: {show.likes_count} </p>
 
           {show.remastered ? <p> Remastered: yes </p> : null}
           {show.sbd ? <p> Soundboard: yes </p> : null}
