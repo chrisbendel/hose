@@ -60,21 +60,26 @@ export default class Show extends Component {
       console.log(track);
       return (
         <li 
-          className="playlist-container-item" 
+          className="show-container-item" 
           key={track.src}
           // onClick={() => {
           //   this.setPlaylistPosition(track.position - 1);
           // }}
         >
-          <Ionicon 
-            style={{cursor: 'pointer'}}
-            icon="ios-play"
-            font-size="60px"
-            onClick={() => {
-              emitter.emit('playlistUpdate', show.id, track.position - 1)
-            }}
-          />
-          <span> {track.position} - </span>
+          <span className="play-cell">
+            <span className="play-button-sm">
+              <Ionicon 
+                style={{cursor: 'pointer'}}
+                icon="ios-play"
+                font-size="40px"
+                onClick={() => {
+                  emitter.emit('playlistUpdate', show.id, track.position - 1)
+                }}
+                className="track-play"
+              />
+            </span>
+            <span className="track-number">{track.position}</span>
+          </span>
           <span>{track.title}</span>
         </li>
       );
