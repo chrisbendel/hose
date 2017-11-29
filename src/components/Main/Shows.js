@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import { shows, showsForYear, showsForVenue, showsForTour, showsToday, show } from './../../api/phishin';
-import {yearFilters, tourFilters, venueFilters, sortByOptions} from './../../filterOptions';
+import { shows, showsForYear, showsForVenue, showsForTour, showsToday, show, testFunc } from './../../api/phishin';
+import {yearFilters, tourFilters, venueFilters, sortByOptions, showJamcharts} from './../../filterOptions';
 import ReactDOM from 'react-dom';
 import './../../css/Shows.css';
 import Ionicon from 'react-ionicons';
 import Filter from './Filter';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+
+const isJamchart = (id) => {
+  return (showJamcharts.indexOf(id) != -1);
+}
 
 //TODO create default empty state if no shows found
 export default class Shows extends Component {
@@ -24,6 +28,7 @@ export default class Shows extends Component {
   }
   
   componentWillMount = () => {
+
     let type = this.props.match.params.type;
     let id = this.props.match.params.id;
     this.loadRelevantData(type, id);
@@ -60,13 +65,14 @@ export default class Shows extends Component {
     return shows.map(function (show, index) {
       let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       let date = new Date(show.date + ' 00:00');
-
       return (
         <div key={show.id} className="image-container">
           <div className="show-information-control">
-            {show.sbd ? <div className="is-soundboard">Soundboard</div> : null}
-            {show.remastered ? <div className="is-soundboard">remastered</div> : null}
-            {show.tags ? <div className="is-soundboard">remastered</div> : null}
+            <div className="show-tags">
+              {show.sbd ? <div className="tag">Soundboard</div> : null}
+              {show.remastered ? <div className="tag">Remastered</div> : null}
+              {isJamchart(show.id) ? <div className="tag">Jamcharts</div> : null}
+            </div>
             <img 
               src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
               alt={show.id}
@@ -78,7 +84,6 @@ export default class Shows extends Component {
                   <Ionicon 
                     icon="ios-play" 
                     fontSize="35px" 
-                    
                     color="white"
                     className="left-10"
                   />
@@ -99,17 +104,23 @@ export default class Shows extends Component {
           </div>
           <span 
             onClick={() => {
-              this.props.history.push('show/' + show.id)}
+              this.props.history.push('/show/' + show.id)}
             }
             className="show-date"
           >
             {date.toLocaleDateString('en-US', dateOptions)}
           </span>
-          <span className="show-venue">
+          <span className="show-venue"
+            
+          >
             {show.venue ? 
-              <span>{show.venue.name} {show.venue.location}</span>
+              <span onClick={() => {
+                this.props.history.push('/shows/venue/' + show.venue.id)
+              }}>{show.venue.name} {show.venue.location}</span>
               :
-              <span> {show.venue_name} {show.location}  </span>
+              <span onClick={() => {
+                this.props.history.push('/shows/venue/' + show.venue_id)
+              }}> {show.venue_name} {show.location}  </span>
             }
             
             </span>
@@ -147,7 +158,6 @@ export default class Shows extends Component {
       let promises = [];
       showIds.forEach(id => {
         promises.push(show(id).then(showInfo => {
-          console.log(showInfo);
           return showInfo;
         }));
       });
@@ -163,7 +173,6 @@ export default class Shows extends Component {
 
   fetchShowsForYear = (year) => {
     showsForYear(year).then(shows => {
-      console.log(shows);
       this.setState({
         shows: shows,
         allShows: false
@@ -184,6 +193,12 @@ export default class Shows extends Component {
           return d-c;
         }
       });
+    }
+
+    if (attr == 'jamcharts') {
+      sorted = shows.filter(show => {
+        return isJamchart(show.id);
+      })
     }
 
     if (attr === 'likes_count') {

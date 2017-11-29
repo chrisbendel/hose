@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import './../../css/Show.css';
 import { show, randomShow } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
+import {trackJamcharts} from './../../filterOptions';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
+
+const isJamchart = (id) => {
+  return (trackJamcharts.indexOf(id) != -1);
+}
 
 const msToSec = (time) => {
   var minutes = Math.floor(time / 60000);
@@ -29,10 +34,6 @@ export default class Show extends Component {
       let tempPos = position+1;
       this.setState({currentPlayingSong: showId.toString() + tempPos.toString()});
     });
-  }
-
-  componentDidUpdate() {
-    
   }
 
   fetchShow = (id) => {
@@ -120,8 +121,8 @@ export default class Show extends Component {
             <span className="track-number">{track.position}</span>
           </span>
           <span className="title-cell">{track.title}</span>
+          <span className="jamcharts-cell">{isJamchart(track.id) ? "Jamcharts" : ""}</span>
           <span className="length-cell">{msToSec(track.duration)}</span>
-          {/* <span className="likes-cell">{track.likes_count}</span> */}
           <span className="likes-cell">
             <Tooltip
             trigger="mouseenter"
@@ -161,19 +162,19 @@ export default class Show extends Component {
                 #
               </span>
               <span className="title-cell">Title</span>
+              <span className="jamcharts-cell"></span>
               <span className="length-cell">
                 <Ionicon
                   icon="md-time"
                   color="black"
                 />
-
               </span>
               <span className="likes-cell">
-              <Ionicon 
-                icon="md-heart-outline"
-                font-size="30px"
-                color="black"
-              />
+                <Ionicon 
+                  icon="md-heart-outline"
+                  font-size="30px"
+                  color="black"
+                />
               </span>
             </li>
             {this.renderTracks(set)} 

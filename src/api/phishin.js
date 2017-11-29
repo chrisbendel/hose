@@ -10,6 +10,11 @@ export const show = async(id) => {
   return data.data;
 }
 
+export const testFunc = async() => {
+  let data = await (await fetch(base + 'tracks?tag=Jamcharts&per_page=30000e')).json();
+  return data.data;
+}
+
 export const shows = async(page = 1) => {
   let data = await (await fetch(base + 'shows?per_page=10&page=' + page)).json();
   return data.data;

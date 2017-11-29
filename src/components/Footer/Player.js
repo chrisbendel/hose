@@ -121,10 +121,12 @@ export default class Player extends Component {
     let show = this.state.show;
     let tracks = this.state.tracks;
 
-    if (!tracks) {
+    if (!show) {
       return (<div> Pick a show or song to start listening </div>);
     }
 
+    console.log(show);
+    
     return (
       <div className="controls-container">
         <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
@@ -148,7 +150,8 @@ export default class Player extends Component {
         >
           <Ionicon className="clickable" icon="ios-list-box" fontSize="60px"/>
         </Tooltip>
-        <img style={{width: '50px', height: '50px'}} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}/> 
+        <div> {show.date} - {show.venue.name}, {show.venue.location} </div>
+        <img style={{'margin-left': '10px', width: '50px', height: '50px'}} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}/> 
       </div>
     );
   }

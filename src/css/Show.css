@@ -157,6 +157,15 @@
   text-overflow: ellipsis;
   flex-grow: 1;
 }
+
+.jamcharts-cell {
+  min-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+}
+
 .likes-cell {
   margin-left: auto;
   text-align: center;
