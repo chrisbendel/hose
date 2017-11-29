@@ -134,11 +134,16 @@ export default class Shows extends Component {
 
   fetchShowsForVenue = (venue) => {
     showsForVenue(venue).then(showIds => {
+      let venueShows = [];
+      showIds.forEach(id => {
+        
+      });
       //TODO fetch all the shows from the show ids passed in from response
-      this.setState({
-        shows: shows,
-        allShows: false
-      })
+      console.log(showIds);
+      // this.setState({
+      //   shows: shows,
+      //   allShows: false
+      // })
     })
   }
 
