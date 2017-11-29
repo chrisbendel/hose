@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { tracksForSong } from './../../api/phishin';
-import { sortByOptions, trackJamcharts } from './../../filterOptions';
+import { tracksForSong, testFunc } from './../../api/phishin';
+import { sortByOptions, trackJamcharts, songFilters  } from './../../filterOptions';
 import Ionicon from 'react-ionicons';
 import Select from 'react-select';
+import Filter from './Filter';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css'
 import './../../css/Shows.css';
@@ -26,25 +27,23 @@ export default class Songs extends Component {
       tracks: null,
       filterOption: '',
       loadingShows: false,
+      songSearch: '',
       filterDisplay: ''
     }
   }
   
   componentWillMount = () => {
     let id = this.props.match.params.id;
-    console.log(id);
     this.fetchTracks(id);
   }
 
   componentWillReceiveProps(nextProps) {
     let nextId = nextProps.match.params.id;
-    console.log(nextId);
     this.fetchTracks(nextId);
   }
 
   fetchTracks = (song) => {
     tracksForSong(song).then(tracks => {
-      console.log(tracks);
       this.setState({
         tracks: tracks
       })
@@ -89,6 +88,7 @@ export default class Songs extends Component {
   }
 
   setFilterDisplay = (title) => {
+    console.log(title);
     this.setState({filterDisplay: title});
   }
 
@@ -165,32 +165,35 @@ export default class Songs extends Component {
   }
 
   renderTrackContainer = () => {
-      return (
-        <ul className="playlist-section"> 
-          <li className="show-container-item header-cell">
-            <span className="play-cell">
-              #
-            </span>
-            <span className="title-cell">Title</span>
-            <span className="jamcharts-cell"></span>
-            <span className="length-cell">
-              <Ionicon
-                icon="md-time"
-                color="black"
-              />
-            </span>
-            <span className="likes-cell">
-              <Ionicon 
-                icon="md-heart-outline"
-                font-size="30px"
-                color="black"
-              />
-            </span>
-          </li>
-          {this.renderTracks()} 
-        </ul>
-      )
-    // });
+    return (
+      <ul className="playlist-section"> 
+        <li className="show-container-item header-cell">
+          <span className="play-cell">
+            #
+          </span>
+          <span className="title-cell">Title</span>
+          <span className="jamcharts-cell"></span>
+          <span className="length-cell">
+            <Ionicon
+              icon="md-time"
+              color="black"
+            />
+          </span>
+          <span className="likes-cell">
+            <Ionicon 
+              icon="md-heart-outline"
+              font-size="30px"
+              color="black"
+            />
+          </span>
+        </li>
+        {this.renderTracks()} 
+      </ul>
+    )
+  }
+
+  setCurrentFilter = (title) => {
+    this.setState({currentFilter: title});
   }
 
   render() {
@@ -212,14 +215,29 @@ export default class Songs extends Component {
               this.refs.shows.scrollTop = 0;
             }}
           />
-          <div className="filter-display">
-            Displaying: {this.state.filterDisplay}
+          {this.state.filterDisplay.length ?
+            <div className="filter-display">
+              Song: {this.state.filterDisplay}
+            </div>
+            :
+            null
+          }
+          <div className="search-filter">
+            <Filter 
+              history={this.props.history}
+              setTitle={this.setFilterDisplay.bind(this)}
+              name={"Songs"}
+              path={"/song/"}
+              placeholder={"Search For Song"}
+              options={songFilters}
+            />
           </div>
+
           <div className="search-filter">
             <Select
               name={"Sort by"}
               placeholder={"Sort by"}
-              value={this.state.value}
+              value={this.state.songSearch}
               onChange={this.handleChange.bind(this)}
               options={sortByOptions}
             />

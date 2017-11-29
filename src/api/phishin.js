@@ -11,7 +11,7 @@ export const show = async(id) => {
 }
 
 export const testFunc = async() => {
-  let data = await (await fetch(base + 'tracks?tag=Jamcharts&per_page=30000e')).json();
+  let data = await (await fetch(base + 'songs?per_page=1000&sort_attr=title')).json();
   return data.data;
 }
 

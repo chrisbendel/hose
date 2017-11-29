@@ -34,13 +34,10 @@ export default class App extends Component {
                   <Shows emitter={emitter} history={history} {...props}/>
                 }
               />
-              <Route path="/song/:id" render={(props) =>
+              <Route path="/song/:id?" render={(props) =>
                   <Songs emitter={emitter} history={history} {...props}/>
                 }
               />
-              <Redirect to={{
-                pathname: '/shows',
-              }}/>
           </main>
         </div>
       </Router>
