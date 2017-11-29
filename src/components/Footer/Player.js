@@ -16,12 +16,19 @@ export default class Player extends Component {
     this.state = {
       tracks: null,
       show: null,
-      downloading: false
+      downloading: false,
+      currentPosition: 0
     }
 
     this.props.emitter.addListener('playlistUpdate', (showId, position = 0) => {
       this.fetchShowTracks(showId, position);
     });
+
+    setInterval(() => {
+      if (this.player && (this.player.state.playing == true)) {
+        this.getPlaylistPosition();
+      }
+    }, 1000)
   }
   
   fetchShowTracks = (showId, position) => {
@@ -38,7 +45,8 @@ export default class Player extends Component {
       
       this.setState({
         tracks: tracks,
-        show: show
+        show: show,
+        currentPosition: position
       });
       this.setPlaylistPosition(position);
     });
@@ -68,6 +76,13 @@ export default class Player extends Component {
     window.require("electron").remote.require("electron-download-manager").bulkDownload(options, function(error, finished, errors){
       that.setState({downloading: false})
     });
+  }
+
+  getPlaylistPosition = () => {
+    if (this.state.currentPosition != this.player.state.currentPlaylistPos) {
+      this.props.emitter.emit('newSong', this.player.state.currentPlaylistPos + 1);
+      this.setState({currentPosition: this.state.currentPosition + 1});
+    }
   }
 
   renderPlaylistContent = (set) => {
@@ -116,7 +131,6 @@ export default class Player extends Component {
         <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
         <Ionicon className={this.state.downloading ? "hidden" : "clickable"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download this show?") ? this.downloadShow() : null}/>
         <Audio
-          // fullPlayer={true}
           ref={audioComponent => { this.player = audioComponent; }}
           width={500}
           height={50}
@@ -135,7 +149,7 @@ export default class Player extends Component {
         >
           <Ionicon className="clickable" icon="ios-list-box" fontSize="60px"/>
         </Tooltip>
-        
+        <Ionicon className="clickable" icon="ios-alert" fontSize="60px" onClick={console.log(this.player)}/>
       </div>
     );
   }

@@ -9,8 +9,14 @@ export default class Show extends Component {
     super(props);
 
     this.state = {
-      show: null
+      show: null,
+      currentPosition: 0
     }
+
+    this.props.emitter.addListener('newSong', (position) => {
+      console.log(position);
+      this.setState({currentPosition: position});
+    });
   }
 
   fetchShow = (id) => {
@@ -57,11 +63,10 @@ export default class Show extends Component {
     return tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
-      console.log(track);
       return (
         <li 
           className="show-container-item" 
-          key={track.src}
+          key={track.position}
           // onClick={() => {
           //   this.setPlaylistPosition(track.position - 1);
           // }}
