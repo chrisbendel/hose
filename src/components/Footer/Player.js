@@ -7,8 +7,9 @@ import ReactDOM from 'react-dom';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css'
 
-//TODO Event emitter listeners, then implement whenever clicking "play" on a song or show
-//maybe support one custom playlist and one current show playlist
+let onplaying = true;
+let onpause = false;
+
 export default class Player extends Component {
   constructor(props) {
     super(props);
@@ -16,22 +17,34 @@ export default class Player extends Component {
     this.state = {
       tracks: null,
       show: null,
-      downloading: false,
-      currentPosition: 0
+      downloading: false
     }
 
     this.props.emitter.addListener('playlistUpdate', (showId, position = 0) => {
       this.fetchShowTracks(showId, position);
     });
-
-    setInterval(() => {
-      if (this.player && (this.player.state.playing == true)) {
-        this.getPlaylistPosition();
-      }
-    }, 1000)
+  }
+  
+  componentDidUpdate() {
+    if (this.player) {
+      let element = this.player.audioElement;
+      console.log(this.player);
+      element.addEventListener('playing', (e) => {
+        onplaying = true;
+        onpause = false;
+        this.props.emitter.emit('positionUpdate', this.player.state.currentPlaylistPos);
+      })
+      element.addEventListener('pause', (e) => {
+        onplaying = false;
+        onpause = true;
+        console.log('pause');
+        // this.props.emitter.emit('positionUpdate', this.player.state.currentPlaylistPos);
+      })
+    }
   }
   
   fetchShowTracks = (showId, position) => {
+    let currentShow = this.state.show;
     if (this.state.show && (showId === this.state.show.id)) {
       this.setPlaylistPosition(position);
     }
@@ -45,18 +58,23 @@ export default class Player extends Component {
       
       this.setState({
         tracks: tracks,
-        show: show,
-        currentPosition: position
+        show: show
       });
       this.setPlaylistPosition(position);
     });
   }
 
+  setNewShow = (showId) => {
+    
+  }
+
   setPlaylistPosition = (index) => {
     this.player.state.currentPlaylistPos = index;
-    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
-    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
-    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
+    if (this.player.state.paused && !onplaying) {
+      ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
+      ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
+      ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
+    }
   }
 
   downloadShow = () => {
@@ -77,21 +95,30 @@ export default class Player extends Component {
     });
   }
 
-  getPlaylistPosition = () => {
-    if (this.state.currentPosition != this.player.state.currentPlaylistPos) {
-      this.props.emitter.emit('newSong', this.player.state.currentPlaylistPos);
-      this.setState({currentPosition: this.player.state.currentPlaylistPos});
-    }
+  getPosition = () => {
+    return this.player.state.currentPlaylistPos;
+  }
+
+  // getPlaylistPosition = () => {
+  //   if (this.state.currentPosition != this.player.state.currentPlaylistPos) {
+  //     this.props.emitter.emit('newSong', this.player.state.currentPlaylistPos);
+  //     this.setState({currentPosition: this.player.state.currentPlaylistPos});
+  //   }
+  // }
+
+  onPlay = (e) => {
+    console.log(e);
   }
 
   renderPlaylistContent = (set) => {
     return this.state.show.tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
+      console.log(track);
       return (
-        <li 
+        <li
           className="playlist-container-item" 
-          key={track.src}
+          key={track.position}
           onClick={() => {
             this.setPlaylistPosition(track.position - 1);
           }}
@@ -108,7 +135,7 @@ export default class Player extends Component {
     const sets = [...new Set(this.state.show.tracks.map(track => track.set_name))];
     return sets.map(set => {
       return (
-        <div>
+        <div key={set}>
           <p> {set} </p>
           <ul className="playlist-section"> {that.renderPlaylistContent(set)} </ul>
         </div>

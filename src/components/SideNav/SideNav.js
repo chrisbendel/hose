@@ -19,16 +19,6 @@ const items = [
     "path": "/shows"
   },
   {
-    "id": 3,
-    "name": "Songs",
-    "path": "/songs"
-  },
-  {
-    "id": 4,
-    "name": "Venues",
-    "path": "/venues"
-  },
-  {
     "id": 5,
     "name": "Settings",
     "path": "/settings"

@@ -116,7 +116,7 @@
 .shows-container {
   height: calc(100% - 91px);
   overflow: auto;
-  top: 75px;
+  top: 100px;
   position: absolute;
   padding: 1.25rem .25rem;
   text-align: center;

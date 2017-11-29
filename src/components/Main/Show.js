@@ -4,9 +4,6 @@ import { show, randomShow } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
-import { easyComp } from 'react-easy-state'
-
-
 
 const msToSec = (time) => {
   var minutes = Math.floor(time / 60000);
@@ -14,7 +11,7 @@ const msToSec = (time) => {
   return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
-class Show extends Component {
+export default class Show extends Component {
   constructor(props) {
     super(props);
 
@@ -24,8 +21,7 @@ class Show extends Component {
       currentPlayingSong: null
     }
 
-    this.props.emitter.addListener('newSong', (position) => {
-      console.log(position);
+    this.props.emitter.addListener('positionUpdate', (position) => {
       this.setState({currentPosition: position + 1});
     });
 
@@ -33,6 +29,10 @@ class Show extends Component {
       let tempPos = position+1;
       this.setState({currentPlayingSong: showId.toString() + tempPos.toString()});
     });
+  }
+
+  componentDidUpdate() {
+    
   }
 
   fetchShow = (id) => {
@@ -223,5 +223,3 @@ class Show extends Component {
     );
   }
 }
-
-export default easyComp(Show)

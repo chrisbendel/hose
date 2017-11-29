@@ -19,7 +19,7 @@ export default class GlobalSearch extends Component {
     this.state = {
       value: '',
       suggestions: []
-    }; 
+    };
   }
 
   getSuggestions = (value) => {

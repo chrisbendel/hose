@@ -65,6 +65,8 @@ export default class Shows extends Component {
         <div key={show.id} className="image-container">
           <div className="show-information-control">
             {show.sbd ? <div className="is-soundboard">Soundboard</div> : null}
+            {show.remastered ? <div className="is-soundboard">remastered</div> : null}
+            {show.tags ? <div className="is-soundboard">remastered</div> : null}
             <img 
               src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
               alt={show.id}
@@ -103,7 +105,14 @@ export default class Shows extends Component {
           >
             {date.toLocaleDateString('en-US', dateOptions)}
           </span>
-          <span className="show-venue"> {show.venue_name} {show.location} </span>
+          <span className="show-venue">
+            {show.venue ? 
+              <span>{show.venue.name} {show.venue.location}</span>
+              :
+              <span> {show.venue_name} {show.location}  </span>
+            }
+            
+            </span>
 
           {show.remastered ? <p> Remastered: yes </p> : null}
         </div>

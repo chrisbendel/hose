@@ -104,7 +104,7 @@ export const search = async(query) => {
   if (tours) {
     Object.keys(tours).forEach(function(tour) {
       let values = tours[tour];
-      values.path = '/tour/' + values.id;
+      values.path = '/shows/tour/' + values.id;
       values.type = 'tour';
       values.display = values.name;
       terms.push(values);
@@ -115,7 +115,7 @@ export const search = async(query) => {
   if (venues) {
     Object.keys(venues).forEach(function(venue) {
       let values = venues[venue];
-      values.path = '/venue/' + values.id;
+      values.path = '/shows/venue/' + values.id;
       values.type = 'venue';
       if (values.past_names) {
         values.display = values.name + " " + values.location + " (" + values.past_names + ")";
