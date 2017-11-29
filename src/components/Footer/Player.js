@@ -21,7 +21,7 @@ export default class Player extends Component {
     }
 
     this.props.emitter.addListener('playlistUpdate', (showId, position = 0) => {
-      this.fetchShowTracks(showId, position);
+      this.setShow(showId, position);
     });
   }
   
@@ -42,39 +42,28 @@ export default class Player extends Component {
       })
     }
   }
-  
-  fetchShowTracks = (showId, position) => {
-    let currentShow = this.state.show;
-    if (this.state.show && (showId === this.state.show.id)) {
-      this.setPlaylistPosition(position);
-    }
 
+  setShow = (showId, position = 0) => {
     show(showId).then(show => {
-      let tracks = [];
-
-      show.tracks.forEach(function (track) {
-        tracks.push({id: track.id, name: track.title, src: track.mp3, img: process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'});
+      let tracks = show.tracks.map(track => {
+        return {id: track.id, name: track.title, src: track.mp3}
       });
-      
+
       this.setState({
-        tracks: tracks,
+        tracks: tracks, 
         show: show
+      }, () => {
+        this.setPlaylistPosition(position);
       });
-      this.setPlaylistPosition(position);
     });
-  }
-
-  setNewShow = (showId) => {
-    
   }
 
   setPlaylistPosition = (index) => {
     this.player.state.currentPlaylistPos = index;
-    if (this.player.state.paused && !onplaying) {
-      ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
-      ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
-      ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
-    }
+    
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
   }
 
   downloadShow = () => {
@@ -93,21 +82,6 @@ export default class Player extends Component {
     window.require("electron").remote.require("electron-download-manager").bulkDownload(options, function(error, finished, errors){
       that.setState({downloading: false})
     });
-  }
-
-  getPosition = () => {
-    return this.player.state.currentPlaylistPos;
-  }
-
-  // getPlaylistPosition = () => {
-  //   if (this.state.currentPosition != this.player.state.currentPlaylistPos) {
-  //     this.props.emitter.emit('newSong', this.player.state.currentPlaylistPos);
-  //     this.setState({currentPosition: this.player.state.currentPlaylistPos});
-  //   }
-  // }
-
-  onPlay = (e) => {
-    console.log(e);
   }
 
   renderPlaylistContent = (set) => {
@@ -174,7 +148,7 @@ export default class Player extends Component {
         >
           <Ionicon className="clickable" icon="ios-list-box" fontSize="60px"/>
         </Tooltip>
-        <Ionicon className="clickable" icon="ios-alert" fontSize="60px" onClick={console.log(this.player)}/>
+        <img style={{width: '50px', height: '50px'}} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}/> 
       </div>
     );
   }

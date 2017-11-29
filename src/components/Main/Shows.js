@@ -74,11 +74,11 @@ export default class Shows extends Component {
             />
             <div className="show-information">
               <div className="center-abs">
-                <div className="play-button">
+                <div className="play-button" onClick={() => this.props.emitter.emit('playlistUpdate', show.id)}>
                   <Ionicon 
                     icon="ios-play" 
                     fontSize="35px" 
-                    onClick={() => this.props.emitter.emit('playlistUpdate', show.id)}
+                    
                     color="white"
                     className="left-10"
                   />
