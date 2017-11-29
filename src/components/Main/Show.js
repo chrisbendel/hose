@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import './../../css/Show.css';
 import { show, randomShow } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
-import ReactTable from 'react-table';
-import { Tooltip } from 'react-tippy';
-import 'react-tippy/dist/tippy.css';
 
 const msToSec = (time) => {
   var minutes = Math.floor(time / 60000);
@@ -104,24 +101,14 @@ export default class Show extends Component {
           <span className="length-cell">{msToSec(track.duration)}</span>
           {/* <span className="likes-cell">{track.likes_count}</span> */}
           <span className="likes-cell">
-            <Tooltip
-            trigger="mouseenter"
-            interactive
-            inertia={false}
-            arrow={true}
-            animation="fade"
-            arrowSize={"small"}
-            duration={200}
-            html={track.likes_count}
-            >
-              <div className="likes-bar">
-                <div 
-                  className="inside-bar"
-                  style={{width: this.getLikesPercent(track.likes_count)}}
-                >
-                </div>
+            <div className="likes-bar">
+              <div 
+                className="inside-bar"
+                style={{width: this.getLikesPercent(track.likes_count)}}
+              >
+              
               </div>
-          </Tooltip>
+            </div>
           </span>
         </li>
       );
@@ -151,6 +138,7 @@ export default class Show extends Component {
               </span>
               <span className="likes-cell">
               <Ionicon 
+                style={{cursor: 'pointer'}}
                 icon="md-heart-outline"
                 font-size="30px"
                 color="black"
