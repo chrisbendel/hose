@@ -82,7 +82,9 @@ export default class Show extends Component {
             </span>
             <span className="track-number">{track.position}</span>
           </span>
-          <span>{track.title}</span>
+          <span className="title-cell">{track.title}</span>
+          <span className="likes-cell">{track.likes_count}</span>
+          <span className="length-cell">{Math.floor(track.duration / 60000)}:{((track.duration % 6000) / 1000).toFixed(0) < 10 ? '0' : ''}{((track.duration % 6000) / 1000).toFixed(0)}</span>
         </li>
       );
     });
@@ -93,8 +95,24 @@ export default class Show extends Component {
     return sets.map(set => {
       return (
         <div>
-          <p> {set} </p>
-          <ul className="playlist-section"> {this.renderTracks(set)} </ul>
+          <ul className="playlist-section"> 
+            <h2 className="set-name"> {set} </h2>
+            <li 
+              className="show-container-item" 
+              // onClick={() => {
+              //   this.setPlaylistPosition(track.position - 1);
+              // }}
+            >
+              <span className="play-cell">
+                #
+              </span>
+              <span className="title-cell">Title</span>
+              <span className="likes-cell">Likes</span>
+              <span className="length-cell">Length</span>
+
+            </li>
+            {this.renderTracks(set)} 
+          </ul>
         </div>
       )
     });
