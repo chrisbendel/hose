@@ -56,6 +56,7 @@
   margin-bottom: .25rem;
   border: 1px solid #EEEEEE;
   transition: .1s ease box-shadow;
+  flex-grow: 1;
 }
 
 .show-container-item:nth-child(odd) {
@@ -86,7 +87,7 @@
 
 .play-button-sm {
   background-color: transparent;
-  border: 1px solid #2979FF;
+  border: 1px solid #3F51B5;
   box-sizing: border-box;
   display: none;
   border-radius: 50%;  
@@ -96,7 +97,7 @@
 }
 
 .track-play {
-  fill: #2979FF;
+  fill: #3F51B5;
   padding: .25rem;
   border-radius: 50%;
   position: absolute;
@@ -124,10 +125,33 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex-grow: 1;
 }
 .likes-cell {
   margin-left: auto;
+  text-align: center;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  flex: 1;
 }
+
 .length-cell {
   margin-left: auto;
+  text-align: right;
+  padding: 0 1rem;
+  flex: 1;
+}
+
+.likes-bar {
+  width: 100%;
+  height: 5px;
+  border-radius: 2.5px;
+  background-color: #C5CAE9;
+}
+
+.inside-bar {
+  background-color: #3F51B5;
+  height: 5px;
+  border-radius: 2.5px;
+  width: 5px;
 }

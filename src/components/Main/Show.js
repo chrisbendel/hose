@@ -61,6 +61,16 @@ export default class Show extends Component {
     }
   }
 
+  getLikesPercent = (likes) => {
+    const max = Math.max.apply(Math,this.state.show.tracks.map(function(o){
+      return o.likes_count;
+    }));
+    let percent = Math.round((likes / max) * 100);
+    return percent > 0 ? percent + "%" : "5px";
+  }
+
+
+
   renderTracks = (set) => {
     let show = this.state.show;
     let tracks = show.tracks;
@@ -89,8 +99,18 @@ export default class Show extends Component {
             <span className="track-number">{track.position}</span>
           </span>
           <span className="title-cell">{track.title}</span>
-          <span className="likes-cell">{track.likes_count}</span>
           <span className="length-cell">{msToSec(track.duration)}</span>
+          {/* <span className="likes-cell">{track.likes_count}</span> */}
+          <span className="likes-cell">
+            <div className="likes-bar">
+              <div 
+                className="inside-bar"
+                style={{width: this.getLikesPercent(track.likes_count)}}
+              >
+              
+              </div>
+            </div>
+          </span>
         </li>
       );
     });
@@ -110,9 +130,21 @@ export default class Show extends Component {
                 #
               </span>
               <span className="title-cell">Title</span>
-              <span className="likes-cell">Likes</span>
-              <span className="length-cell">Length</span>
+              <span className="length-cell">
+                <Ionicon
+                  icon="md-time"
+                  color="black"
+                />
 
+              </span>
+              <span className="likes-cell">
+              <Ionicon 
+                style={{cursor: 'pointer'}}
+                icon="md-heart-outline"
+                font-size="30px"
+                color="black"
+              />
+              </span>
             </li>
             {this.renderTracks(set)} 
           </ul>
