@@ -22,6 +22,7 @@ export default class Show extends Component {
 
     this.state = {
       show: null,
+      currentPosition,
       playingShow: {
         show: null,
         position: 0
@@ -97,8 +98,7 @@ export default class Show extends Component {
                 icon="ios-pause"
                 font-size="40px"
                 onClick={() => {
-                  emitter.emit('pauseCurrentSong', show.id, track.position - 1);
-                  this.setState({playingShow: {show: show.id, position: track.position}})
+                  emitter.emit('playlistUpdate', show.id, track.position - 1);
                 }}
                 className="track-pause"
               />
