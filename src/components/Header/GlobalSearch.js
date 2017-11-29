@@ -53,6 +53,7 @@ export default class GlobalSearch extends Component {
 
   onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
     if (suggestion) {
+      this.setState({value: ''});
       this.props.history.push(suggestion.path);
     }
   }
