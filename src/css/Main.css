@@ -23,17 +23,21 @@ html > * {
 .left {
   position: fixed;
   left: 0;
-  width: 100px;
-  height: calc(100% - 100px);
-  top: 50px;
+  width: 150px;
+  height: calc(100vh - 100px);
+  top: 0px;
   display: flex;
-  background-color: #3F51B5;
+  background-color: #FFF;
   overflow-x: hidden;
+  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.1);
+  z-index: 900;
+
 }
 
 .header {
   position: fixed;
-  width: 100%;
+  right: 0;
+  width: calc(100% - 150px);
   height: 50px;
   background: #3F51B5;
   top: 0;
@@ -46,8 +50,8 @@ html > * {
   top: calc(50px + 1rem);
   height: calc(100% - 100px);
   bottom: calc(50px + 1rem);
-  width: calc(100% - 100px);
-  left: 100px;
+  width: calc(100% - 150px);
+  right: 0;
   padding: 1rem 0;
   box-sizing: border-box;
   overflow-y: auto;

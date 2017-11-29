@@ -56,6 +56,9 @@ export default class SideNav extends Component {
   render() {
     return (
       <div className="sidenav">
+        <div className="logo-area">
+          <span className="logo">HOSE</span>
+        </div>
         {this.renderList}
       </div>
     );
