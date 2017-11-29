@@ -18,7 +18,8 @@ export default class Shows extends Component {
       allShows: true,
       filterOption: '',
       page: 1,
-      loadingShows: false
+      loadingShows: false,
+      currentFilter: 'Shows'
     }
   }
   
@@ -218,6 +219,10 @@ export default class Shows extends Component {
     });
   }
 
+  setCurrentFilter = (title) => {
+    this.setState({currentFilter: title});
+  }
+
   render() {
     let shows = this.state.shows;
     
@@ -234,6 +239,13 @@ export default class Shows extends Component {
             fontSize="60px"
             onClick={() => {console.log(this.refs.shows); this.refs.shows.scroll({top: 0, behavior:"smooth"})}}
           />
+          <p>Displaying: {this.state.currentFilter}</p>
+          <div className="load-more" onClick={() => {
+                  this.fetchAllShows();
+                }}
+              >
+              Remove Filters
+          </div>
           <div className="search-filter">
             <Select
               name={"Sort by"}
@@ -245,6 +257,7 @@ export default class Shows extends Component {
           </div>
           <Filter
             history={this.props.history}
+            setTitle={this.setCurrentFilter.bind(this)}
             name={"Years"}
             path={"/shows/year/"}
             placeholder={"Years"}
@@ -252,6 +265,7 @@ export default class Shows extends Component {
           />
           <Filter 
             history={this.props.history}
+            setTitle={this.setCurrentFilter.bind(this)}
             name={"Tours"}
             path={"/shows/tour/"}
             placeholder={"Tours"}
@@ -259,6 +273,7 @@ export default class Shows extends Component {
           />
           <Filter 
             history={this.props.history}
+            setTitle={this.setCurrentFilter.bind(this)}
             name={"Venues"}
             path={"/shows/venue/"}
             placeholder={"Venues"}
@@ -276,7 +291,7 @@ export default class Shows extends Component {
                   this.loadMoreShows();
                 }}
               >
-                Load more shows 
+                Load more shows
               </div>
             </div>
             :

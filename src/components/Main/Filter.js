@@ -13,6 +13,7 @@ export default class Filter extends Component {
   }
 
   handleChange = (selectedOption) => {
+    this.props.setTitle(selectedOption.label);
     if (selectedOption.value === 'all') {
       this.props.history.push('/shows');
     } else {
