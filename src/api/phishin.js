@@ -27,7 +27,7 @@ export const showsForYear = async(year) => {
 
 export const showsForTour = async(tour) => {
   let data = await (await fetch(base + 'tours/' + tour)).json();
-  return data.data;
+  return data.data.shows;
 }
 
 export const showsToday = async(day) => {
@@ -41,12 +41,12 @@ export const years = async() => {
 }
 
 export const tours = async() => {
-  let data = await (await fetch(base + 'tours?per_page=1000')).json();
+  let data = await (await fetch(base + 'tours?sort_attr=starts_on&per_page=1000')).json();
   return data.data;
 }
 
 export const venues = async() => {
-  let data = await (await fetch(base + 'venues?per_page=1000')).json();
+  let data = await (await fetch(base + 'venues?per_page=1000&sort_attr=shows_count&sort_dir=desc')).json();
   return data.data;
 }
 
