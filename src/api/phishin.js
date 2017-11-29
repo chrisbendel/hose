@@ -100,9 +100,9 @@ export const search = async(query) => {
       values.type = 'song';
       values.display = values.title;
       if (values.alias_for) {
-        values.path = '/songs/' + values.alias_for;
+        values.path = '/song/' + values.alias_for;
       } else {
-        values.path = '/songs/' + values.id;
+        values.path = '/song/' + values.id;
       }
       terms.push(values);
     });

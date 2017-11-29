@@ -31,20 +31,23 @@ export default class Songs extends Component {
   }
   
   componentWillMount = () => {
-    let type = this.props.match.params.type;
     let id = this.props.match.params.id;
+    console.log(id);
     this.fetchTracks(id);
   }
 
   componentWillReceiveProps(nextProps) {
-    let nextType = nextProps.match.params.type;
     let nextId = nextProps.match.params.id;
+    console.log(nextId);
     this.fetchTracks(nextId);
   }
 
   fetchTracks = (song) => {
     tracksForSong(song).then(tracks => {
       console.log(tracks);
+      this.setState({
+        tracks: tracks
+      })
     });
   }
   
@@ -89,13 +92,11 @@ export default class Songs extends Component {
     this.setState({filterDisplay: title});
   }
 
-  renderTracks = (set) => {
+  renderTracks = () => {
     let tracks = this.state.tracks;
     let emitter = this.props.emitter;
     
-    return tracks.filter(track => {
-      return track.set_name === set;
-    }).map(track => {
+    return tracks.map(track => {
       return (
         <li 
           // className={this.state.currentPlayingSong === show.id.toString() + track.position.toString() ? "show-container-item playing" : "show-container-item"} 
@@ -155,15 +156,10 @@ export default class Songs extends Component {
   }
 
   renderTrackContainer = () => {
-    const sets = [...new Set(this.state.show.tracks.map(track => track.set_name))];
-    return sets.map(set => {
       return (
-        <div key={set}>
+        <div>
           <ul className="playlist-section"> 
-            <h2 className="set-name"> {set} </h2>
-            <li 
-              className="show-container-item header-cell"
-            >
+            <li className="show-container-item header-cell">
               <span className="play-cell">
                 #
               </span>
@@ -183,11 +179,11 @@ export default class Songs extends Component {
                 />
               </span>
             </li>
-            {this.renderTracks(set)} 
+            {this.renderTracks()} 
           </ul>
         </div>
       )
-    });
+    // });
   }
 
   render() {
