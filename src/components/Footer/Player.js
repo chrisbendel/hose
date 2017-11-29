@@ -21,8 +21,8 @@ export default class Player extends Component {
       this.setShow(showId, position);
     });
 
-    this.props.emitter.addListener('pauseCurrentSong', (showId, position = 0) => {
-      ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
+    this.props.emitter.addListener('pauseCurrentSong', () => {
+      this.pausePlayer();
     });
   }
   
@@ -38,6 +38,10 @@ export default class Player extends Component {
         // this.props.emitter.emit('positionUpdate', this.player.state.currentPlaylistPos);
       })
     }
+  }
+
+  pausePlayer = (e) => {
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));    
   }
 
   setShow = (showId, position = 0) => {
