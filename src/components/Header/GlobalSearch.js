@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {search} from './../../api/phishin.js';
 import './../../css/Search.css';
 import Autosuggest from 'react-autosuggest';
+import Ionicon from 'react-ionicons';
 
 let results = [];
 
@@ -88,8 +89,12 @@ export default class GlobalSearch extends Component {
 
     return (
       <div className="nav">
-        <a onClick={() => {this.props.history.goBack()}} className="prev">&#8249;</a>
-        <a onClick={() => {this.props.history.goForward()}} className="next">&#8250;</a>
+        <a onClick={() => {this.props.history.goBack()}} className="prev">
+          <Ionicon icon="ios-arrow-back" fontSize="60px" color="#FFF" />        
+        </a>
+        <a onClick={() => {this.props.history.goForward()}} className="next">
+          <Ionicon icon="ios-arrow-forward" fontSize="60px" color="#FFF" />        
+        </a>
         <Autosuggest
           highlightFirstSuggestion={true}
           shouldRenderSuggestions={this.shouldRenderSuggestions}

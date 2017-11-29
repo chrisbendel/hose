@@ -1,6 +1,21 @@
+.logo-area {
+  background-color: #5C6BC0;
+  width: 100%;
+  height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #FFF;
+}
+
 .sidenav {
   flex: 1;
-  align-self: center;
+  align-self: flex-start;
 }
 
 .sidenav a {
@@ -13,10 +28,10 @@
 }
 
 .sidenav a.active {
-  color: #2979FF;
+  color: #2962FF;
 }
 
 .sidenav a:hover, .offcanvas a:focus{
-  color: #FFF;
+  color: #2979FF;
 }
 
