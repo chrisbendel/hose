@@ -53,7 +53,6 @@ export default class Player extends Component {
   }
 
   setPlaylistPosition = (index) => {
-    console.log(this.player);
     this.player.state.currentPlaylistPos = index;
     ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
     ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
@@ -80,8 +79,8 @@ export default class Player extends Component {
 
   getPlaylistPosition = () => {
     if (this.state.currentPosition != this.player.state.currentPlaylistPos) {
-      this.props.emitter.emit('newSong', this.player.state.currentPlaylistPos + 1);
-      this.setState({currentPosition: this.state.currentPosition + 1});
+      this.props.emitter.emit('newSong', this.player.state.currentPlaylistPos);
+      this.setState({currentPosition: this.player.state.currentPlaylistPos});
     }
   }
 
@@ -89,7 +88,6 @@ export default class Player extends Component {
     return this.state.show.tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
-      console.log(track);
       return (
         <li 
           className="playlist-container-item" 

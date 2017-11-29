@@ -15,7 +15,7 @@ export default class Show extends Component {
 
     this.props.emitter.addListener('newSong', (position) => {
       console.log(position);
-      this.setState({currentPosition: position});
+      this.setState({currentPosition: position + 1});
     });
   }
 
@@ -67,9 +67,6 @@ export default class Show extends Component {
         <li 
           className="show-container-item" 
           key={track.position}
-          // onClick={() => {
-          //   this.setPlaylistPosition(track.position - 1);
-          // }}
         >
           <span className="play-cell">
             <span className="play-button-sm">
