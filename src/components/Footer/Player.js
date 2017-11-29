@@ -158,7 +158,7 @@ export default class Player extends Component {
           height={50}
           autoPlay={true}
           playlist={tracks}
-          color="#FFF"
+          color="#000"
         />
         <Tooltip
           trigger="click"

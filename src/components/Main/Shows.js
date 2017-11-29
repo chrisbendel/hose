@@ -68,9 +68,9 @@ export default class Shows extends Component {
         <div key={show.id} className="image-container">
           <div className="show-information-control">
             <div className="show-tags">
-              {show.sbd ? <div style={{backgroundColor: 'blue'}} className="tag">Soundboard</div> : null}
-              {show.remastered ? <div style={{backgroundColor: 'red'}} className="tag">Remastered</div> : null}
-              {isJamchart(show.id) ? <div style={{backgroundColor: 'green'}} className="tag">Jamcharts</div> : null}
+              {show.sbd ? <div className="tag">Soundboard</div> : null}
+              {show.remastered ? <div className="tag">Remastered</div> : null}
+              {isJamchart(show.id) ? <div className="tag">Jamcharts</div> : null}
             </div>
             <img 
               src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
