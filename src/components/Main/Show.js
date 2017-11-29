@@ -112,7 +112,7 @@ export default class Show extends Component {
             animation="fade"
             arrowSize={"small"}
             duration={200}
-            html={<span>{track.likes_count}</span>}
+            html={<span>{track.likes_count} likes</span>}
           >
             <div className="likes-bar">
               <div 

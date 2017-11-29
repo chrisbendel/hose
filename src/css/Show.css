@@ -115,8 +115,12 @@
 .set-name {
   font-size: 2rem;
   display: inline-block;
-  border-bottom: 2px solid #000;
   margin: 0 0 1rem 0;
+  color: #FFF;
+  padding: .25rem .5rem;
+  background-color: #3F51B5;
+  border-radius: 4px;
+  font-weight: 600;
 }
 
 .title-cell {
