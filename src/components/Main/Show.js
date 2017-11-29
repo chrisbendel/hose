@@ -50,7 +50,11 @@ export default class Show extends Component {
   }
 
   renderTracks = (set) => {
-    return this.state.show.tracks.filter(track => {
+    let show = this.state.show;
+    let tracks = show.tracks;
+    let emitter = this.props.emitter;
+    
+    return tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
       console.log(track);
@@ -62,6 +66,14 @@ export default class Show extends Component {
           //   this.setPlaylistPosition(track.position - 1);
           // }}
         >
+          <Ionicon 
+            style={{cursor: 'pointer'}}
+            icon="ios-play"
+            font-size="60px"
+            onClick={() => {
+              emitter.emit('playlistUpdate', show.id, track.position - 1)
+            }}
+          />
           <span> {track.position} - </span>
           <span>{track.title}</span>
         </li>
@@ -77,28 +89,6 @@ export default class Show extends Component {
           <p> {set} </p>
           <ul className="playlist-section"> {this.renderTracks(set)} </ul>
         </div>
-      )
-    });
-  }
-
-  renderSongs = () => {
-    let show = this.state.show;
-    let tracks = show.tracks;
-    let emitter = this.props.emitter;
-    return tracks.map(function (track, index) {
-      return (
-        <div key={track.id}> 
-          <Ionicon 
-            style={{cursor: 'pointer'}}
-            icon="ios-play"
-            font-size="60px"
-            onClick={() => {
-              emitter.emit('playlistUpdate', show.id, index)
-            }}
-          />
-          {track.title}
-        </div>
-
       )
     });
   }
@@ -139,16 +129,6 @@ export default class Show extends Component {
         </div>
         <div className="show-tracks">
           {this.renderTrackContainer()}
-          {/* <ReactTable
-            data={show}
-            columns={columns}
-          /> */}
-          {/* <ul>
-            {this.renderSongs()}
-          </ul>
-          <ul>
-            {this.renderSongs()}
-          </ul> */}
         </div>
       </div>
     );
