@@ -43,6 +43,14 @@ export default class Player extends Component {
   pausePlayer = (e) => {
     ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));    
   }
+  
+  skipToNext = (e) => {
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));    
+  }
+
+  skipToPrevious = (e) => {
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));    
+  }
 
   setShow = (showId, position = 0) => {
     show(showId).then(show => {
@@ -62,9 +70,9 @@ export default class Player extends Component {
   setPlaylistPosition = (index) => {
     this.player.state.currentPlaylistPos = index;
     
-    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
-    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
-    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
+    this.pausePlayer();
+    this.skipToNext();
+    this.skipToPrevious();
   }
 
   downloadShow = () => {
