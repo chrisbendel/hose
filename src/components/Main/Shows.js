@@ -69,9 +69,9 @@ export default class Shows extends Component {
         <div key={show.id} className="image-container">
           <div className="show-information-control">
             <div className="show-tags">
-              {show.sbd ? <div className="tag">Soundboard</div> : null}
-              {show.remastered ? <div className="tag">Remastered</div> : null}
-              {isJamchart(show.id) ? <div className="tag">Jamcharts</div> : null}
+              {show.sbd ? <div style={{backgroundColor: 'blue'}} className="tag">Soundboard</div> : null}
+              {show.remastered ? <div style={{backgroundColor: 'red'}} className="tag">Remastered</div> : null}
+              {isJamchart(show.id) ? <div style={{backgroundColor: 'green'}} className="tag">Jamcharts</div> : null}
             </div>
             <img 
               src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
@@ -258,27 +258,18 @@ export default class Shows extends Component {
     return (
       <div>
         <div className="filters">
-          <Ionicon 
-            className="clickable" 
+          
+          <Ionicon
+            className="clickable"
             icon="ios-arrow-dropup-circle" 
-            fontSize="60px"
-            onClick={() => {console.log(this.refs.shows); this.refs.shows.scroll({top: 0, behavior:"smooth"})}}
+            fontSize="40px"
+            onClick={() => {
+              //animate this one day
+              this.refs.shows.scrollTop = 0;
+            }}
           />
-          <p>Displaying: {this.state.currentFilter}</p>
-          <div className="load-more" onClick={() => {
-                  this.fetchAllShows();
-                }}
-              >
-              Remove Filters
-          </div>
-          <div className="search-filter">
-            <Select
-              name={"Sort by"}
-              placeholder={"Sort by"}
-              value={this.state.value}
-              onChange={this.handleChange.bind(this)}
-              options={sortByOptions}
-            />
+          <div className="filter-display">
+            Displaying: {this.state.currentFilter}
           </div>
           <Filter
             history={this.props.history}
@@ -304,6 +295,23 @@ export default class Shows extends Component {
             placeholder={"Venues"}
             options={venueFilters}
           />
+
+          <div className="search-filter">
+            <Select
+              name={"Sort by"}
+              placeholder={"Sort by"}
+              value={this.state.value}
+              onChange={this.handleChange.bind(this)}
+              options={sortByOptions}
+            />
+          </div>
+
+          <div className="load-more" onClick={() => {
+                  this.fetchAllShows();
+                }}
+              >
+              Remove Filters
+          </div>
         </div>
         <div className="shows-container" ref="shows">
           <div className="show-gallery">
