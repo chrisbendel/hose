@@ -17,16 +17,22 @@ export default class Player extends Component {
       downloading: false
     }
 
-    this.props.emitter.addListener('playlistUpdate', (showId, position = 0) => {
+    let emitter = this.props.emitter;
+
+    emitter.addListener('playlistUpdate', (showId, position = 0) => {
       this.setShow(showId, position);
     });
 
-    this.props.emitter.addListener('pauseCurrentSong', () => {
-      this.pausePlayer();
+    emitter.addListener('pauseCurrentSong', () => {
+      this.pause();
     });
 
-    this.props.emitter.addListener('getShowIdAndPosition', () => {
-      this.returnShowAndPosition();
+    emitter.addListener('getShow', () => {
+      emitter.emit('receiveShow', this.state.show);
+    });
+
+    emitter.addListener('getPosition', () => {
+      emitter.emit('receivePosition', this.player.state.currentPlaylistPos);
     });
   }
   
@@ -37,6 +43,7 @@ export default class Player extends Component {
       element.addEventListener('playing', (e) => {
         this.props.emitter.emit('positionUpdate', this.player.state.currentPlaylistPos);
       })
+
       element.addEventListener('pause', (e) => {
         console.log('pause');
         // this.props.emitter.emit('positionUpdate', this.player.state.currentPlaylistPos);
@@ -49,16 +56,20 @@ export default class Player extends Component {
     this.props.emitter.emit('returnShowIdAndPosition', info);
   }
 
-  pausePlayer = (e) => {
-    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));    
+  play = (e) => {
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-play'));
+  }
+
+  pause = (e) => {
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
   }
   
   skipToNext = (e) => {
-    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));    
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
   }
 
   skipToPrevious = (e) => {
-    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));    
+    ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
   }
 
   setShow = (showId, position = 0) => {
@@ -79,7 +90,7 @@ export default class Player extends Component {
   setPlaylistPosition = (index) => {
     this.player.state.currentPlaylistPos = index;
     
-    this.pausePlayer();
+    this.pause();
     this.skipToNext();
     this.skipToPrevious();
   }

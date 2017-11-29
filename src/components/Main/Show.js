@@ -35,8 +35,12 @@ export default class Show extends Component {
       this.setState({currentPlayingSong: showId.toString() + tempPos.toString()});
     });
 
-    this.props.emitter.addListener('returnShowIdAndPosition', info => {
-      console.log(info);
+    this.props.emitter.addListener('receiveShow', show => {
+      console.log(show);
+    });
+
+    this.props.emitter.addListener('receivePosition', pos => {
+      console.log(pos);
     });
   }
 
@@ -62,25 +66,20 @@ export default class Show extends Component {
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();
     }
+
     if (nextProps.match.params.id !== this.props.match.params.id) {
       this.fetchShow(nextProps.match.params.id);
     }
   }
 
   componentWillMount() {
-    // console.log(this.props);
+    this.props.emitter.emit("getShowId");
+    this.props.emitter.emit("getPosition");
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();
     } else {
       this.fetchShow(this.props.match.params.id);
     }
-
-    this.checkPlayerState();
-  }
-
-  checkPlayerState() {
-    let emitter = this.props.emitter;
-    emitter.emit("getShowIdAndPosition");
   }
 
   getLikesPercent = (likes) => {
