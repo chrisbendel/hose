@@ -22,7 +22,8 @@ export default class Show extends Component {
 
     this.state = {
       show: null,
-      currentPosition,
+      currentTrack: null,
+      playing: false,
       playingShow: {
         show: null,
         position: 0
@@ -74,7 +75,7 @@ export default class Show extends Component {
       return (
         <li
           className={
-              playingShow.show === show.id && playingShow.position === track.position
+              this.state.playing && this.state.currentTrack === track.position
               ? "show-container-item playing" 
               : "show-container-item"
             } 
@@ -88,6 +89,7 @@ export default class Show extends Component {
                 font-size="40px"
                 onClick={() => {
                   emitter.emit('playlistUpdate', show.id, track.position - 1)
+                  this.setState({playing: true, currentTrack: track.position})
                 }}
                 className="track-play"
               />
@@ -99,6 +101,7 @@ export default class Show extends Component {
                 font-size="40px"
                 onClick={() => {
                   emitter.emit('playlistUpdate', show.id, track.position - 1);
+                  this.setState({playing: false, currentTrack: track.position})
                 }}
                 className="track-pause"
               />
