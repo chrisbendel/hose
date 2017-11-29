@@ -50,3 +50,7 @@
   justify-content: center;
   height: 100%;
 }
+
+.svgBtnDefault {
+  display: none;
+}
