@@ -4,6 +4,12 @@ import { show, randomShow } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
 import ReactTable from 'react-table';
 
+const msToSec = (time) => {
+  var minutes = Math.floor(time / 60000);
+  var seconds = ((time % 60000) / 1000).toFixed(0);
+  return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+}
+
 export default class Show extends Component {
   constructor(props) {
     super(props);
@@ -84,7 +90,7 @@ export default class Show extends Component {
           </span>
           <span className="title-cell">{track.title}</span>
           <span className="likes-cell">{track.likes_count}</span>
-          <span className="length-cell">{Math.floor(track.duration / 60000)}:{((track.duration % 6000) / 1000).toFixed(0) < 10 ? '0' : ''}{((track.duration % 6000) / 1000).toFixed(0)}</span>
+          <span className="length-cell">{msToSec(track.duration)}</span>
         </li>
       );
     });
@@ -98,10 +104,7 @@ export default class Show extends Component {
           <ul className="playlist-section"> 
             <h2 className="set-name"> {set} </h2>
             <li 
-              className="show-container-item" 
-              // onClick={() => {
-              //   this.setPlaylistPosition(track.position - 1);
-              // }}
+              className="show-container-item"
             >
               <span className="play-cell">
                 #
