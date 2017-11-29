@@ -18,12 +18,18 @@ export default class Show extends Component {
 
     this.state = {
       show: null,
-      currentPosition: 0
+      currentPosition: 0,
+      currentPlayingSong: null
     }
 
     this.props.emitter.addListener('newSong', (position) => {
       console.log(position);
       this.setState({currentPosition: position + 1});
+    });
+
+    this.props.emitter.addListener('playlistUpdate', (showId, position = 0) => {
+      let tempPos = position+1;
+      this.setState({currentPlayingSong: showId.toString() + tempPos.toString()});
     });
   }
 
@@ -83,7 +89,7 @@ export default class Show extends Component {
     }).map(track => {
       return (
         <li 
-          className="show-container-item" 
+          className={this.state.currentPlayingSong === show.id.toString() + track.position.toString() ? "show-container-item playing" : "show-container-item"} 
           key={track.position}
         >
           <span className="play-cell">
@@ -96,6 +102,17 @@ export default class Show extends Component {
                   emitter.emit('playlistUpdate', show.id, track.position - 1)
                 }}
                 className="track-play"
+              />
+            </span>
+            <span className="pause-button-sm">
+              <Ionicon 
+                style={{cursor: 'pointer'}}
+                icon="ios-pause"
+                font-size="40px"
+                onClick={() => {
+                  emitter.emit('pauseCurrentSong', show.id, track.position - 1)
+                }}
+                className="track-pause"
               />
             </span>
             <span className="track-number">{track.position}</span>
@@ -113,16 +130,15 @@ export default class Show extends Component {
             arrowSize={"small"}
             duration={200}
             html={<span>{track.likes_count} {track.likes_count === 1 ? "Like" : "Likes"}</span>}
-          >
-            <div className="likes-bar">
-              <div 
-                className="inside-bar"
-                style={{width: this.getLikesPercent(track.likes_count)}}
-              >
-              
+            >
+              <div className="likes-bar">
+                <div 
+                  className="inside-bar"
+                  style={{width: this.getLikesPercent(track.likes_count)}}
+                >
+                </div>
               </div>
-            </div>
-          </Tooltip>
+            </Tooltip>
           </span>
         </li>
       );
@@ -187,11 +203,10 @@ export default class Show extends Component {
             alt={show.date} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
           />
           <div className="show-details">
-            <p> {show.date} </p>
-            <p> {show.venue.name} </p>
-            <p> {show.venue.location} </p>
+            <p> Date: {show.date} </p>
+            <p> Venue: {show.venue.name} </p>
+            <p> Location: {show.venue.location} </p>
 
-            <p> {show.date} </p>
             <p> {show.tags} </p>
             <p> {show.remastered ? "Remastered" : null} </p>
             <p> {show.sbd ? "Soundboard" : null} </p>
