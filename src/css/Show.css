@@ -44,7 +44,9 @@
   padding: 1rem;
   box-sizing: border-box;
 }
+.show-container-item.header {
 
+}
 .show-container-item {
   display: flex;
   align-items: center;
