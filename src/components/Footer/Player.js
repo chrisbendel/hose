@@ -147,6 +147,9 @@ export default class Player extends Component {
     
     return (
       <div className="controls-container">
+        <div className="album-art-container">
+          <img alt={show.date} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}/>
+        </div>
         <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
         <Ionicon className={this.state.downloading ? "hidden" : "clickable"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download this show?") ? this.downloadShow() : null}/>
         <Audio
@@ -155,6 +158,7 @@ export default class Player extends Component {
           height={50}
           autoPlay={true}
           playlist={tracks}
+          color="#FFF"
         />
         <Tooltip
           trigger="click"
@@ -169,7 +173,6 @@ export default class Player extends Component {
           <Ionicon className="clickable" icon="ios-list-box" fontSize="60px"/>
         </Tooltip>
         <div> {show.date} - {show.venue.name}, {show.venue.location} </div>
-        <img alt={show.date} style={{'margin-left': '10px', width: '50px', height: '50px'}} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}/> 
       </div>
     );
   }

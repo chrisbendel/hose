@@ -55,9 +55,9 @@ html > * {
 
 .footer {
   position: fixed;
-  height: 50px;
+  display: flex;
+  height: 100px;
   bottom: 0px;
   width: 100%;
-  background:#3F51B5;
-  padding: 1rem 0;
+  background:#212121;
 }
