@@ -19,7 +19,7 @@ export default class Shows extends Component {
       filterOption: '',
       page: 1,
       loadingShows: false,
-      currentFilter: 'Shows'
+      currentFilter: 'All Shows'
     }
   }
   
@@ -193,7 +193,8 @@ export default class Shows extends Component {
       this.setState({
         shows: shows,
         allShows: true,
-        page: 1
+        page: 1,
+        currentFilter: "All Shows"
       })
     })
   }
