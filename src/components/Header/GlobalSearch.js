@@ -67,7 +67,7 @@ export default class GlobalSearch extends Component {
   }
 
   shouldRenderSuggestions = (value) => {
-    return value.trim().length > 2;
+    return value.trim().length > 3;
   }
 
   onSuggestionsClearRequested = () => {

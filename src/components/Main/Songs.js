@@ -109,7 +109,7 @@ export default class Songs extends Component {
       return (
         <li 
           // className={this.state.currentPlayingSong === show.id.toString() + track.position.toString() ? "show-container-item playing" : "show-container-item"} 
-          key={track.position}
+          key={track.id}
         >
           <span className="play-cell">
             <span className="play-button-sm">
@@ -166,31 +166,29 @@ export default class Songs extends Component {
 
   renderTrackContainer = () => {
       return (
-        <div>
-          <ul className="playlist-section"> 
-            <li className="show-container-item header-cell">
-              <span className="play-cell">
-                #
-              </span>
-              <span className="title-cell">Title</span>
-              <span className="jamcharts-cell"></span>
-              <span className="length-cell">
-                <Ionicon
-                  icon="md-time"
-                  color="black"
-                />
-              </span>
-              <span className="likes-cell">
-                <Ionicon 
-                  icon="md-heart-outline"
-                  font-size="30px"
-                  color="black"
-                />
-              </span>
-            </li>
-            {this.renderTracks()} 
-          </ul>
-        </div>
+        <ul className="playlist-section"> 
+          <li className="show-container-item header-cell">
+            <span className="play-cell">
+              #
+            </span>
+            <span className="title-cell">Title</span>
+            <span className="jamcharts-cell"></span>
+            <span className="length-cell">
+              <Ionicon
+                icon="md-time"
+                color="black"
+              />
+            </span>
+            <span className="likes-cell">
+              <Ionicon 
+                icon="md-heart-outline"
+                font-size="30px"
+                color="black"
+              />
+            </span>
+          </li>
+          {this.renderTracks()} 
+        </ul>
       )
     // });
   }
