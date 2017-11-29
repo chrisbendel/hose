@@ -90,10 +90,10 @@ export default class GlobalSearch extends Component {
     return (
       <div className="nav">
         <a onClick={() => {this.props.history.goBack()}} className="prev">
-          <Ionicon className="prev" icon="ios-arrow-back" fontSize="60px" color="#FFF" />        
+          <Ionicon icon="ios-arrow-back" fontSize="60px" color="#FFF" />        
         </a>
         <a onClick={() => {this.props.history.goForward()}} className="next">
-          <Ionicon className="prev" icon="ios-arrow-forward" fontSize="60px" color="#FFF" />        
+          <Ionicon icon="ios-arrow-forward" fontSize="60px" color="#FFF" />        
         </a>
         <Autosuggest
           highlightFirstSuggestion={true}
