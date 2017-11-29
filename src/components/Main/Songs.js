@@ -254,7 +254,7 @@ export default class Songs extends Component {
               {this.renderTrackContainer(tracks)}
           </div>
           : 
-          null
+          <div>Choose a song from the list!</div>
         }
       </div>
     );
