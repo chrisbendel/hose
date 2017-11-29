@@ -13,7 +13,11 @@ export default class Filter extends Component {
   }
 
   handleChange = (selectedOption) => {
-    this.props.sort(selectedOption.attr, selectedOption.order);
+    if (selectedOption.value === 'all') {
+      this.props.history.push('/shows');
+    } else {
+      this.props.history.push(this.props.path + selectedOption.value);
+    }
     this.setState({ selectedOption });
   }
 

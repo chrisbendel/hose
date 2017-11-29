@@ -5,6 +5,10 @@
   overflow: hidden;
 }
 
+.hidden {
+  display: none;
+}
+
 .show-information {
   position: absolute;
   top: 0;
@@ -46,7 +50,23 @@
   background-color: rgba(0, 0, 0, 0.35);
   height: 40px;
   width: 40px;
+  cursor: pointer;
   position: relative;
+}
+
+.load-more {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  border-radius: 10px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 20px;
+  cursor: pointer;
+  align-self: center;
 }
 
 .play-button:hover {
@@ -67,6 +87,7 @@
   justify-content: center;
   text-align: center;
   line-height: 1;
+  cursor: pointer;  
   padding: .5rem;
   align-items: center;
   font-size: 18px;
@@ -95,9 +116,10 @@
 .shows-container {
   height: calc(100% - 100px);
   overflow: auto;
-  top: 50px;
+  top: 75px;
   position: absolute;
-  padding: 1rem .25rem;
+  padding: 1.25rem .25rem;
+  text-align: center;
 }
 
 .filters {

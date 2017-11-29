@@ -14,37 +14,32 @@ export default class Shows extends Component {
     
     this.state = {
       shows: null,
-      path: 'shows',
+      allShows: true,
       filterOption: '',
-      page: 1
+      page: 1,
+      loadingShows: false
     }
   }
-
+  
   componentWillMount = () => {
-    console.log(this.props.match.params);
     let type = this.props.match.params.type;
     let id = this.props.match.params.id;
-    
     this.loadRelevantData(type, id);
   }
 
   componentWillReceiveProps(nextProps) {
-    let currentType = this.props.match.params.type;
-    let currentId = this.props.match.params.id;
-
     let nextType = nextProps.match.params.type;
     let nextId = nextProps.match.params.id;
-
-    if (!((nextType === currentType) && (nextId === currentId))) {
-      this.loadRelevantData(nextType, nextId);
-    } else {
-      console.log('the same');
-    }
+    this.loadRelevantData(nextType, nextId);
   }
 
-  loadRelevantData = (type, id = null) => {
+  loadRelevantData = (type = null, id = null) => {
+    if (!type) {
+      this.fetchAllShows();
+    }
+
     switch(type) {
-      case "year": 
+      case "years": 
         this.fetchShowsForYear(id);
         break;
       case "today":
@@ -52,47 +47,16 @@ export default class Shows extends Component {
         break;
       case "venue":
         this.fetchShowsForVenue(id);
-      default:
-        this.fetchAllShows();
     }
-
   }
-
-  // renderYears = () => {
-  //   return years.map(function(year) {
-  //     if (year.year === "All") {
-  //       return (
-  //         <a onClick={() => {
-  //           this.props.history.push('/shows' + year.path);
-  //             // this.fetchShows()
-  //           }} 
-  //           className="year-list-item" 
-  //           key={year.year}
-  //         >
-  //           <span>{year.short}</span>
-  //         </a>
-  //       );
-  //     } else {
-  //       return (
-  //         <a onClick={() => {
-  //           this.props.history.push('/shows/year/' + year.year);
-  //             // this.fetchShowByYear(year.year)
-  //           }}
-  //           className="year-list-item" 
-  //           key={year.year}
-  //         >
-  //           <span>{year.short}</span>
-  //         </a>
-  //       );
-  //     }
-  //   }, this);
-  // }
 
   renderShows = (shows) => {
     return shows.map(function (show, index) {
-      let date = new Date(show.date);
+      let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      
+      let date = new Date(show.date + ' 00:00');
       return (
-        <div key={index} className="image-container">
+        <div key={show.id} className="image-container">
           <div className="show-information-control">
             {show.sbd ? <div className="is-soundboard">Soundboard</div> : null}
             <img 
@@ -130,8 +94,8 @@ export default class Shows extends Component {
               this.props.history.push('show/' + show.id)}
             }
             className="show-date"
-          > 
-            {date.toDateString()} 
+          >
+            {date.toLocaleDateString('en-US', dateOptions)}
           </span>
           <span className="show-venue"> {show.venue_name} {show.location} </span>
 
@@ -149,7 +113,7 @@ export default class Shows extends Component {
     showsToday(date).then(shows => {
       this.setState({
         shows: shows,
-        path: 'shows-on-day-of-year/' + date
+        allShows: false
       })
     })
   }
@@ -159,22 +123,22 @@ export default class Shows extends Component {
       //TODO fetch all the shows from the show ids passed in from response
       this.setState({
         shows: shows,
-        path: 'venues/' + venue
+        allShows: false
       })
     })
   }
 
   fetchShowsForYear = (year) => {
     showsForYear(year).then(shows => {
+      console.log(shows);
       this.setState({
         shows: shows,
-        path: 'year/' + year
+        allShows: false
       })
     })
   }
 
   sortShows = (attr, order) => {
-    console.log(attr, order);
     let sorted;
     let shows = this.state.shows;
     if (attr === 'date') {
@@ -204,7 +168,8 @@ export default class Shows extends Component {
     shows().then(shows => {
       this.setState({
         shows: shows,
-        path: 'shows'
+        allShows: true,
+        page: 1
       })
     })
   }
@@ -214,35 +179,27 @@ export default class Shows extends Component {
     this.setState({ filterOption: filterOption });
   }
 
-  handleScroll = () => {
-    setTimeout(() => {
-      let el = this.refs.shows;
-      if (el.scrollTop >= (el.scrollHeight - el.offsetHeight - 300)) {
-        let page = this.state.page + 1;
-        shows(page).then(shows => {
-          this.setState((prevState) => ({
-            shows: prevState.shows.concat(shows),
-            page: prevState.page + 1
-          }));
-        });
-      }
-    }, 400);
-  }
-
-  componentDidUpdate() {
-    let list = this.refs.shows;
-    list.addEventListener('scroll', this.handleScroll);
+  loadMoreShows = () => {
+    this.setState({
+      loadingShows: true
+    })
+    let page = this.state.page + 1;
+    
+    shows(page).then(shows => {
+      console.log(shows);
+      this.setState(previousState => ({
+        loadingShows: false,
+        page: page,
+        shows: [...previousState.shows, ...shows]
+      }));
+    });
   }
 
   render() {
     let shows = this.state.shows;
     
     if (!shows) {
-      return (
-        <div>
-          Loading ...
-        </div>
-      )
+      return (<div> Loading ... </div>);
     }
 
     return (
@@ -264,9 +221,12 @@ export default class Shows extends Component {
             />
           </div>
           <Filter
-            placeholder={"Sort by..."}
-            options={sortByOptions}
-            sort={this.sortShows.bind(this)}
+            history={this.props.history}
+            name={"Years"}
+            path={"/shows/years/"}
+            placeholder={"Years"}
+            options={yearFilters}
+            getShows={this.fetchShowsForYear.bind(this)}
           />
           <Filter />
           <Filter />
@@ -275,6 +235,19 @@ export default class Shows extends Component {
           <div className="show-gallery">
             {this.renderShows(shows)}
           </div>
+          {this.state.allShows ?
+            <div>
+              <Ionicon className={this.state.loadingShows ? "" : "hidden"} icon="ios-refresh" fontSize="80px" rotate={true} />
+              <div className={this.state.loadingShows ? "hidden" : "load-more"} onClick={() => {
+                  this.loadMoreShows();
+                }}
+              >
+                Load more shows 
+              </div>
+            </div>
+            :
+            null
+            }
         </div>
       </div>
     );
@@ -287,32 +260,32 @@ const sortByOptions = [
   {label: 'Date (Older)', value: "older", attr: "date", order: "asc"},
 ];
 
-const years = [
-  {"year": "All Shows", "short": "All", "era": "All"},
-  {"year": "1983-1987", "short": "83-87", "era": "1.0"},
-  {"year": "1988", "short": "'88", "era": "1.0"},
-  {"year": "1989", "short": "'89", "era": "1.0"},
-  {"year": "1990", "short": "'90", "era": "1.0"},
-  {"year": "1991", "short": "'91", "era": "1.0"},
-  {"year": "1992", "short": "'92", "era": "1.0"},
-  {"year": "1993", "short": "'93", "era": "1.0"},
-  {"year": "1994", "short": "'94", "era": "1.0"},
-  {"year": "1995", "short": "'95", "era": "1.0"},
-  {"year": "1996", "short": "'96", "era": "1.0"},
-  {"year": "1997", "short": "'97", "era": "1.0"},
-  {"year": "1998", "short": "'98", "era": "1.0"},
-  {"year": "1999", "short": "'99", "era": "1.0"},
-  {"year": "2000", "short": "'00", "era": "1.0"},
-  {"year": "2002", "short": "'02", "era": "2.0"},
-  {"year": "2003", "short": "'03", "era": "2.0"},
-  {"year": "2004", "short": "'04", "era": "2.0"},
-  {"year": "2009", "short": "'09", "era": "3.0"},
-  {"year": "2010", "short": "'10", "era": "3.0"},
-  {"year": "2011", "short": "'11", "era": "3.0"},
-  {"year": "2012", "short": "'12", "era": "3.0"},
-  {"year": "2013", "short": "'13", "era": "3.0"},
-  {"year": "2014", "short": "'14", "era": "3.0"},
-  {"year": "2015", "short": "'15", "era": "3.0"},
-  {"year": "2016", "short": "'16", "era": "3.0"},
-  {"year": "2017", "short": "'17", "era": "3.0"}
+const yearFilters = [
+  {label: "All Shows", value: "all"},
+  {label: "1983-1987", value: "1983-1987"},
+  {label: "1988", value: "1988"},
+  {label: "1989", value: "1989"},
+  {label: "1990", value: "1990"},
+  {label: "1991", value: "1991"},
+  {label: "1992", value: "1992"},
+  {label: "1993", value: "1993"},
+  {label: "1994", value: "1994"},
+  {label: "1995", value: "1995"},
+  {label: "1996", value: "1996"},
+  {label: "1997", value: "1997"},
+  {label: "1998", value: "1998"},
+  {label: "1999", value: "1999"},
+  {label: "2000", value: "2000"},
+  {label: "2002", value: "2002"},
+  {label: "2003", value: "2003"},
+  {label: "2004", value: "2004"},
+  {label: "2009", value: "2009"},
+  {label: "2010", value: "2010"},
+  {label: "2011", value: "2011"},
+  {label: "2012", value: "2012"},
+  {label: "2013", value: "2013"},
+  {label: "2014", value: "2014"},
+  {label: "2015", value: "2015"},
+  {label: "2016", value: "2016"},
+  {label: "2017", value: "2017"}
 ];

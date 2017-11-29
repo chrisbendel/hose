@@ -49,6 +49,38 @@ export default class Show extends Component {
     }
   }
 
+  renderTracks = (set) => {
+    return this.state.show.tracks.filter(track => {
+      return track.set_name === set;
+    }).map(track => {
+      console.log(track);
+      return (
+        <li 
+          className="playlist-container-item" 
+          key={track.src}
+          // onClick={() => {
+          //   this.setPlaylistPosition(track.position - 1);
+          // }}
+        >
+          <span> {track.position} - </span>
+          <span>{track.title}</span>
+        </li>
+      );
+    });
+  }
+
+  renderTrackContainer = () => {
+    const sets = [...new Set(this.state.show.tracks.map(track => track.set_name))];
+    return sets.map(set => {
+      return (
+        <div>
+          <p> {set} </p>
+          <ul className="playlist-section"> {this.renderTracks(set)} </ul>
+        </div>
+      )
+    });
+  }
+
   renderSongs = () => {
     let show = this.state.show;
     let tracks = show.tracks;
@@ -72,30 +104,16 @@ export default class Show extends Component {
   }
 
   render() {
-    let show = this.state.show;
-    const columns = [{
-      Header: '#',
-      accessor: 'number' // String-based value accessors!
-    }, {
-      Header: 'TITLE',
-      accessor: 'title'
-      // Cell: props => <span className='number'>{props.value}</span> // Custom cell components!
-    }, {
-      id: 'Length', // Required because our accessor is not a string
-      Header: 'Friend Name',
-      accessor: d => d.friend.name // Custom value accessors!
-    }, {
-      Header: props => <span>Friend Age</span>, // Custom header components!
-      accessor: 'friend.age'
-    }]
-
-    if (!show) {
+    if (!this.state.show) {
       return (
         <div>
           Loading ...
         </div>
       )
     }
+
+    let show = this.state.show;
+    let tracks = show.tracks;
 
     console.log(show);
 
@@ -120,10 +138,11 @@ export default class Show extends Component {
           </div>
         </div>
         <div className="show-tracks">
-          <ReactTable
+          {this.renderTrackContainer()}
+          {/* <ReactTable
             data={show}
             columns={columns}
-          />
+          /> */}
           {/* <ul>
             {this.renderSongs()}
           </ul>
