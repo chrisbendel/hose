@@ -25,7 +25,7 @@ export default class Player extends Component {
       this.pausePlayer();
     });
 
-    this.props.emitter.addListener('getPlayerState', () => {
+    this.props.emitter.addListener('getShowIdAndPosition', () => {
       this.returnPlayerState();
     });
   }
@@ -45,8 +45,13 @@ export default class Player extends Component {
   }
 
   returnPlayerState = (e) => {
-    this.props.emitter.emit('currentPlayerState', () => {
-      this.player.state.currentPlaylistPos;
+    this.props.emitter.emit('returnShowIdAndPosition', () => {
+      let player = this.player.state;
+
+      return {
+        showId: this.state.showId,
+        position: player.currentPlaylistPos
+      }
     });
   }
 
