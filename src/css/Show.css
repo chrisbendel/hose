@@ -59,6 +59,14 @@
   flex-grow: 1;
 }
 
+.show-container-item.header-cell {
+  border: 0; 
+}
+
+.show-container-item.header-cell:hover {
+  box-shadow: none;
+}
+
 .show-container-item:nth-child(odd) {
   background-color: #EEEEEE;
 }
@@ -137,6 +145,7 @@
   padding: 0 1rem;
   box-sizing: border-box;
   flex: 1;
+  position: relative;
 }
 
 .length-cell {
@@ -145,7 +154,14 @@
   padding: 0 1rem;
   flex: 1;
 }
-
+.likes-bar:before {
+  content: '';
+  height: 43px;
+  width: 100%;
+  position: absolute;
+  top: -20px;
+  left: 0;
+}
 .likes-bar {
   width: 100%;
   height: 5px;

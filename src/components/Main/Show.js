@@ -67,7 +67,7 @@ export default class Show extends Component {
     const max = Math.max.apply(Math,this.state.show.tracks.map(function(o){
       return o.likes_count;
     }));
-    let percent = Math.round((likes / max) * 100);
+    let percent = Math.ceil((likes / max) * 100);
     return percent > 0 ? percent + "%" : "5px";
   }
 
@@ -112,7 +112,7 @@ export default class Show extends Component {
             animation="fade"
             arrowSize={"small"}
             duration={200}
-            html={<span>{track.likes_count} likes</span>}
+            html={<span>{track.likes_count} {track.likes_count === 1 ? "Like" : "Likes"}</span>}
           >
             <div className="likes-bar">
               <div 
@@ -137,7 +137,7 @@ export default class Show extends Component {
           <ul className="playlist-section"> 
             <h2 className="set-name"> {set} </h2>
             <li 
-              className="show-container-item"
+              className="show-container-item header-cell"
             >
               <span className="play-cell">
                 #
@@ -152,7 +152,6 @@ export default class Show extends Component {
               </span>
               <span className="likes-cell">
               <Ionicon 
-                style={{cursor: 'pointer'}}
                 icon="md-heart-outline"
                 font-size="30px"
                 color="black"
