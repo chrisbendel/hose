@@ -66,7 +66,7 @@ export default class Songs extends Component {
       });
     }
 
-    if (attr == 'jamcharts') {
+    if (attr === 'jamcharts') {
       sorted = tracks.filter(show => {
         return isJamchart(show.id);
       })
@@ -91,6 +91,15 @@ export default class Songs extends Component {
   setFilterDisplay = (title) => {
     this.setState({filterDisplay: title});
   }
+
+  getLikesPercent = (likes) => {
+    const max = Math.max.apply(Math,this.state.tracks.map(function(o){
+      return o.likes_count;
+    }));
+    let percent = Math.ceil((likes / max) * 100);
+    return percent > 0 ? percent + "%" : "5px";
+  }
+
 
   renderTracks = () => {
     let tracks = this.state.tracks;
