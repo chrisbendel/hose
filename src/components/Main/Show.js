@@ -119,7 +119,7 @@ export default class Show extends Component {
     const sets = [...new Set(this.state.show.tracks.map(track => track.set_name))];
     return sets.map(set => {
       return (
-        <div>
+        <div key={set}>
           <ul className="playlist-section"> 
             <h2 className="set-name"> {set} </h2>
             <li 
