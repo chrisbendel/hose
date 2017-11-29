@@ -137,7 +137,7 @@ export default class Show extends Component {
           <ul className="playlist-section"> 
             <h2 className="set-name"> {set} </h2>
             <li 
-              className="show-container-item"
+              className="show-container-item header-cell"
             >
               <span className="play-cell">
                 #
@@ -152,7 +152,6 @@ export default class Show extends Component {
               </span>
               <span className="likes-cell">
               <Ionicon 
-                style={{cursor: 'pointer'}}
                 icon="md-heart-outline"
                 font-size="30px"
                 color="black"

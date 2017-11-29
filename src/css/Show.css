@@ -44,9 +44,7 @@
   padding: 1rem;
   box-sizing: border-box;
 }
-.show-container-item.header {
 
-}
 .show-container-item {
   display: flex;
   align-items: center;
@@ -59,6 +57,14 @@
   border: 1px solid #EEEEEE;
   transition: .1s ease box-shadow;
   flex-grow: 1;
+}
+
+.show-container-item.header-cell {
+  border: 0; 
+}
+
+.show-container-item.header-cell:hover {
+  box-shadow: none;
 }
 
 .show-container-item:nth-child(odd) {
