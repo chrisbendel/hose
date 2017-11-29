@@ -35,8 +35,8 @@ export default class Show extends Component {
       this.setState({currentPlayingSong: showId.toString() + tempPos.toString()});
     });
 
-    this.props.emitter.addListener('returnShowIdAndPosition', (showId, pos) => {
-      console.log(showId, pos);
+    this.props.emitter.addListener('returnShowIdAndPosition', info => {
+      console.log(info);
     });
   }
 
