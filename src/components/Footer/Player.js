@@ -7,9 +7,6 @@ import ReactDOM from 'react-dom';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css'
 
-let onplaying = true;
-let onpause = false;
-
 export default class Player extends Component {
   constructor(props) {
     super(props);
@@ -30,13 +27,9 @@ export default class Player extends Component {
       let element = this.player.audioElement;
       console.log(this.player);
       element.addEventListener('playing', (e) => {
-        onplaying = true;
-        onpause = false;
         this.props.emitter.emit('positionUpdate', this.player.state.currentPlaylistPos);
       })
       element.addEventListener('pause', (e) => {
-        onplaying = false;
-        onpause = true;
         console.log('pause');
         // this.props.emitter.emit('positionUpdate', this.player.state.currentPlaylistPos);
       })
@@ -151,7 +144,7 @@ export default class Player extends Component {
           <Ionicon className="clickable" icon="ios-list-box" fontSize="60px"/>
         </Tooltip>
         <div> {show.date} - {show.venue.name}, {show.venue.location} </div>
-        <img style={{'margin-left': '10px', width: '50px', height: '50px'}} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}/> 
+        <img alt={show.date} style={{'margin-left': '10px', width: '50px', height: '50px'}} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}/> 
       </div>
     );
   }

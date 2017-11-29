@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, Redirect } from 'react-router-dom';
 import SideNav from './components/SideNav/SideNav';
 import Player from './components/Footer/Player';
 import Show from './components/Main/Show';
@@ -34,8 +34,13 @@ export default class App extends Component {
                   <Shows emitter={emitter} history={history} {...props}/>
                 }
               />
-              <Route path="/song/:id" component={Show}/>
-              <Route path="/play/:id" component={Player}/>
+              <Route path="/song/:id" render={(props) =>
+                  <Songs emitter={emitter} history={history} {...props}/>
+                }
+              />
+              <Redirect to={{
+                pathname: '/shows',
+              }}/>
           </main>
         </div>
       </Router>

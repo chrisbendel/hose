@@ -20,6 +20,11 @@ export const shows = async(page = 1) => {
   return data.data;
 }
 
+export const tracksForSong = async(track) => {
+  let data = await (await fetch(base + 'songs/' + track)).json();
+  return data.data.tracks;
+}
+
 export const showsForVenue = async(venue) => {
   let data = await (await fetch(base + 'venues/' + venue)).json();
   return data.data.show_ids;
@@ -69,8 +74,6 @@ export const search = async(query) => {
     return terms;
   }
 
-  console.log(data.data);
-
   let show = data.data.show;
   if (show) {
     show.path = '/show/' + show.id;
@@ -97,9 +100,9 @@ export const search = async(query) => {
       values.type = 'song';
       values.display = values.title;
       if (values.alias_for) {
-        values.path = '/song/' + values.alias_for;
+        values.path = '/songs/' + values.alias_for;
       } else {
-        values.path = '/song/' + values.id;
+        values.path = '/songs/' + values.id;
       }
       terms.push(values);
     });

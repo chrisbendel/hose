@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { shows, showsForYear, showsForVenue, showsForTour, showsToday, show, testFunc } from './../../api/phishin';
+import { shows, showsForYear, showsForVenue, showsForTour, showsToday, show, showsWithTrack } from './../../api/phishin';
 import {yearFilters, tourFilters, venueFilters, sortByOptions, showJamcharts} from './../../filterOptions';
-import ReactDOM from 'react-dom';
 import './../../css/Shows.css';
 import Ionicon from 'react-ionicons';
 import Filter from './Filter';
@@ -9,7 +8,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
 const isJamchart = (id) => {
-  return (showJamcharts.indexOf(id) != -1);
+  return (showJamcharts.indexOf(id) !== -1);
 }
 
 //TODO create default empty state if no shows found
@@ -28,7 +27,6 @@ export default class Shows extends Component {
   }
   
   componentWillMount = () => {
-
     let type = this.props.match.params.type;
     let id = this.props.match.params.id;
     this.loadRelevantData(type, id);
@@ -58,6 +56,7 @@ export default class Shows extends Component {
       case "tour":
         this.fetchShowsForTour(id);
         break;
+      default:
     }
   }
 
@@ -171,6 +170,31 @@ export default class Shows extends Component {
     })
   }
 
+  // fetchShowsWithTrack = (track) => {
+  //   let trackName = "";
+  //   showsWithTrack(track).then(tracks => {
+  //     trackName = track.title;
+  //     return tracks.map(track => {
+  //       return track.show_id;
+  //     });
+  //   }).then(trackShowIds => {
+  //     let promises = [];
+  //     trackShowIds.forEach(id => {
+  //       promises.push(show(id).then(showInfo => {
+  //         return showInfo;
+  //       }));
+  //     });
+  
+  //     Promise.all(promises).then(shows => {
+  //       this.setState({
+  //         shows: shows,
+  //         allShows: false,
+  //         currentFilter: "Shows with " + trackName
+  //       })
+  //     })
+  //   });
+  // }
+
   fetchShowsForYear = (year) => {
     showsForYear(year).then(shows => {
       this.setState({
@@ -258,7 +282,6 @@ export default class Shows extends Component {
     return (
       <div>
         <div className="filters">
-          
           <Ionicon
             className="clickable"
             icon="ios-arrow-dropup-circle" 

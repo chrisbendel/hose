@@ -136,7 +136,6 @@
 .filters {
   position: sticky;
   display: flex;
-  overflow: hidden;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;

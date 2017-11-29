@@ -80,8 +80,6 @@ export default class Show extends Component {
     return percent > 0 ? percent + "%" : "5px";
   }
 
-
-
   renderTracks = (set) => {
     let show = this.state.show;
     let tracks = show.tracks;
