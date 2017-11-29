@@ -29,44 +29,7 @@ export default class Show extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log(nextState, this.state);
-    // if (this.state.show && nextState.show) {
-    //   if (this.state.playingShow.position != nextState.playingShow.position) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // }
-
-    return true;
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-
-  }
-
-  componentDidMount() {
-    this.props.emitter.emit("getShowAndPosition");
-  }
-
   componentWillMount() {
-    this.props.emitter.addListener('receiveShowAndposition', showAndPosition => {
-      console.log(this.state);
-      let show = showAndPosition.show;
-      let position = showAndPosition.position + 1;
-
-      if (this.state.show.id === show.id) {
-        console.log(this.state);
-        let currentTrack = this.state.show.tracks.find(track => {
-          return track.position === position;
-        });
-        console.log(currentTrack);
-
-        this.setState({playingShow: {show: show.id, position: currentTrack.position}});
-      }
-    });
-    
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow().then(show => {
         this.setState({show: show})
@@ -89,8 +52,6 @@ export default class Show extends Component {
       return show;
     })
   }
-
-
 
   getLikesPercent = (likes) => {
     const max = Math.max.apply(Math,this.state.show.tracks.map(function(o){

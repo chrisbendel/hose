@@ -33,7 +33,7 @@ export default class Player extends Component {
   }
 
   sendPlayerInfo = () => {
-    if (this.player){
+    if (this.player) {
       let showAndPosition = {
         show: this.state.show,
         position: this.player.state.currentPlaylistPos
