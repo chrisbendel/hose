@@ -27,21 +27,28 @@ export default class Player extends Component {
       this.pause();
     });
 
-    emitter.addListener('getShow', () => {
-      emitter.emit('receiveShow', this.state.show);
+    emitter.addListener('getShowAndPosition', () => {
+      this.sendPlayerInfo();
     });
+  }
 
-    emitter.addListener('getPosition', () => {
-      emitter.emit('receivePosition', this.player.state.currentPlaylistPos);
-    });
+  sendPlayerInfo = () => {
+    if (this.player){
+      let showAndPosition = {
+        show: this.state.show,
+        position: this.player.state.currentPlaylistPos
+      }
+      this.props.emitter.emit('receiveShowAndposition', showAndPosition);
+    }
   }
   
   componentDidUpdate() {
     if (this.player) {
       let element = this.player.audioElement;
-      console.log(this.player);
+      let emitter = this.props.emitter;
+
       element.addEventListener('playing', (e) => {
-        this.props.emitter.emit('positionUpdate', this.player.state.currentPlaylistPos);
+        this.sendPlayerInfo();
       })
 
       element.addEventListener('pause', (e) => {
@@ -49,11 +56,6 @@ export default class Player extends Component {
         // this.props.emitter.emit('positionUpdate', this.player.state.currentPlaylistPos);
       })
     }
-  }
-
-  returnShowAndPosition = (e) => {
-    let info = {showId: this.state.showId, position: this.player.state.currentPlaylistPos}
-    this.props.emitter.emit('returnShowIdAndPosition', info);
   }
 
   play = (e) => {

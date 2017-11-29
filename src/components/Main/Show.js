@@ -22,65 +22,75 @@ export default class Show extends Component {
 
     this.state = {
       show: null,
-      currentPosition: 0,
-      currentPlayingSong: null
+      playingShow: {
+        show: null,
+        position: 0
+      }
     }
+  }
 
-    this.props.emitter.addListener('positionUpdate', (position) => {
-      this.setState({currentPosition: position + 1});
-    });
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log(nextState, this.state);
+    // if (this.state.show && nextState.show) {
+    //   if (this.state.playingShow.position != nextState.playingShow.position) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // }
 
-    this.props.emitter.addListener('playlistUpdate', (showId, position = 0) => {
-      let tempPos = position+1;
-      this.setState({currentPlayingSong: showId.toString() + tempPos.toString()});
-    });
+    return true;
+  }
 
-    this.props.emitter.addListener('receiveShow', show => {
-      console.log(show);
-    });
+  componentDidUpdate(prevProps, prevState) {
 
-    this.props.emitter.addListener('receivePosition', pos => {
-      console.log(pos);
+  }
+
+  componentDidMount() {
+    this.props.emitter.emit("getShowAndPosition");
+  }
+
+  componentWillMount() {
+    this.props.emitter.addListener('receiveShowAndposition', showAndPosition => {
+      console.log(this.state);
+      let show = showAndPosition.show;
+      let position = showAndPosition.position + 1;
+
+      if (this.state.show.id === show.id) {
+        console.log(this.state);
+        let currentTrack = this.state.show.tracks.find(track => {
+          return track.position === position;
+        });
+        console.log(currentTrack);
+
+        this.setState({playingShow: {show: show.id, position: currentTrack.position}});
+      }
     });
+    
+    if (this.props.match.params.id === 'random') {
+      this.fetchRandomShow().then(show => {
+        this.setState({show: show})
+      });
+    } else {
+      this.fetchShow(this.props.match.params.id).then(show => {
+        this.setState({show: show})
+      })
+    }
   }
 
   fetchShow = (id) => {
-    show(id).then(show => {
-      if (show) {
-        this.setState({
-          show: show
-        })
-      }
+    return show(id).then(show => {
+      return show;
     });
   }
 
   fetchRandomShow = () => {
-    randomShow().then(show => {
-      this.setState({
-        show: show
-      })
+    return randomShow().then(show => {
+      return show;
     })
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.match.params.id === 'random') {
-      this.fetchRandomShow();
-    }
 
-    if (nextProps.match.params.id !== this.props.match.params.id) {
-      this.fetchShow(nextProps.match.params.id);
-    }
-  }
-
-  componentWillMount() {
-    this.props.emitter.emit("getShowId");
-    this.props.emitter.emit("getPosition");
-    if (this.props.match.params.id === 'random') {
-      this.fetchRandomShow();
-    } else {
-      this.fetchShow(this.props.match.params.id);
-    }
-  }
 
   getLikesPercent = (likes) => {
     const max = Math.max.apply(Math,this.state.show.tracks.map(function(o){
@@ -94,13 +104,18 @@ export default class Show extends Component {
     let show = this.state.show;
     let tracks = show.tracks;
     let emitter = this.props.emitter;
-    
+    let playingShow = this.state.playingShow;
+
     return tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
       return (
-        <li 
-          className={this.state.currentPlayingSong === show.id.toString() + track.position.toString() ? "show-container-item playing" : "show-container-item"} 
+        <li
+          className={
+              playingShow.show === show.id && playingShow.position === track.position
+              ? "show-container-item playing" 
+              : "show-container-item"
+            } 
           key={track.position}
         >
           <span className="play-cell">
@@ -122,7 +137,7 @@ export default class Show extends Component {
                 font-size="40px"
                 onClick={() => {
                   emitter.emit('pauseCurrentSong', show.id, track.position - 1);
-                  this.setState({currentPlayingSong: null})
+                  this.setState({playingShow: {show: show.id, position: track.position}})
                 }}
                 className="track-pause"
               />
