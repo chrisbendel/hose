@@ -23,6 +23,10 @@ export default class Player extends Component {
     this.props.emitter.addListener('playlistUpdate', (showId, position = 0) => {
       this.setShow(showId, position);
     });
+
+    this.props.emitter.addListener('pauseCurrentSong', (showId, position = 0) => {
+      ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
+    });
   }
   
   componentDidUpdate() {
