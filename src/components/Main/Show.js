@@ -3,7 +3,9 @@ import './../../css/Show.css';
 import { show, randomShow } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
 import { Tooltip } from 'react-tippy';
-import 'react-tippy/dist/tippy.css'
+import 'react-tippy/dist/tippy.css';
+import { easyComp } from 'react-easy-state'
+
 
 
 const msToSec = (time) => {
@@ -12,7 +14,7 @@ const msToSec = (time) => {
   return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
-export default class Show extends Component {
+class Show extends Component {
   constructor(props) {
     super(props);
 
@@ -221,3 +223,5 @@ export default class Show extends Component {
     );
   }
 }
+
+export default easyComp(Show)
