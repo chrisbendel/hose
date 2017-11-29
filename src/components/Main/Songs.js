@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { tracksForSong, testFunc } from './../../api/phishin';
+import { tracksForSong } from './../../api/phishin';
 import { sortByOptions, trackJamcharts, songFilters  } from './../../filterOptions';
 import Ionicon from 'react-ionicons';
 import Select from 'react-select';

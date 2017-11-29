@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { shows, showsForYear, showsForVenue, showsForTour, showsToday, show, showsWithTrack } from './../../api/phishin';
+import { shows, showsForYear, showsForVenue, showsForTour, showsToday, show } from './../../api/phishin';
 import {yearFilters, tourFilters, venueFilters, sortByOptions, showJamcharts} from './../../filterOptions';
 import './../../css/Shows.css';
 import Ionicon from 'react-ionicons';
@@ -169,31 +169,6 @@ export default class Shows extends Component {
       })
     })
   }
-
-  // fetchShowsWithTrack = (track) => {
-  //   let trackName = "";
-  //   showsWithTrack(track).then(tracks => {
-  //     trackName = track.title;
-  //     return tracks.map(track => {
-  //       return track.show_id;
-  //     });
-  //   }).then(trackShowIds => {
-  //     let promises = [];
-  //     trackShowIds.forEach(id => {
-  //       promises.push(show(id).then(showInfo => {
-  //         return showInfo;
-  //       }));
-  //     });
-  
-  //     Promise.all(promises).then(shows => {
-  //       this.setState({
-  //         shows: shows,
-  //         allShows: false,
-  //         currentFilter: "Shows with " + trackName
-  //       })
-  //     })
-  //   });
-  // }
 
   fetchShowsForYear = (year) => {
     showsForYear(year).then(shows => {

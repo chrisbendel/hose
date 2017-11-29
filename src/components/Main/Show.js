@@ -7,7 +7,7 @@ import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
 
 const isJamchart = (id) => {
-  return (trackJamcharts.indexOf(id) != -1);
+  return (trackJamcharts.indexOf(id) !== -1);
 }
 
 const msToSec = (time) => {
@@ -185,17 +185,10 @@ export default class Show extends Component {
 
   render() {
     if (!this.state.show) {
-      return (
-        <div>
-          Loading ...
-        </div>
-      )
+      return (<div>Loading ...</div>)
     }
 
     let show = this.state.show;
-    let tracks = show.tracks;
-
-    console.log(show);
 
     return (
       <div className="show-container">

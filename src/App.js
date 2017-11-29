@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Route, Redirect } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import SideNav from './components/SideNav/SideNav';
 import Player from './components/Footer/Player';
 import Show from './components/Main/Show';
