@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { shows, showsForYear, showsForVenue, showsForTour, showsToday, tours } from './../../api/phishin';
+import { shows, showsForYear, showsForVenue, showsForTour, showsToday, show } from './../../api/phishin';
 import {yearFilters, tourFilters, venueFilters, sortByOptions} from './../../filterOptions';
 import ReactDOM from 'react-dom';
 import './../../css/Shows.css';
@@ -134,16 +134,20 @@ export default class Shows extends Component {
 
   fetchShowsForVenue = (venue) => {
     showsForVenue(venue).then(showIds => {
-      let venueShows = [];
+      let promises = [];
       showIds.forEach(id => {
-        
+        promises.push(show(id).then(showInfo => {
+          console.log(showInfo);
+          return showInfo;
+        }));
       });
-      //TODO fetch all the shows from the show ids passed in from response
-      console.log(showIds);
-      // this.setState({
-      //   shows: shows,
-      //   allShows: false
-      // })
+
+      Promise.all(promises).then(shows => {
+        this.setState({
+          shows: shows,
+          allShows: false
+        })
+      })
     })
   }
 
