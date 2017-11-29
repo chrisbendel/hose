@@ -24,6 +24,10 @@ export default class Player extends Component {
     this.props.emitter.addListener('pauseCurrentSong', () => {
       this.pausePlayer();
     });
+
+    this.props.emitter.addListener('getPlayerState', () => {
+      this.returnPlayerState();
+    });
   }
   
   componentDidUpdate() {
@@ -38,6 +42,12 @@ export default class Player extends Component {
         // this.props.emitter.emit('positionUpdate', this.player.state.currentPlaylistPos);
       })
     }
+  }
+
+  returnPlayerState = (e) => {
+    this.props.emitter.emit('currentPlayerState', () => {
+      this.player.state.currentPlaylistPos;
+    });
   }
 
   pausePlayer = (e) => {

@@ -34,6 +34,10 @@ export default class Show extends Component {
       let tempPos = position+1;
       this.setState({currentPlayingSong: showId.toString() + tempPos.toString()});
     });
+
+    this.props.emitter.addListener('currentPlayerState', () => {
+
+    });
   }
 
   fetchShow = (id) => {
@@ -70,6 +74,13 @@ export default class Show extends Component {
     } else {
       this.fetchShow(this.props.match.params.id);
     }
+
+    this.checkPlayerState();
+  }
+
+  checkPlayerState() {
+    let emitter = this.props.emitter;
+    emitter.emit("getPlayerState");
   }
 
   getLikesPercent = (likes) => {
