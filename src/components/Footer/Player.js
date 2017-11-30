@@ -115,6 +115,8 @@ export default class Player extends Component {
       this.skipToNext();
       this.skipToPrevious();
     } else {
+      this.skipToNext();
+      this.skipToPrevious();
       this.play();
     }
 
