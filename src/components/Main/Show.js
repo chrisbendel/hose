@@ -34,7 +34,7 @@ export default class Show extends Component {
 
     emitter.addListener("receiveShowAndposition", (e) => {
       console.log(e);
-      this.setState({playing: e.action, currentTrack: e.position})
+      this.setState({playing: e.action, currentTrack: e.position+1})
     })
   }
 
