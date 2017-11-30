@@ -30,7 +30,8 @@ export default class Player extends Component {
 
     emitter.addListener('playlistUpdate', (showId, position) => {
       if (this.state.show != null) {
-        if (this.state.show.id == showId && this.player.state.currentPlaylistPos === position) {
+        console.log(this.player.state.currentPlaylistPos, position)
+        if (this.state.show.id === showId && this.player.state.currentPlaylistPos === position) {
           this.play();
           return;
         }
@@ -43,14 +44,12 @@ export default class Player extends Component {
   setPlayerInfo = () => {
     if (this.player) {
       let show = this.state.show;
-      let currentPosition = this.player.state.currentPlaylistPos + 1;
-      console.log(currentPosition);
+      let playerState = this.player.state;
+      let currentPosition = playerState.currentPlaylistPos + 1;
       let currentTrack = show.tracks.find(track => {
         return track.position === currentPosition;
       });
-      PlayerInfo.setShow(show);
-      PlayerInfo.setTrack(currentTrack);
-      PlayerInfo.setPosition(currentPosition);
+      emitter.emit('songUpdate', show, currentTrack, currentPosition, playerState.playing);
     }
   }
   
@@ -179,8 +178,6 @@ export default class Player extends Component {
       return (<div> Pick a show or song to start listening </div>);
     }
 
-    // console.log(show);
-    
     return (
       <div className="controls-container">
         <div className="album-art-container">

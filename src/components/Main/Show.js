@@ -28,8 +28,8 @@ export default class Show extends Component {
     this.state = {
       show: null,
       currentTrack: null,
-      playing: false,
-      showDetails: null
+      showDetails: null,
+      playing: false
     }
   }
 
@@ -40,10 +40,16 @@ export default class Show extends Component {
     }
   }
 
-  componentDidUpdate() {
-  }
-
   componentWillMount() {
+    emitter.addListener('songUpdate', (show, track, position, playing) => {
+      this.setState({
+        playingShow: show,
+        playingTrack: track,
+        playingPosition: position,
+        playing: playing
+      });
+    });
+
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();
     } else {
@@ -88,7 +94,7 @@ export default class Show extends Component {
               this.state.playing && this.state.currentTrack === track.position
               ? "show-container-item playing" 
               : "show-container-item"
-            } 
+            }
           key={track.position}
         >
           <span className="play-cell">
@@ -98,9 +104,8 @@ export default class Show extends Component {
                 icon="ios-play"
                 font-size="40px"
                 onClick={() => {
-                  this.getPlayerInfo();
                   PlayerInfo.updateShowAndPosition(show.id, track.position);
-                  this.setState({playing: true, currentTrack: track.position});
+                  this.setState({currentTrack: track.position});
                 }}
                 className="track-play"
               />
@@ -111,9 +116,8 @@ export default class Show extends Component {
                 icon="ios-pause"
                 font-size="40px"
                 onClick={() => {
-                  this.getPlayerInfo();
-                  emitter.emit('pause');
-                  this.setState({playing: false, currentTrack: track.position});
+                  PlayerInfo.pause();
+                  this.setState({currentTrack: track.position});
                 }}
                 className="track-pause"
               />
@@ -185,14 +189,7 @@ export default class Show extends Component {
   }
 
   getPlayerInfo = () => {
-    console.log(PlayerInfo.getShow());
-    console.log(PlayerInfo.getTrack());
-    console.log(PlayerInfo.getPosition());
-    this.setState({
-      playingShow: PlayerInfo.getShow(),
-      playingTrack: PlayerInfo.getTrack(),
-      playingPosition: PlayerInfo.getPosition()
-    });
+
   }
 
   render() {

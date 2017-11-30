@@ -1,9 +1,23 @@
 import {emitter} from './Emitter';
 
 class PlayerInfo {
-  show = {};
-  track = {};
-  position = null;
+  constructor () {
+    this.show = null;
+    this.track = null;
+    this.position = null;
+    this.playing = false;
+
+    emitter.addListener('songUpdate', (show, track, position, playing) => {
+      this.show = show;
+      this.track = track;
+      this.position = position;
+      this.playing = playing;
+    });
+  }
+
+  isPlaying = () => {
+    return this.playing;
+  }
 
   getShow = () => {
     return this.show;
