@@ -11,6 +11,7 @@ const DownloadManager = require("electron-download-manager");
 DownloadManager.register();
 
 function createWindow() {
+  console.log(__dirname);
     mainWindow = new BrowserWindow({
       title: 'Hose',
       width: 1400, 
@@ -18,6 +19,7 @@ function createWindow() {
       minWidth: 1400,
       minHeight: 900,
       darkTheme: true,
+      icon: path.join(__dirname, 'icons/png/64x64.png'),
       webPreferences: {
         nodeIntegration: false,
         preload: __dirname + '/preload.js',
