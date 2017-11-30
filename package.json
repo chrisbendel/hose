@@ -1,8 +1,10 @@
 {
-  "name": "phish",
+  "name": "hose",
   "version": "0.1.0",
   "private": true,
   "main": "src/start-electron.js",
+  "author": "Christopher Bendel",
+  "description": "Stream Live Phish Music",
   "dependencies": {
     "browserify-css": "0.12.0",
     "classnames": "^2.2.5",
@@ -24,16 +26,27 @@
     "react-router-dom": "^4.1.2",
     "react-scripts": "^1.0.11",
     "react-select": "^1.1.0",
-    "react-tippy": "^1.2.2"
+    "react-tippy": "^1.2.2",
+    "request": "^2.83.0"
+  },
+  "build": {
+    "appId": "com.chrissbendel.hose",
+    "mac": {
+      "category": "public.app-category.music"
+    }
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "electron": "electron ."
+    "electron": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
-    "electron": "^1.7.5"
+    "electron": "^1.7.5",
+    "electron-builder": "^19.47.1"
   }
 }
