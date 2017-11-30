@@ -10,6 +10,7 @@ import './../../css/Shows.css';
 import 'react-select/dist/react-select.css';
 import {emitter} from './../../Emitter';
 import {history} from './../../History';
+import PlayerInfo from './../../PlayerInfo';
 
 const isJamchart = (id) => {
   return (trackJamcharts.indexOf(id) !== -1);
@@ -107,7 +108,7 @@ export default class Songs extends Component {
 
   renderTracks = () => {
     let tracks = this.state.tracks;
-    
+    console.log(tracks);
     return tracks.map(track => {
       return (
         <li key={track.id}>
@@ -117,9 +118,7 @@ export default class Songs extends Component {
                 style={{cursor: 'pointer'}}
                 icon="ios-play"
                 font-size="40px"
-                onClick={() => {
-                  // emitter.emit('playlistUpdate', show.id, track.position - 1)
-                }}
+                onClick={() => {PlayerInfo.updateShowAndPosition(track.show_id, track.position)}}
                 className="track-play"
               />
             </span>
@@ -128,9 +127,7 @@ export default class Songs extends Component {
                 style={{cursor: 'pointer'}}
                 icon="ios-pause"
                 font-size="40px"
-                onClick={() => {
-                  // emitter.emit('pauseCurrentSong', show.id, track.position - 1)
-                }}
+                onClick={() => {emitter.emit('pause')}}
                 className="track-pause"
               />
             </span>

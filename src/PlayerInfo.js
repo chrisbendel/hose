@@ -28,6 +28,18 @@ class PlayerInfo {
   setPosition = (p) => {
     this.position = p;
   }
+
+  pause = () => {
+    emitter.emit('pause');
+  }
+
+  play = () => {
+    emitter.emit('play');
+  }
+
+  updateShowAndPosition = (s, p = 1) => {
+    emitter.emit('playlistUpdate', s, p - 1);
+  }
 }
 
 export default new PlayerInfo();

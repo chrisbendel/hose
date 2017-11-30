@@ -31,11 +31,6 @@ export default class Show extends Component {
       playing: false,
       showDetails: null
     }
-
-
-    emitter.addListener("receiveShowAndposition", (e) => {
-      this.setState({playing: e.action, currentTrack: e.position+1})
-    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,6 +38,9 @@ export default class Show extends Component {
     if (nextId === 'random') {
       this.fetchRandomShow();
     }
+  }
+
+  componentDidUpdate() {
   }
 
   componentWillMount() {
@@ -95,13 +93,14 @@ export default class Show extends Component {
         >
           <span className="play-cell">
             <span className="play-button-sm">
-              <Ionicon 
+              <Ionicon
                 style={{cursor: 'pointer'}}
                 icon="ios-play"
                 font-size="40px"
                 onClick={() => {
-                  emitter.emit('playlistUpdate', show.id, track.position - 1)
-                  this.setState({playing: true, currentTrack: track.position})
+                  this.getPlayerInfo();
+                  PlayerInfo.updateShowAndPosition(show.id, track.position);
+                  this.setState({playing: true, currentTrack: track.position});
                 }}
                 className="track-play"
               />
@@ -112,7 +111,8 @@ export default class Show extends Component {
                 icon="ios-pause"
                 font-size="40px"
                 onClick={() => {
-                  emitter.emit('pauseCurrentSong', show.id, track.position - 1);
+                  this.getPlayerInfo();
+                  emitter.emit('pause');
                   this.setState({playing: false, currentTrack: track.position});
                 }}
                 className="track-pause"
@@ -181,6 +181,17 @@ export default class Show extends Component {
           </ul>
         </div>
       )
+    });
+  }
+
+  getPlayerInfo = () => {
+    console.log(PlayerInfo.getShow());
+    console.log(PlayerInfo.getTrack());
+    console.log(PlayerInfo.getPosition());
+    this.setState({
+      playingShow: PlayerInfo.getShow(),
+      playingTrack: PlayerInfo.getTrack(),
+      playingPosition: PlayerInfo.getPosition()
     });
   }
 

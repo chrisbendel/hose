@@ -8,6 +8,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import {emitter} from './../../Emitter';
 import {history} from './../../History';
+import PlayerInfo from './../../PlayerInfo';
 
 const isJamchart = (id) => {
   return (showJamcharts.indexOf(id) !== -1);
@@ -81,7 +82,7 @@ export default class Shows extends Component {
             />
             <div className="show-information">
               <div className="center-abs">
-                <div className="play-button" onClick={() => emitter.emit('playlistUpdate', show.id)}>
+                <div className="play-button" onClick={() => PlayerInfo.updateShowAndPosition(show.id)}>
                   <Ionicon 
                     icon="ios-play" 
                     fontSize="35px" 
