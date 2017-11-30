@@ -100,7 +100,7 @@ export default class Show extends Component {
                 icon="ios-pause"
                 font-size="40px"
                 onClick={() => {
-                  emitter.emit('playlistUpdate', show.id, track.position - 1);
+                  emitter.emit('pauseCurrentSong', show.id, track.position - 1);
                   this.setState({playing: false, currentTrack: track.position})
                 }}
                 className="track-pause"

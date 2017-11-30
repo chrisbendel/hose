@@ -19,16 +19,23 @@ export default class Player extends Component {
 
     let emitter = this.props.emitter;
 
-    emitter.addListener('playlistUpdate', (showId, position = 0) => {
-      this.setShow(showId, position);
-    });
-
     emitter.addListener('pauseCurrentSong', () => {
       this.pause();
     });
 
     emitter.addListener('getShowAndPosition', () => {
       this.sendPlayerInfo();
+    });
+
+    emitter.addListener('playlistUpdate', (showId, position = 0) => {
+      if(this.state.show != null) {
+        if(this.state.show.id == showId && this.player.state.currentPlaylistPos == position) {
+          this.play();
+          return;
+        }
+      }
+      
+      this.setShow(showId, position)
     });
   }
 
@@ -52,7 +59,7 @@ export default class Player extends Component {
       })
 
       element.addEventListener('pause', (e) => {
-        console.log('pause');
+        // console.log('pause');
         // this.props.emitter.emit('positionUpdate', this.player.state.currentPlaylistPos);
       })
     }
@@ -119,7 +126,6 @@ export default class Player extends Component {
     return this.state.show.tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
-      console.log(track);
       return (
         <li
           className="playlist-container-item" 
@@ -156,7 +162,7 @@ export default class Player extends Component {
       return (<div> Pick a show or song to start listening </div>);
     }
 
-    console.log(show);
+    // console.log(show);
     
     return (
       <div className="controls-container">
