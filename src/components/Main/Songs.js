@@ -43,11 +43,13 @@ export default class Songs extends Component {
   }
 
   fetchTracks = (song) => {
-    tracksForSong(song).then(tracks => {
-      this.setState({
-        tracks: tracks
-      })
-    });
+    if (song) {
+      tracksForSong(song).then(tracks => {
+        this.setState({
+          tracks: tracks
+        })
+      });
+    }
   }
   
   sortShows = (attr, order) => {
@@ -107,10 +109,7 @@ export default class Songs extends Component {
     
     return tracks.map(track => {
       return (
-        <li 
-          // className={this.state.currentPlayingSong === show.id.toString() + track.position.toString() ? "show-container-item playing" : "show-container-item"} 
-          key={track.id}
-        >
+        <li key={track.id}>
           <span className="play-cell">
             <span className="play-button-sm">
               <Ionicon 
@@ -199,9 +198,9 @@ export default class Songs extends Component {
   render() {
     let tracks = this.state.tracks;
     
-    if (!tracks) {
-      return (<div> Loading ... </div>);
-    }
+    // if (!tracks) {
+    //   return (<div> Loading ... </div>);
+    // }
 
     return (
       <div>
@@ -250,9 +249,13 @@ export default class Songs extends Component {
               Remove Filters
           </div>
         </div>
-        <div className="tracks-container" ref="tracks">
-            {this.renderTrackContainer(tracks)}
-        </div>
+        {tracks ? 
+          <div className="tracks-container" ref="tracks">
+              {this.renderTrackContainer(tracks)}
+          </div>
+          : 
+          <div>Choose a song from the list!</div>
+        }
       </div>
     );
   }
