@@ -40,16 +40,26 @@ export default class Show extends Component {
     }
   }
 
-  componentWillMount() {
-    emitter.addListener('songUpdate', (show, track, position, playing) => {
-      this.setState({
-        playingShow: show,
-        playingTrack: track,
-        playingPosition: position,
-        playing: playing
-      });
-    });
+  componentWillUnmount() {
+    this.mounted = false;
+  }
 
+  componentDidMount() {
+    if (this.mounted) {
+      emitter.addListener('songUpdate', (show, track, position, playing) => {
+        this.setState({
+          playingShow: show,
+          playingTrack: track,
+          playingPosition: position,
+          playing: playing
+        });
+      });
+    }
+  }
+
+  componentWillMount() {
+    this.mounted = true;
+      
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();
     } else {
