@@ -11,6 +11,7 @@
     "eslint-config-react-tools": "^1.0.10",
     "fbemitter": "^2.1.1",
     "fuse.js": "^2.2.0",
+    "interweave": "^8.0.2",
     "prop-types": "^15.6.0",
     "react": "^15.6.2",
     "react-audioplayer": "^0.3.1",

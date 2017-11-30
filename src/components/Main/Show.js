@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import './../../css/Show.css';
+import { NavLink } from 'react-router-dom';
 import { show, randomShow } from './../../api/phishin';
+import { showDetails } from './../../api/phishnet';
 import Ionicon from 'react-ionicons';
-import {trackJamcharts} from './../../filterOptions';
+import {trackJamcharts, tourFilters} from './../../filterOptions';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
+import Interweave from 'interweave';
 
 const isJamchart = (id) => {
   return (trackJamcharts.indexOf(id) !== -1);
@@ -24,41 +27,44 @@ export default class Show extends Component {
       show: null,
       currentTrack: null,
       playing: false,
-      playingShow: {
-        show: null,
-        position: 0
-      }
+      showDetails: null
     }
 
     let emitter = this.props.emitter;
 
     emitter.addListener("receiveShowAndposition", (e) => {
-      console.log(e);
       this.setState({playing: e.action, currentTrack: e.position+1})
     })
   }
 
+  componentWillReceiveProps(nextProps) {
+    let nextId = nextProps.match.params.id;
+    if (nextId === 'random') {
+      this.fetchRandomShow();
+    }
+  }
+
   componentWillMount() {
     if (this.props.match.params.id === 'random') {
-      this.fetchRandomShow().then(show => {
-        this.setState({show: show})
-      });
+      this.fetchRandomShow();
     } else {
-      this.fetchShow(this.props.match.params.id).then(show => {
-        this.setState({show: show})
-      })
+      this.fetchShow(this.props.match.params.id);
     }
   }
 
   fetchShow = (id) => {
     return show(id).then(show => {
-      return show;
+      showDetails(show.date).then(details => {
+        this.setState({show: show, showDetails: details})
+      })
     });
   }
 
   fetchRandomShow = () => {
     return randomShow().then(show => {
-      return show;
+      showDetails(show.date).then(details => {
+        this.setState({show: show, showDetails: details})
+      })
     })
   }
 
@@ -74,7 +80,6 @@ export default class Show extends Component {
     let show = this.state.show;
     let tracks = show.tracks;
     let emitter = this.props.emitter;
-    let playingShow = this.state.playingShow;
 
     return tracks.filter(track => {
       return track.set_name === set;
@@ -185,6 +190,8 @@ export default class Show extends Component {
     }
 
     let show = this.state.show;
+    let details = this.state.showDetails;
+    console.log(show);
 
     return (
       <div className="show-container">
@@ -196,13 +203,25 @@ export default class Show extends Component {
           <div className="show-details">
             <p> Date: {show.date} </p>
             <p> Venue: {show.venue.name} </p>
-            <p> Location: {show.venue.location} </p>
+            <p> Location: {details.location} </p>
+            <NavLink
+              key={show.id} 
+              to={'/shows/tour/' + show.tour_id}
+            >
+              <p>{getTourName(show.tour_id)}</p>
+            </NavLink>
 
+            {/* 
+            TODO: @Jonah
+            Put these over the image like they are on the list
             <p> {show.tags} </p>
             <p> {show.remastered ? "Remastered" : null} </p>
-            <p> {show.sbd ? "Soundboard" : null} </p>
-            <p> Tour : {show.tour} (we can fetch this tour and show information about the tour, possibly using a component) this will link to the tour page with all the shows from that tour</p>
-            
+            <p> {show.sbd ? "Soundboard" : null} </p> */}
+            <b> Notes </b>
+            <Interweave
+              tagName="div"
+              content={details.setlistnotes}
+            />
           </div>
         </div>
         <div className="show-tracks">
@@ -211,4 +230,10 @@ export default class Show extends Component {
       </div>
     );
   }
+}
+
+const getTourName = (id) => {
+  return tourFilters.find(tour => {
+    return tour.value === id;
+  }).label;
 }

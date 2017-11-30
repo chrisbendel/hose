@@ -20,12 +20,13 @@ function createWindow() {
       darkTheme: true,
       webPreferences: {
         nodeIntegration: false,
-        preload: __dirname + '/preload.js'
+        preload: __dirname + '/preload.js',
+        webSecurity: false
       }
     });
     mainWindow.loadURL('http://localhost:3000');
 
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     mainWindow.on('closed', function () {
         mainWindow = null

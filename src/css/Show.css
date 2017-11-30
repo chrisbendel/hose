@@ -18,8 +18,8 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  max-height: 100vh;
+  overflow: auto;
+  max-height: 80vh;
   align-self: flex-start;
 }
 
