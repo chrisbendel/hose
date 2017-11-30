@@ -8,6 +8,8 @@ import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css'
 import './../../css/Shows.css';
 import 'react-select/dist/react-select.css';
+import {emitter} from './../../Emitter';
+import {history} from './../../History';
 
 const isJamchart = (id) => {
   return (trackJamcharts.indexOf(id) !== -1);
@@ -105,7 +107,6 @@ export default class Songs extends Component {
 
   renderTracks = () => {
     let tracks = this.state.tracks;
-    let emitter = this.props.emitter;
     
     return tracks.map(track => {
       return (
@@ -198,10 +199,6 @@ export default class Songs extends Component {
   render() {
     let tracks = this.state.tracks;
     
-    // if (!tracks) {
-    //   return (<div> Loading ... </div>);
-    // }
-
     return (
       <div>
         <div className="filters">
@@ -223,7 +220,6 @@ export default class Songs extends Component {
           }
           <div className="search-filter">
             <Filter 
-              history={this.props.history}
               setTitle={this.setFilterDisplay.bind(this)}
               name={"Songs"}
               path={"/song/"}

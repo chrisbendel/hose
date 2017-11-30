@@ -8,6 +8,8 @@ import {trackJamcharts, tourFilters} from './../../filterOptions';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
 import Interweave from 'interweave';
+import PlayerInfo from './../../PlayerInfo';
+import {emitter} from './../../Emitter';
 
 const isJamchart = (id) => {
   return (trackJamcharts.indexOf(id) !== -1);
@@ -30,7 +32,6 @@ export default class Show extends Component {
       showDetails: null
     }
 
-    let emitter = this.props.emitter;
 
     emitter.addListener("receiveShowAndposition", (e) => {
       this.setState({playing: e.action, currentTrack: e.position+1})
@@ -79,7 +80,6 @@ export default class Show extends Component {
   renderTracks = (set) => {
     let show = this.state.show;
     let tracks = show.tracks;
-    let emitter = this.props.emitter;
 
     return tracks.filter(track => {
       return track.set_name === set;
@@ -193,6 +193,7 @@ export default class Show extends Component {
     let details = this.state.showDetails;
     console.log(show);
 
+    PlayerInfo.getShow();
     return (
       <div className="show-container">
         <div className="show-overview">

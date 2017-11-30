@@ -3,6 +3,7 @@ import {search} from './../../api/phishin.js';
 import './../../css/Search.css';
 import Autosuggest from 'react-autosuggest';
 import Ionicon from 'react-ionicons';
+import {history} from './../../History';
 
 let results = [];
 
@@ -59,7 +60,7 @@ export default class GlobalSearch extends Component {
   onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
     if (suggestion) {
       this.setState({value: ''});
-      this.props.history.push(suggestion.path);
+      history.push(suggestion.path);
     }
   }
 
@@ -89,10 +90,10 @@ export default class GlobalSearch extends Component {
 
     return (
       <div className="nav">
-        <a onClick={() => {this.props.history.goBack()}} className="prev">
+        <a onClick={() => {history.goBack()}} className="prev">
           <Ionicon icon="ios-arrow-back" fontSize="60px" color="#FFF" />        
         </a>
-        <a onClick={() => {this.props.history.goForward()}} className="next">
+        <a onClick={() => {history.goForward()}} className="next">
           <Ionicon icon="ios-arrow-forward" fontSize="60px" color="#FFF" />        
         </a>
         <Autosuggest

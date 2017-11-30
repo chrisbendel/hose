@@ -5,44 +5,32 @@ import Player from './components/Footer/Player';
 import Show from './components/Main/Show';
 import Shows from './components/Main/Shows';
 import Songs from './components/Main/Songs';
-import createHistory from 'history/createBrowserHistory';
+import {history} from './History';
 import GlobalSearch from './components/Header/GlobalSearch';
-import {EventEmitter} from 'fbemitter';
+import {emitter} from './Emitter';
 import './css/Main.css';
-
-const history = createHistory();
-const emitter = new EventEmitter();
 
 export default class App extends Component {
   render() {
     return (
       <div>
-      <Router history={history}>
-        <div>
-          <nav className="left">
-            <SideNav />
-          </nav>
-          <header className="header">
-            <GlobalSearch history={history}/>
-          </header>
-          <main className="content">
-              <Route path="/show/:id" render={(props) =>
-                  <Show emitter={emitter} {...props}/>
-                }
-              />
-              <Route path="/shows/:type?/:id?" render={(props) =>
-                  <Shows emitter={emitter} history={history} {...props}/>
-                }
-              />
-              <Route path="/song/:id?" render={(props) =>
-                  <Songs emitter={emitter} history={history} {...props}/>
-                }
-              />
-          </main>
-        </div>
-      </Router>
+        <Router history={history}>
+          <div>
+            <nav className="left">
+              <SideNav />
+            </nav>
+            <header className="header">
+              <GlobalSearch history={history}/>
+            </header>
+            <main className="content">
+                <Route path="/show/:id" component={Show}/>
+                <Route path="/shows/:type?/:id?" component={Shows}/>
+                <Route path="/song/:id?" component={Songs}/>
+            </main>
+          </div>
+        </Router>
         <footer className="footer">
-          <Player emitter={emitter}/>
+          <Player/>
         </footer>
       </div>
     );

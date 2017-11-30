@@ -6,6 +6,8 @@ import Ionicon from 'react-ionicons';
 import Filter from './Filter';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import {emitter} from './../../Emitter';
+import {history} from './../../History';
 
 const isJamchart = (id) => {
   return (showJamcharts.indexOf(id) !== -1);
@@ -79,7 +81,7 @@ export default class Shows extends Component {
             />
             <div className="show-information">
               <div className="center-abs">
-                <div className="play-button" onClick={() => this.props.emitter.emit('playlistUpdate', show.id)}>
+                <div className="play-button" onClick={() => emitter.emit('playlistUpdate', show.id)}>
                   <Ionicon 
                     icon="ios-play" 
                     fontSize="35px" 
@@ -102,9 +104,7 @@ export default class Shows extends Component {
             </div>
           </div>
           <span 
-            onClick={() => {
-              this.props.history.push('/show/' + show.id)}
-            }
+            onClick={() => {history.push('/show/' + show.id)}}
             className="show-date"
           >
             {date.toLocaleDateString('en-US', dateOptions)}
@@ -113,13 +113,13 @@ export default class Shows extends Component {
             
           >
             {show.venue ? 
-              <span onClick={() => {
-                this.props.history.push('/shows/venue/' + show.venue.id)
-              }}>{show.venue.name} {show.venue.location}</span>
+              <span onClick={() => {history.push('/shows/venue/' + show.venue.id)}}>
+                {show.venue.name} {show.venue.location
+              }</span>
               :
-              <span onClick={() => {
-                this.props.history.push('/shows/venue/' + show.venue_id)
-              }}> {show.venue_name} {show.location}  </span>
+              <span onClick={() => {history.push('/shows/venue/' + show.venue_id)}}> 
+                {show.venue_name} {show.location}  
+              </span>
             }
             
             </span>
@@ -270,7 +270,6 @@ export default class Shows extends Component {
             Displaying: {this.state.currentFilter}
           </div>
           <Filter
-            history={this.props.history}
             setTitle={this.setCurrentFilter.bind(this)}
             name={"Years"}
             path={"/shows/year/"}
@@ -278,7 +277,6 @@ export default class Shows extends Component {
             options={yearFilters}
           />
           <Filter 
-            history={this.props.history}
             setTitle={this.setCurrentFilter.bind(this)}
             name={"Tours"}
             path={"/shows/tour/"}
@@ -286,7 +284,6 @@ export default class Shows extends Component {
             options={tourFilters}
           />
           <Filter 
-            history={this.props.history}
             setTitle={this.setCurrentFilter.bind(this)}
             name={"Venues"}
             path={"/shows/venue/"}

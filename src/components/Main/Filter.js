@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import './../../css/Shows.css';
+import {history} from './../../History';
 
 export default class Filter extends Component {
   constructor (props) {
@@ -15,9 +16,9 @@ export default class Filter extends Component {
   handleChange = (selectedOption) => {
     this.props.setTitle(selectedOption.label);
     if (selectedOption.value === 'all') {
-      this.props.history.push('/shows');
+      history.push('/shows');
     } else {
-      this.props.history.push(this.props.path + selectedOption.value);
+      history.push(this.props.path + selectedOption.value);
     }
     this.setState({ selectedOption });
   }
