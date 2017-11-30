@@ -39,11 +39,12 @@ export default class Player extends Component {
     });
   }
 
-  sendPlayerInfo = () => {
+  sendPlayerInfo = (action) => {
     if (this.player) {
       let showAndPosition = {
         show: this.state.show,
-        position: this.player.state.currentPlaylistPos
+        position: this.player.state.currentPlaylistPos,
+        action: action
       }
       this.props.emitter.emit('receiveShowAndposition', showAndPosition);
     }
@@ -55,12 +56,11 @@ export default class Player extends Component {
       let emitter = this.props.emitter;
 
       element.addEventListener('playing', (e) => {
-        this.sendPlayerInfo();
+        this.sendPlayerInfo(true);
       })
 
       element.addEventListener('pause', (e) => {
-        // console.log('pause');
-        // this.props.emitter.emit('positionUpdate', this.player.state.currentPlaylistPos);
+        this.sendPlayerInfo(false);        
       })
     }
   }

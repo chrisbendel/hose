@@ -29,6 +29,13 @@ export default class Show extends Component {
         position: 0
       }
     }
+
+    let emitter = this.props.emitter;
+
+    emitter.addListener("receiveShowAndposition", (e) => {
+      console.log(e);
+      this.setState({playing: e.action, currentTrack: e.position})
+    })
   }
 
   componentWillMount() {
@@ -101,7 +108,7 @@ export default class Show extends Component {
                 font-size="40px"
                 onClick={() => {
                   emitter.emit('pauseCurrentSong', show.id, track.position - 1);
-                  this.setState({playing: false, currentTrack: track.position})
+                  this.setState({playing: false, currentTrack: track.position});
                 }}
                 className="track-pause"
               />
