@@ -9,7 +9,11 @@ import 'react-tippy/dist/tippy.css';
 import {emitter} from './../../Emitter';
 import {history} from './../../History';
 import PlayerInfo from './../../PlayerInfo';
-var {ipcRenderer, remote} = window.require('electron');  
+import isElectron from 'is-electron';
+
+if (isElectron()) {
+  var {ipcRenderer, remote} = window.require('electron');  
+}
 
 export default class Player extends Component {
   constructor(props) {

@@ -6,6 +6,7 @@ const url = require('url');
 const {ipcMain} = require('electron');
 let mainWindow;
 const DownloadManager = require("electron-download-manager");
+const isElectron = require('is-electron');
 
 DownloadManager.register();
 
@@ -22,6 +23,19 @@ ipcMain.on('download', (event, urls, show) => {
   });
 });
 
+if (isElectron()) {
+  prefs = {
+    webSecurity: false
+  }
+} else {
+  prefs = {
+    nodeIntegration: false,
+    preload: __dirname + '/preload.js',
+    webSecurity: false
+  }
+}
+console.log(isElectron());
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     title: 'Hose',
@@ -31,9 +45,7 @@ function createWindow() {
     minHeight: 900,
     darkTheme: true,
     icon: path.join(__dirname, 'icons/png/64x64.png'),
-    webPreferences: {
-      webSecurity: false
-    }
+    webPreferences: prefs
   });
   mainWindow.loadURL('http://localhost:3000');
 
