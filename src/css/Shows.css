@@ -153,6 +153,7 @@
 
 .search-filter {
   flex: .3;
+  padding: 8px;
 }
 
 .show-gallery {
