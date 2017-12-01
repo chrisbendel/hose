@@ -45,7 +45,7 @@ export default class Show extends Component {
 
   componentWillMount() {
     emitter.addListener('songUpdate', (show, track, position, playing) => {
-      console.log(show, track, position, playing);
+      // console.log(show, track, position, playing);
       this.setState({
         playingShow: show,
         playingTrack: track,
@@ -99,7 +99,7 @@ export default class Show extends Component {
     return tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
-      console.log(PlayerInfo.isPlaying(), PlayerInfo.getPosition(), track.position, PlayerInfo.getShow(), show.id)
+      // console.log(PlayerInfo.isPlaying(), PlayerInfo.getPosition(), track.position, PlayerInfo.getShow(), show.id)
       return (
         <li
           className={

@@ -6,9 +6,19 @@ const url = require('url');
 const {ipcMain} = require('electron');
 const {download} = require('electron-dl');
 let mainWindow;
-const DownloadManager = require("electron-download-manager");
+require('electron-dl')();
 
-DownloadManager.register();
+// const DownloadManager = require("electron-download-manager");
+
+// DownloadManager.register();
+
+ipcMain.on('download', (event, arg) => {
+  // console.log('asdfasdfafsd');
+  console.log(arg.url);
+	download(BrowserWindow.getFocusedWindow(), arg.url)
+		.then(dl => console.log(dl.getSavePath()))
+		.catch(console.error);
+});
 
 function createWindow() {
   console.log(__dirname);
@@ -21,8 +31,8 @@ function createWindow() {
       darkTheme: true,
       icon: path.join(__dirname, 'icons/png/64x64.png'),
       webPreferences: {
-        nodeIntegration: false,
-        preload: __dirname + '/preload.js',
+      //   nodeIntegration: false,
+      //   preload: __dirname + '/preload.js',
         webSecurity: false
       }
     });

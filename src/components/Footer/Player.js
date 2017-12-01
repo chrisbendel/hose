@@ -9,11 +9,12 @@ import 'react-tippy/dist/tippy.css';
 import {emitter} from './../../Emitter';
 import {history} from './../../History';
 import PlayerInfo from './../../PlayerInfo';
+var {ipcRenderer, remote} = window.require('electron');  
 
 export default class Player extends Component {
   constructor(props) {
     super(props);
-
+    console.log(ipcRenderer);
     this.state = {
       tracks: null,
       show: null,
@@ -132,20 +133,23 @@ export default class Player extends Component {
 
   downloadShow = () => {
     this.setState({downloading: true})
-    let tracks = this.state.tracks;
     let show = this.state.show;
-
-    let options = {};
-    options.urls = [];
-    options.path = show.date;
-    tracks.forEach(function (track) {
-      options.urls.push(track.src);
+    
+    let urls = [];
+    
+    let tracks = show.tracks.forEach(function (track) {
+      // console.log(track.mp3);
+      // urls.push(track.mp3);
+      ipcRenderer.send('download', track.mp3);
     });
 
-    let that = this;
-    window.require("electron").remote.require("electron-download-manager").bulkDownload(options, function(error, finished, errors){
-      that.setState({downloading: false})
-    });
+    // console.log(JSON.stringify(tracks));
+    // ipcRenderer.send('download', urls);
+    this.setState({downloading: false});
+    // let that = this;
+    // require("electron").remote.require("electron-download-manager").bulkDownload(options, function(error, finished, errors){
+    //   that.setState({downloading: false})
+    // });
   }
 
   renderPlaylistContent = (set) => {
@@ -185,7 +189,7 @@ export default class Player extends Component {
     let tracks = this.state.tracks;
 
     if (!show) {
-      return (<div> Pick a show or song to start listening </div>);
+      return (<div onClick={() => {this.downloadShow()}}> Pick a show or song to start listening </div>);
     }
 
     return (
