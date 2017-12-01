@@ -19,7 +19,6 @@
     "react-audioplayer": "^0.3.1",
     "react-autosuggest": "^9.3.2",
     "react-dom": "^15.6.2",
-    "react-easy-state": "^3.0.1",
     "react-ionicons": "^2.0.3",
     "react-motion": "^0.4.0",
     "react-router": "^4.1.2",
@@ -45,7 +44,7 @@
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
-    "package-win": "electron-packager . hose --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron Tutorial App\"",    
+    "package-win": "electron-packager . hose --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron Tutorial App\"",
     "package-linux": "electron-packager . hose --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds"
   },
   "devDependencies": {
