@@ -15,6 +15,15 @@ class PlayerInfo {
     });
   }
 
+  getInfo = () => {
+    return {
+      show: this.show,
+      track: this.track,
+      position: this.position,
+      playing: this.playing
+    }
+  }
+
   isPlaying = () => {
     return this.playing;
   }
@@ -43,11 +52,21 @@ class PlayerInfo {
     this.position = p;
   }
 
+  setPlaying = (p) => {
+    this.playing = p;
+  }
+
+  getPlaying = () => {
+    return this.playing;
+  }
+
   pause = () => {
+    this.playing = false;
     emitter.emit('pause');
   }
 
   play = () => {
+    this.playing = true;
     emitter.emit('play');
   }
 

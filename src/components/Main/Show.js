@@ -27,7 +27,6 @@ export default class Show extends Component {
 
     this.state = {
       show: null,
-      currentTrack: null,
       showDetails: null,
       playing: false
     }
@@ -41,25 +40,28 @@ export default class Show extends Component {
   }
 
   componentWillUnmount() {
-    this.mounted = false;
-  }
-
-  componentDidMount() {
-    if (this.mounted) {
-      emitter.addListener('songUpdate', (show, track, position, playing) => {
-        this.setState({
-          playingShow: show,
-          playingTrack: track,
-          playingPosition: position,
-          playing: playing
-        });
-      });
-    }
+    emitter.removeAllListeners('songUpdate');
   }
 
   componentWillMount() {
-    this.mounted = true;
-      
+    emitter.addListener('songUpdate', (show, track, position, playing) => {
+      console.log(show, track, position, playing);
+      this.setState({
+        playingShow: show,
+        playingTrack: track,
+        playingPosition: position,
+        playing: playing
+      });
+    });
+
+    // let info = PlayerInfo.getInfo();
+    // this.setState({
+    //   playingShow: info.show,
+    //   playingTrack: info.track,
+    //   playingPosition: info.position,
+    //   playing: info.playing
+    // });
+    
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();
     } else {
@@ -94,14 +96,15 @@ export default class Show extends Component {
   renderTracks = (set) => {
     let show = this.state.show;
     let tracks = show.tracks;
-
     return tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
+      console.log(PlayerInfo.isPlaying(), PlayerInfo.getPosition(), track.position, PlayerInfo.getShow(), show.id)
+      
       return (
         <li
           className={
-              this.state.playing && this.state.currentTrack === track.position
+              PlayerInfo.isPlaying() && PlayerInfo.getPosition() === track.position && PlayerInfo.getShow().id === this.state.show.id
               ? "show-container-item playing" 
               : "show-container-item"
             }
@@ -115,7 +118,7 @@ export default class Show extends Component {
                 font-size="40px"
                 onClick={() => {
                   PlayerInfo.updateShowAndPosition(show.id, track.position);
-                  this.setState({currentTrack: track.position});
+                  this.setState({playing: true});
                 }}
                 className="track-play"
               />
@@ -127,7 +130,7 @@ export default class Show extends Component {
                 font-size="40px"
                 onClick={() => {
                   PlayerInfo.pause();
-                  this.setState({currentTrack: track.position});
+                  this.setState({playing: true});
                 }}
                 className="track-pause"
               />
@@ -198,10 +201,6 @@ export default class Show extends Component {
     });
   }
 
-  getPlayerInfo = () => {
-
-  }
-
   render() {
     if (!this.state.show) {
       return (<div>Loading ...</div>)
@@ -209,7 +208,6 @@ export default class Show extends Component {
 
     let show = this.state.show;
     let details = this.state.showDetails;
-    console.log(show);
 
     PlayerInfo.getShow();
     return (

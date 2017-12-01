@@ -195,7 +195,7 @@ export default class Shows extends Component {
       });
     }
 
-    if (attr == 'jamcharts') {
+    if (attr === 'jamcharts') {
       sorted = shows.filter(show => {
         return isJamchart(show.id);
       })

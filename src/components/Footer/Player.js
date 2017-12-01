@@ -30,7 +30,6 @@ export default class Player extends Component {
 
     emitter.addListener('playlistUpdate', (showId, position) => {
       if (this.state.show != null) {
-        console.log(this.player.state.currentPlaylistPos, position)
         if (this.state.show.id === showId && this.player.state.currentPlaylistPos === position) {
           this.play();
           return;
@@ -49,6 +48,12 @@ export default class Player extends Component {
       let currentTrack = show.tracks.find(track => {
         return track.position === currentPosition;
       });
+      
+      PlayerInfo.setPosition(currentPosition);
+      PlayerInfo.setShow(show);
+      PlayerInfo.setTrack(currentTrack);
+      PlayerInfo.setPlaying(playerState.playing);
+
       emitter.emit('songUpdate', show, currentTrack, currentPosition, playerState.playing);
     }
   }
@@ -71,12 +76,14 @@ export default class Player extends Component {
   play = (e) => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-play'));
+      this.setPlayerInfo();
     }
   }
 
   pause = (e) => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
+      this.setPlayerInfo();
     }
   }
   
@@ -97,21 +104,23 @@ export default class Player extends Component {
       let tracks = show.tracks.map(track => {
         return {id: track.id, name: track.title, src: track.mp3}
       });
-
+      
       this.setState({
         tracks: tracks, 
         show: show
       }, () => {
         this.setPlaylistPosition(position);
       });
+    }).then(() => {
+      this.setPlayerInfo();
     });
   }
 
   setPlaylistPosition = (index) => {
     this.player.state.currentPlaylistPos = index;
-    
+    this.pause();
+
     if (this.player.state.playing) {
-      this.pause();
       this.skipToNext();
       this.skipToPrevious();
     } else {
@@ -119,7 +128,6 @@ export default class Player extends Component {
       this.skipToPrevious();
       this.play();
     }
-
   }
 
   downloadShow = () => {
