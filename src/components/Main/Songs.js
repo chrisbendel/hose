@@ -3,7 +3,6 @@ import { tracksForSong } from './../../api/phishin';
 import { sortByOptions, trackJamcharts, songFilters  } from './../../filterOptions';
 import {NavLink} from 'react-router-dom';
 import Ionicon from 'react-ionicons';
-import Select from 'react-select';
 import Filter from './Filter';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css'
@@ -28,11 +27,11 @@ export default class Songs extends Component {
     super(props);
     
     this.state = {
-      tracks: [],
+      tracks: null,
       filterOption: '',
       loadingShows: false,
       songSearch: '',
-      filterDisplay: '',
+      filterDisplay: null,
       likesOrder: false,
       timeOrder: false,
       dateOrder: false,
@@ -59,7 +58,7 @@ export default class Songs extends Component {
         })
       });
     } else {
-      this.setState({tracks: []})
+      this.setState({tracks: null})
     }
   }
   
@@ -137,20 +136,11 @@ export default class Songs extends Component {
   }
 
   getLikesPercent = (likes) => {
-    let values = this.state.tracks.map(track => {
-      return track.likes_count;
-    });
-
-    let lowMiddle = Math.floor((values.length - 1) / 2);
-    let highMiddle = Math.ceil((values.length - 1) / 2);
-    let median = (values[lowMiddle] + values[highMiddle]) / 2;
-    console.log(median, lowMiddle, highMiddle);
-    return "5%";
-    // const max = Math.max.apply(Math,this.state.tracks.map(function(o) {
-    //   return o.likes_count;
-    // }));
-    // let percent = Math.ceil((likes / max) * 100);
-    // return percent > 0 ? percent + "%" : "5px";
+    const max = Math.max.apply(Math,this.state.tracks.map(function(o) {
+      return o.likes_count;
+    }));
+    let percent = Math.ceil((likes / max) * 100);
+    return percent > 0 ? percent + "%" : "5px";
   }
 
   renderTracks = () => {
@@ -158,7 +148,7 @@ export default class Songs extends Component {
     return tracks.map(track => {
       return (
         <li className="show-container-item" key={track.show_id}>
-          <img className="image-cell" src={process.env.PUBLIC_URL + '/art/' + track.show_date + '.jpg'}/>
+          <img alt={track.show_date} className="image-cell" src={process.env.PUBLIC_URL + '/art/' + track.show_date + '.jpg'}/>
           <span className="play-cell">
             <span className="play-button-sm">
               <Ionicon 
@@ -210,8 +200,8 @@ export default class Songs extends Component {
 
   renderTrackContainer = () => {
     return (
-      <ul className="playlist-section">
-        <li key={'header'} className="show-container-item header-cell">
+      <ul key='top' className="playlist-section">
+        <li key='header' className="show-container-item header-cell">
           <span className="image-cell-header"></span>
           <span className="play-cell"> </span>
           <span className="title-cell">Title</span>
@@ -259,7 +249,7 @@ export default class Songs extends Component {
               this.refs.tracks.scrollTop = 0;
             }}
           />
-          {this.state.filterDisplay.length ?
+          {this.state.filterDisplay ?
             <div className="filter-display">
               Song: {this.state.filterDisplay}
             </div>
