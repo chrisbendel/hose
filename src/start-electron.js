@@ -9,7 +9,6 @@ const DownloadManager = require("electron-download-manager");
 const isElectron = require('is-electron');
 
 DownloadManager.register();
-
 ipcMain.on('download', (event, urls, show) => {
   DownloadManager.bulkDownload({
     urls: urls,
@@ -34,7 +33,9 @@ if (isElectron()) {
     webSecurity: false
   }
 }
-console.log(isElectron());
+
+const updater = require('electron-simple-updater');
+updater.init('https://raw.githubusercontent.com/megahertz/electron-simple-updater/master/example/updates.json');
 
 function createWindow() {
   mainWindow = new BrowserWindow({
