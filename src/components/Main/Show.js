@@ -100,12 +100,11 @@ export default class Show extends Component {
       return track.set_name === set;
     }).map(track => {
       console.log(PlayerInfo.isPlaying(), PlayerInfo.getPosition(), track.position, PlayerInfo.getShow(), show.id)
-      
       return (
         <li
           className={
               PlayerInfo.isPlaying() && PlayerInfo.getPosition() === track.position && PlayerInfo.getShow().id === this.state.show.id
-              ? "show-container-item playing" 
+              ? "show-container-item playing"
               : "show-container-item"
             }
           key={track.position}
@@ -172,9 +171,7 @@ export default class Show extends Component {
         <div key={set}>
           <ul className="playlist-section"> 
             <h2 className="set-name"> {set} </h2>
-            <li 
-              className="show-container-item header-cell"
-            >
+            <li className="show-container-item header-cell">
               <span className="play-cell">
                 #
               </span>

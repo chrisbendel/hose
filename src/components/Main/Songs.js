@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { tracksForSong } from './../../api/phishin';
 import { sortByOptions, trackJamcharts, songFilters  } from './../../filterOptions';
+import {NavLink} from 'react-router-dom';
 import Ionicon from 'react-ionicons';
 import Select from 'react-select';
 import Filter from './Filter';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css'
-import './../../css/Shows.css';
+import './../../css/Songs.css';
 import 'react-select/dist/react-select.css';
 import {emitter} from './../../Emitter';
 import {history} from './../../History';
@@ -110,8 +111,9 @@ export default class Songs extends Component {
     let tracks = this.state.tracks;
     console.log(tracks);
     return tracks.map(track => {
+      console.log(track);
       return (
-        <li key={track.id}>
+        <li className="show-container-item" key={track.id}>
           <span className="play-cell">
             <span className="play-button-sm">
               <Ionicon 
@@ -134,6 +136,7 @@ export default class Songs extends Component {
             <span className="track-number">{track.position}</span>
           </span>
           <span className="title-cell">{track.title}</span>
+          <NavLink className="title-cell" to={'/show/' + track.show_id}><span>{track.show_date}</span></NavLink>
           <span className="jamcharts-cell">{isJamchart(track.id) ? "Jamcharts" : ""}</span>
           <span className="length-cell">{msToSec(track.duration)}</span>
           <span className="likes-cell">
@@ -163,12 +166,13 @@ export default class Songs extends Component {
 
   renderTrackContainer = () => {
     return (
-      <ul className="playlist-section"> 
+      <ul className="playlist-section">
         <li className="show-container-item header-cell">
           <span className="play-cell">
             #
           </span>
           <span className="title-cell">Title</span>
+          <span className="title-cell">Show</span>
           <span className="jamcharts-cell"></span>
           <span className="length-cell">
             <Ionicon
