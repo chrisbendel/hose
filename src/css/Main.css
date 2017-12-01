@@ -46,12 +46,11 @@ html > * {
 
 .content {
   position: absolute;
-  top: calc(50px + 1rem);
-  height: calc(100% - 125px);
+  top: calc(50px + 2rem);
+  height: calc(100% - 182px);
   bottom: calc(50px + 1rem);
   width: calc(100% - 125px);
   right: 0;
-  padding: 1rem 0;
   box-sizing: border-box;
   overflow-y: auto;
 }
