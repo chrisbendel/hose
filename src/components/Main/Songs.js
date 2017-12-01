@@ -75,7 +75,11 @@ export default class Songs extends Component {
 
     if (attr === 'duration') {
       sorted = tracks.sort((a, b) => {
-        return parseFloat(b.duration) - parseFloat(a.duration);
+        if (order === 'asc') {
+          return parseFloat(a.duration) - parseFloat(b.duration);
+        } else if (order === 'desc') {
+          return parseFloat(b.duration) - parseFloat(a.duration);
+        }
       });
     }
 
@@ -121,7 +125,7 @@ export default class Songs extends Component {
       console.log(track);
       return (
         <li className="show-container-item" key={track.id}>
-          <span className="title-cell">{track.title}</span>
+          
           <span className="play-cell">
             <span className="play-button-sm">
               <Ionicon 
@@ -142,7 +146,7 @@ export default class Songs extends Component {
               />
             </span>
           </span>
-          
+          <span className="title-cell">{track.title}</span>
           <NavLink className="title-cell" to={'/show/' + track.show_id}><span>{track.show_date}</span></NavLink>
           <span className="jamcharts-cell">{isJamchart(track.id) ? "Jamcharts" : ""}</span>
           <span className="length-cell">{msToSec(track.duration)}</span>
@@ -175,8 +179,8 @@ export default class Songs extends Component {
     return (
       <ul className="playlist-section">
         <li className="show-container-item header-cell">
-          <span className="title-cell">Title</span>
           <span className="play-cell"> </span>
+          <span className="title-cell">Title</span>
           <span className="title-cell">Show</span>
           <span className="jamcharts-cell"></span>
           <span className="length-cell">
@@ -256,7 +260,7 @@ export default class Songs extends Component {
               {this.renderTrackContainer(tracks)}
           </div>
           : 
-          <div>Choose a song from the list!</div>
+          <div className="tracks-container">Choose a song from the list!</div>
         }
       </div>
     );

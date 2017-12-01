@@ -11,6 +11,17 @@
   box-shadow: 0 0 7px 0px rgba(0,0,0,0.2);
 }
 
+.tracks-container {
+  height: calc(100% - 150px);
+  top: 100px;
+  overflow: auto;
+  width: 100%;
+  position: absolute;
+  padding: .5rem .25rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
 .playlist-section {
   margin: 0;
   padding: 1rem;
