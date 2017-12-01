@@ -5,7 +5,7 @@ import './../../css/SideNav.css'
 const items = [
   {
     "id": 0,
-    "name": "Today in Phistory",
+    "name": "On This Day",
     "path": "/shows/today"
   },
   {

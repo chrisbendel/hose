@@ -28,7 +28,7 @@ export default class Songs extends Component {
     super(props);
     
     this.state = {
-      tracks: null,
+      tracks: [],
       filterOption: '',
       loadingShows: false,
       songSearch: '',
@@ -53,6 +53,8 @@ export default class Songs extends Component {
           tracks: tracks
         })
       });
+    } else {
+      this.setState({tracks: []})
     }
   }
   
@@ -68,6 +70,12 @@ export default class Songs extends Component {
         } else if (order === 'desc') {
           return d-c;
         }
+      });
+    }
+
+    if (attr === 'duration') {
+      sorted = tracks.sort((a, b) => {
+        return parseFloat(b.duration) - parseFloat(a.duration);
       });
     }
 
@@ -109,11 +117,11 @@ export default class Songs extends Component {
 
   renderTracks = () => {
     let tracks = this.state.tracks;
-    console.log(tracks);
     return tracks.map(track => {
       console.log(track);
       return (
         <li className="show-container-item" key={track.id}>
+          <span className="title-cell">{track.title}</span>
           <span className="play-cell">
             <span className="play-button-sm">
               <Ionicon 
@@ -133,9 +141,8 @@ export default class Songs extends Component {
                 className="track-pause"
               />
             </span>
-            <span className="track-number">{track.position}</span>
           </span>
-          <span className="title-cell">{track.title}</span>
+          
           <NavLink className="title-cell" to={'/show/' + track.show_id}><span>{track.show_date}</span></NavLink>
           <span className="jamcharts-cell">{isJamchart(track.id) ? "Jamcharts" : ""}</span>
           <span className="length-cell">{msToSec(track.duration)}</span>
@@ -168,23 +175,25 @@ export default class Songs extends Component {
     return (
       <ul className="playlist-section">
         <li className="show-container-item header-cell">
-          <span className="play-cell">
-            #
-          </span>
           <span className="title-cell">Title</span>
+          <span className="play-cell"> </span>
           <span className="title-cell">Show</span>
           <span className="jamcharts-cell"></span>
           <span className="length-cell">
             <Ionicon
+              style={{cursor: 'pointer'}}
               icon="md-time"
               color="black"
+              onClick={() => {this.sortShows('duration')}}
             />
           </span>
           <span className="likes-cell">
             <Ionicon 
+              style={{cursor: 'pointer'}}
               icon="md-heart-outline"
               font-size="30px"
               color="black"
+              onClick={() => {this.sortShows('likes_count')}}
             />
           </span>
         </li>
@@ -238,12 +247,8 @@ export default class Songs extends Component {
               options={sortByOptions}
             />
           </div>
-
-          <div className="load-more" onClick={() => {
-                  this.fetchAllShows();
-                }}
-              >
-              Remove Filters
+          <div className="load-more" onClick={() => {this.fetchTracks()}}>
+            Remove Filters
           </div>
         </div>
         {tracks ? 

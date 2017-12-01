@@ -3,10 +3,10 @@
   font-size: 18px;
   color: #fff !important;
   text-align: center;
-  margin: 0 10px;
+  margin: 0 25px;
   border-radius: 4px;
   cursor: pointer;
-  width: 25px;
+  width: 40px;
 }
 
 .prev svg, .next svg {

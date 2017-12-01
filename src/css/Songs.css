@@ -1,3 +1,16 @@
+.filters {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 75px;
+  z-index: 8888;
+  flex-wrap: nowrap;
+  width: calc(100% - 125px);
+  background: #F9f9F9;
+  box-shadow: 0 0 7px 0px rgba(0,0,0,0.2);
+}
+
 .playlist-section {
   margin: 0;
   padding: 1rem;

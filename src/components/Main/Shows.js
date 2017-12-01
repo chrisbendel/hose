@@ -268,8 +268,17 @@ export default class Shows extends Component {
             }}
           />
           <div className="filter-display">
-            Displaying: {this.state.currentFilter}
+            <span>Displaying: {this.state.currentFilter}</span>
+            <Ionicon
+            className="clickable"
+            icon="md-close-circle" 
+            fontSize="20px"
+            onClick={() => {
+              this.fetchAllShows()
+            }}
+          />
           </div>
+
           <Filter
             setTitle={this.setCurrentFilter.bind(this)}
             name={"Years"}
@@ -300,13 +309,6 @@ export default class Shows extends Component {
               onChange={this.handleChange.bind(this)}
               options={sortByOptions}
             />
-          </div>
-
-          <div className="load-more" onClick={() => {
-                  this.fetchAllShows();
-                }}
-              >
-              Remove Filters
           </div>
         </div>
         <div className="shows-container" ref="shows">

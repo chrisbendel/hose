@@ -23,7 +23,7 @@ html > * {
 .left {
   position: fixed;
   left: 0;
-  width: 150px;
+  width: 125px;
   height: calc(100vh - 100px);
   top: 0px;
   display: flex;
@@ -36,7 +36,7 @@ html > * {
 .header {
   position: fixed;
   right: 0;
-  width: calc(100% - 150px);
+  width: calc(100% - 125px);
   height: 50px;
   background: #3F51B5;
   top: 0;
@@ -47,9 +47,9 @@ html > * {
 .content {
   position: absolute;
   top: calc(50px + 1rem);
-  height: calc(100% - 75px);
+  height: calc(100% - 125px);
   bottom: calc(50px + 1rem);
-  width: calc(100% - 150px);
+  width: calc(100% - 125px);
   right: 0;
   padding: 1rem 0;
   box-sizing: border-box;
