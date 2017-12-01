@@ -67,8 +67,8 @@ export default class Songs extends Component {
     let tracks = this.state.tracks;
     if (attr === 'date') {
       let sorted = tracks.sort((a, b) => {
-        var c = new Date(a.date);
-        var d = new Date(b.date);
+        var c = new Date(a.show_date);
+        var d = new Date(b.show_date);
         if (this.state.dateOrder) {
           return c-d;
         } else {
@@ -137,19 +137,27 @@ export default class Songs extends Component {
   }
 
   getLikesPercent = (likes) => {
-    const max = Math.max.apply(Math,this.state.tracks.map(function(o){
-      return o.likes_count;
-    }));
-    let percent = Math.ceil((likes / max) * 100);
-    return percent > 0 ? percent + "%" : "5px";
+    let values = this.state.tracks.map(track => {
+      return track.likes_count;
+    });
+
+    let lowMiddle = Math.floor((values.length - 1) / 2);
+    let highMiddle = Math.ceil((values.length - 1) / 2);
+    let median = (values[lowMiddle] + values[highMiddle]) / 2;
+    console.log(median, lowMiddle, highMiddle);
+    return "5%";
+    // const max = Math.max.apply(Math,this.state.tracks.map(function(o) {
+    //   return o.likes_count;
+    // }));
+    // let percent = Math.ceil((likes / max) * 100);
+    // return percent > 0 ? percent + "%" : "5px";
   }
 
   renderTracks = () => {
     let tracks = this.state.tracks;
     return tracks.map(track => {
-      console.log(track);
       return (
-        <li className="show-container-item" key={track.id}>
+        <li className="show-container-item" key={track.show_id}>
           <img className="image-cell" src={process.env.PUBLIC_URL + '/art/' + track.show_date + '.jpg'}/>
           <span className="play-cell">
             <span className="play-button-sm">
@@ -203,11 +211,11 @@ export default class Songs extends Component {
   renderTrackContainer = () => {
     return (
       <ul className="playlist-section">
-        <li className="show-container-item header-cell">
+        <li key={'header'} className="show-container-item header-cell">
           <span className="image-cell-header"></span>
           <span className="play-cell"> </span>
           <span className="title-cell">Title</span>
-          <span className="title-cell" onClick={() => {this.sortShows('duration')}}>Date</span>
+          <span className="title-cell" onClick={() => {this.sortShows('date')}}>Date</span>
           <span className="jamcharts-cell" onClick={() => {this.sortShows('jamcharts')}}>Jamcharts</span>
           <span className="length-cell">
             <Ionicon
