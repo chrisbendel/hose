@@ -106,7 +106,6 @@ export default class Songs extends Component {
   }
 
   setFilterDisplay = (title) => {
-    console.log(title);
     this.setState({filterDisplay: title});
   }
 
@@ -118,11 +117,9 @@ export default class Songs extends Component {
     return percent > 0 ? percent + "%" : "5px";
   }
 
-
   renderTracks = () => {
     let tracks = this.state.tracks;
     return tracks.map(track => {
-      console.log(track);
       return (
         <li className="show-container-item" key={track.id}>
           
