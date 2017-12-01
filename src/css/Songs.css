@@ -58,6 +58,15 @@
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
 }
 
+.image-cell-header {
+  width: 100px;
+}
+
+.image-cell {
+  height: 100px;
+  width: 100px;
+}
+
 .play-cell {
   display: inline-flex;
   width: 30px;
@@ -69,6 +78,7 @@
 }
 
 .title-cell {
+  cursor: pointer;
   width: 20%;
   min-width: 100px;
   white-space: nowrap;
@@ -78,6 +88,7 @@
 }
 
 .jamcharts-cell {
+  cursor: pointer;
   width: 20%;
   min-width: 100px;
   white-space: nowrap;
@@ -87,6 +98,7 @@
 }
 
 .likes-cell {
+  cursor: pointer;
   margin-left: auto;
   text-align: center;
   padding: 0 1rem;

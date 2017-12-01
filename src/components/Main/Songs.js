@@ -32,7 +32,11 @@ export default class Songs extends Component {
       filterOption: '',
       loadingShows: false,
       songSearch: '',
-      filterDisplay: ''
+      filterDisplay: '',
+      likesOrder: false,
+      timeOrder: false,
+      dateOrder: false,
+      jamcharts: false
     }
   }
   
@@ -50,7 +54,8 @@ export default class Songs extends Component {
     if (song) {
       tracksForSong(song).then(tracks => {
         this.setState({
-          tracks: tracks
+          tracks: tracks,
+          trackId: song
         })
       });
     } else {
@@ -58,50 +63,72 @@ export default class Songs extends Component {
     }
   }
   
-  sortShows = (attr, order) => {
-    let sorted;
+  sortShows = (attr) => {
     let tracks = this.state.tracks;
     if (attr === 'date') {
-      sorted = tracks.sort((a, b) => {
+      let sorted = tracks.sort((a, b) => {
         var c = new Date(a.date);
         var d = new Date(b.date);
-        if (order === 'asc') {
+        if (this.state.dateOrder) {
           return c-d;
-        } else if (order === 'desc') {
+        } else {
           return d-c;
         }
       });
-    }
 
-    if (attr === 'duration') {
-      sorted = tracks.sort((a, b) => {
-        if (order === 'asc') {
-          return parseFloat(a.duration) - parseFloat(b.duration);
-        } else if (order === 'desc') {
-          return parseFloat(b.duration) - parseFloat(a.duration);
-        }
-      });
-    }
-
-    if (attr === 'jamcharts') {
-      sorted = tracks.filter(show => {
-        return isJamchart(show.id);
+      this.setState({
+        tracks: sorted,
+        dateOrder: !this.state.dateOrder
       })
     }
 
-    if (attr === 'likes_count') {
-      sorted = tracks.sort((a, b) => {
-        return parseFloat(b.likes_count) - parseFloat(a.likes_count);
+    if (attr === 'duration') {
+      let sorted = tracks.sort((a, b) => {
+        if (this.state.timeOrder) {
+          return parseFloat(a.duration) - parseFloat(b.duration);
+        } else {
+          return parseFloat(b.duration) - parseFloat(a.duration);
+        }
       });
+      this.setState({
+        tracks: sorted,
+        timeOrder: !this.state.timeOrder
+      })
+    }
+    
+    if (attr === 'jamcharts') {
+      if (!this.state.jamcharts) {
+        let sorted = tracks.filter(track => {
+          return isJamchart(track.id);        
+        })
+
+        this.setState({
+          tracks: sorted,
+          jamcharts: !this.state.jamcharts
+        })
+      } else {
+        this.setState({jamcharts: !this.state.jamcharts})
+        this.fetchTracks(this.state.trackId);
+      }
     }
 
-    this.setState({
-      tracks: sorted
-    })
+    if (attr === 'likes_count') {
+      let sorted = tracks.sort((a, b) => {
+        if (this.state.likesOrder) {
+          return parseFloat(a.likes_count) - parseFloat(b.likes_count);
+        } else {
+          return parseFloat(b.likes_count) - parseFloat(a.likes_count);
+        }
+      });
+      this.setState({
+        tracks: sorted,
+        likesOrder: !this.state.likesOrder
+      })
+    }
   }
 
   handleChange = (filterOption) => {
-    this.sortShows(filterOption.attr, filterOption.order);
+    this.sortShows(filterOption.attr);
     this.setState({ filterOption: filterOption });
   }
 
@@ -120,9 +147,10 @@ export default class Songs extends Component {
   renderTracks = () => {
     let tracks = this.state.tracks;
     return tracks.map(track => {
+      console.log(track);
       return (
         <li className="show-container-item" key={track.id}>
-          
+          <img className="image-cell" src={process.env.PUBLIC_URL + '/art/' + track.show_date + '.jpg'}/>
           <span className="play-cell">
             <span className="play-button-sm">
               <Ionicon 
@@ -176,10 +204,11 @@ export default class Songs extends Component {
     return (
       <ul className="playlist-section">
         <li className="show-container-item header-cell">
+          <span className="image-cell-header"></span>
           <span className="play-cell"> </span>
           <span className="title-cell">Title</span>
-          <span className="title-cell">Show</span>
-          <span className="jamcharts-cell"></span>
+          <span className="title-cell" onClick={() => {this.sortShows('duration')}}>Date</span>
+          <span className="jamcharts-cell" onClick={() => {this.sortShows('jamcharts')}}>Jamcharts</span>
           <span className="length-cell">
             <Ionicon
               style={{cursor: 'pointer'}}
