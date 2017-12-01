@@ -14,7 +14,7 @@ var {ipcRenderer, remote} = window.require('electron');
 export default class Player extends Component {
   constructor(props) {
     super(props);
-    console.log(ipcRenderer);
+
     this.state = {
       tracks: null,
       show: null,
@@ -138,16 +138,12 @@ export default class Player extends Component {
     let urls = [];
     
     show.tracks.forEach(function (track) {
-      ipcRenderer.send('download', {mp3: track.mp3, name: track.title + ".mp3"}, "/" + show.date);
-      // urls.push({mp3: track.mp3, name: track.title});
+      // ipcRenderer.send('download', {mp3: track.mp3, name: track.title + ".mp3"}, "/" + show.date);
+      urls.push(track.mp3);
     });
-    // console.log(JSON.stringify(tracks));
-    // ipcRenderer.send('download', urls, "/" + show.date + "-" + show.venue.name + "-" + show.venue.location);
+    let showName = "/" + show.date + "-" + show.venue.name + "-" + show.venue.location;
+    ipcRenderer.send('download', urls, showName);
     this.setState({downloading: false});
-    // let that = this;
-    // require("electron").remote.require("electron-download-manager").bulkDownload(options, function(error, finished, errors){
-    //   that.setState({downloading: false})
-    // });
   }
 
   renderPlaylistContent = (set) => {
@@ -187,14 +183,11 @@ export default class Player extends Component {
     let tracks = this.state.tracks;
 
     if (!show) {
-      return (<div onClick={() => {this.downloadShow()}}> Pick a show or song to start listening </div>);
+      return (<div> Pick a show or song to start listening </div>);
     }
 
     return (
       <div className="controls-container">
-        <div className="album-art-container">
-          <img alt={show.date} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}/>
-        </div>
         <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
         <Ionicon className={this.state.downloading ? "hidden" : "clickable"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download this show?") ? this.downloadShow() : null}/>
         <Audio
@@ -217,7 +210,11 @@ export default class Player extends Component {
         >
           <Ionicon className="clickable" icon="ios-list-box" fontSize="60px"/>
         </Tooltip>
-        <div> {show.date} - {show.venue.name}, {show.venue.location} </div>
+        <div className="album-art-container clickable" onClick={() => {history.push('/show/' + show.id)}}>
+          <img alt={show.date} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}/>
+        </div>
+        <p className="clickable" onClick={() => {history.push('/show/' + show.id)}}> {show.date}  </p>
+        <p className="clickable" onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} </p>
       </div>
     );
   }

@@ -128,7 +128,7 @@
 }
 
 .shows-container {
-  height: calc(100% - 100px);
+  height: calc(100% - 150px);
   top: 100px;
   overflow: auto;
   width: 100%;

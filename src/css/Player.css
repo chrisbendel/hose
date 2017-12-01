@@ -26,11 +26,14 @@
   display: none;
 }
 
-
 /* Player Styles */
-
+.show-information {
+  cursor: pointer;
+  flex: 1;
+}
 
 .album-art-container {
+  flex: 1;
   height: 100px;
   width: 100px;
   padding: .75rem;
@@ -38,7 +41,6 @@
 }
 
 .album-art-container img {
-  display: block;
   width: 100%;
 }
 
