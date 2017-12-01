@@ -248,7 +248,7 @@ export default class Songs extends Component {
             fontSize="40px"
             onClick={() => {
               //animate this one day
-              this.refs.shows.scrollTop = 0;
+              this.refs.tracks.scrollTop = 0;
             }}
           />
           {this.state.filterDisplay.length ?
@@ -266,19 +266,6 @@ export default class Songs extends Component {
               placeholder={"Search For Song"}
               options={songFilters}
             />
-          </div>
-
-          <div className="search-filter">
-            <Select
-              name={"Sort by"}
-              placeholder={"Sort by"}
-              value={this.state.songSearch}
-              onChange={this.handleChange.bind(this)}
-              options={sortByOptions}
-            />
-          </div>
-          <div className="load-more" onClick={() => {this.fetchTracks()}}>
-            Remove Filters
           </div>
         </div>
         {tracks ? 
