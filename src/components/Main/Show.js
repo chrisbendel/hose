@@ -34,8 +34,12 @@ export default class Show extends Component {
 
   componentWillReceiveProps(nextProps) {
     let nextId = nextProps.match.params.id;
-    if (nextId === 'random') {
-      this.fetchRandomShow();
+    if (this.state.show && (nextId !== this.state.show.id)) {
+      if (nextId === 'random') {
+        this.fetchRandomShow();
+      } else {
+        this.fetchShow(nextId);
+      }
     }
   }
 
