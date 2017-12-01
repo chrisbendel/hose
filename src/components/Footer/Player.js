@@ -137,14 +137,12 @@ export default class Player extends Component {
     
     let urls = [];
     
-    let tracks = show.tracks.forEach(function (track) {
-      // console.log(track.mp3);
-      // urls.push(track.mp3);
-      ipcRenderer.send('download', track.mp3);
+    show.tracks.forEach(function (track) {
+      ipcRenderer.send('download', {mp3: track.mp3, name: track.title + ".mp3"}, "/" + show.date);
+      // urls.push({mp3: track.mp3, name: track.title});
     });
-
     // console.log(JSON.stringify(tracks));
-    // ipcRenderer.send('download', urls);
+    // ipcRenderer.send('download', urls, "/" + show.date + "-" + show.venue.name + "-" + show.venue.location);
     this.setState({downloading: false});
     // let that = this;
     // require("electron").remote.require("electron-download-manager").bulkDownload(options, function(error, finished, errors){

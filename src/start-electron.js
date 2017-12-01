@@ -12,12 +12,23 @@ require('electron-dl')();
 
 // DownloadManager.register();
 
-ipcMain.on('download', (event, arg) => {
+ipcMain.on('download', (event, url, show) => {
   // console.log('asdfasdfafsd');
-  console.log(arg.url);
-	download(BrowserWindow.getFocusedWindow(), arg.url)
-		.then(dl => console.log(dl.getSavePath()))
-		.catch(console.error);
+  // console.log(url.name);
+  // console.log(show);
+  // console.log(path.join(app.getPath('downloads') + show, url.name));
+
+  download(BrowserWindow.getFocusedWindow(), url.mp3, {
+    filename: url.name,
+    directory: path.join(app.getPath('downloads') + show)
+  });
+
+  // urls.forEach(url => {
+  //   download(BrowserWindow.getFocusedWindow(), url.mp3, {
+  //     filename: url.name + ".mp3", 
+  //     directory: app.getPath('downloads') + show
+  //   });
+  // })
 });
 
 function createWindow() {
