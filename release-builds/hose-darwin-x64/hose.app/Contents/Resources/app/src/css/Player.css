@@ -1,0 +1,58 @@
+
+.playlist-container {
+  border-radius: 25px;
+  height: 500px;
+  text-align: left;
+  overflow-y: auto;
+  padding: .5rem;
+}
+
+.playlist-section {
+  list-style-type: none;
+}
+
+.playlist-container-item {
+  cursor: pointer;
+  border-bottom: 1px solid blue;
+  margin: 5px;
+  padding: .5rem 0;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Player Styles */
+.show-information {
+  cursor: pointer;
+  flex: 1;
+}
+
+.album-art-container {
+  flex: 1;
+  height: 100px;
+  width: 100px;
+  padding: .75rem;
+  box-sizing: border-box;
+}
+
+.album-art-container img {
+  width: 100%;
+}
+
+.controls-container {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.svgBtnDefault {
+  display: none;
+}
