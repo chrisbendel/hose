@@ -128,12 +128,12 @@
 }
 
 .shows-container {
-  height: calc(100% - 150px);
-  top: 100px;
+  height: calc(100% - 75px);
+  top: 75px;
   overflow: auto;
   width: 100%;
   position: absolute;
-  padding: 1.25rem .25rem;
+  padding: 1rem .25rem 0 .25rem;
   text-align: center;
   box-sizing: border-box;
 }
