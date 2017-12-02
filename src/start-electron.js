@@ -8,7 +8,6 @@ let mainWindow;
 const DownloadManager = require("electron-download-manager");
 const isElectron = require('is-electron');
 const autoUpdater = require("electron-updater").autoUpdater
-if(require('electron-squirrel-startup')) return;
 
 autoUpdater.checkForUpdatesAndNotify()
 DownloadManager.register();
@@ -48,8 +47,9 @@ function createWindow() {
     icon: path.join(__dirname, 'icons/png/64x64.png'),
     webPreferences: prefs
   });
-  mainWindow.loadURL('http://localhost:3000');
 
+  mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../public/index.html')}`);
+  
   mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', function () {
