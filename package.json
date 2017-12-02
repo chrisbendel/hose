@@ -34,8 +34,14 @@
     "request": "^2.83.0"
   },
   "build": {
-    "appId": "com.chrissbendel.hose",
     "asar": false,
+    "appId": "com.chrissbendel.hose",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "dist/electron/**/*"
+    ],
     "mac": {
       "category": "public.app-category.music"
     },
