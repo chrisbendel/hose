@@ -33,12 +33,6 @@
   },
   "build": {
     "appId": "com.chrissbendel.hose",
-    "asar": false,
-    "directories": {
-      "buildResources": {
-        "files": ["**/*", "build/icon.*"]
-      }
-    },
     "mac": {
       "category": "public.app-category.music"
     },
