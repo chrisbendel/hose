@@ -33,8 +33,12 @@
   },
   "build": {
     "appId": "com.chrissbendel.hose",
+    "asar": false,
     "mac": {
       "category": "public.app-category.music"
+    },
+    "win": {
+      "target": "squirrel"
     },
     "publish": {
       "provider": "s3",
