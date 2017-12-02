@@ -59,6 +59,7 @@
   "devDependencies": {
     "electron": "^1.7.9",
     "electron-builder": "^19.47.1",
+    "electron-builder-squirrel-windows": "^19.47.0",
     "electron-packager": "^10.1.0",
     "electron-publisher-s3": "^19.47.0"
   }
