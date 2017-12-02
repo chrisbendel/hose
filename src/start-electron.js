@@ -8,6 +8,7 @@ let mainWindow;
 const DownloadManager = require("electron-download-manager");
 const isElectron = require('is-electron');
 const autoUpdater = require("electron-updater").autoUpdater
+if(require('electron-squirrel-startup')) return;
 
 autoUpdater.checkForUpdatesAndNotify()
 DownloadManager.register();
