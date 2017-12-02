@@ -6,6 +6,11 @@
   height: calc(100% - 1rem);
 }
 
+.right {
+  width: 100%;
+  overflow-y: auto;
+}
+
 .show-overview {
   background-color: #FFF;
   box-shadow: 0 0 14px 2px rgba(0, 0, 0, 0.1);
@@ -25,11 +30,37 @@
 }
 
 .show-information-top {
-  width: 
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 1rem 1rem 1rem;
+  box-sizing: border-box;
 }
 
+.show-information-top h2,
+.show-information-top h3,
+.show-information-top h4 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.show-information-top h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.show-information-top h3 {
+  color: #3F51B5;
+  font-weight: 500;
+  margin-bottom: .5rem;
+}  
+
+.show-information-top h4 {
+  color: #BDBDBD;
+  font-weight: 500;
+}  
+
 .show-tracks {
-  overflow: auto;
   height: calc(100% - 1px);
   width: 100%;
 }

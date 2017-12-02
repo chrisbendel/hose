@@ -209,7 +209,8 @@ export default class Show extends Component {
 
     let show = this.state.show;
     let details = this.state.showDetails;
-
+    let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    let date = new Date(show.date + ' 00:00');
     PlayerInfo.getShow();
     return (
       <div className="show-container">
@@ -219,9 +220,6 @@ export default class Show extends Component {
             alt={show.date} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
           />
           <div className="show-details">
-            <p> Date: {show.date} </p>
-            <p> Venue: {show.venue.name} </p>
-            <p> Location: {details.location} </p>
             <NavLink
               key={show.id} 
               to={'/shows/tour/' + show.tour_id}
@@ -242,8 +240,15 @@ export default class Show extends Component {
             />
           </div>
         </div>
-        <div className="show-tracks">
-          {this.renderTrackContainer()}
+        <div className="right">
+          <div className="show-information-top">
+              <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
+              <h3>{show.venue.name}</h3>
+              <h4>{details.location}</h4>
+          </div>
+          <div className="show-tracks">
+            {this.renderTrackContainer()}
+          </div>
         </div>
       </div>
     );
