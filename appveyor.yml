@@ -4,6 +4,14 @@ image: Visual Studio 2017
 platform:
   - x64
 
+deploy:
+  provider: S3
+  access_key_id: AKIAIR46SO4TO7WSW4DA
+  secret_access_key: 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
+  bucket: hose
+  region: us-east-1
+  set_public: true
+
 cache:
   - node_modules
   - '%USERPROFILE%\.electron'
