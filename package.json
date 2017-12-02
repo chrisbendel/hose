@@ -48,7 +48,8 @@
     "electron": "electron .",
     "pack": "electron-builder --dir",
     "release": "build",
-    "dist": "electron-builder -mw --publish always",
+    "dist": "electron-builder -m --publish always",
+    "dist:win": "electron-builder -w --publish always",
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
