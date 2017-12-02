@@ -20,3 +20,7 @@ Make your changes, add your files, commit, and push them
 ```git commit -m "commit message"```  
 ```git push```  
 Navigate to https://github.com/chrissbendel/phish and press "New Pull Request" on your branch name (Should appear at the top)
+
+
+### Building for release
+```yarn dist```

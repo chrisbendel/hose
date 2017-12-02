@@ -7,7 +7,9 @@ const {ipcMain} = require('electron');
 let mainWindow;
 const DownloadManager = require("electron-download-manager");
 const isElectron = require('is-electron');
+const autoUpdater = require("electron-updater").autoUpdater
 
+autoUpdater.checkForUpdatesAndNotify()
 DownloadManager.register();
 ipcMain.on('download', (event, urls, show) => {
   DownloadManager.bulkDownload({

@@ -8,6 +8,9 @@
 
 # production
 /release-builds
+/dist
+/package-lock.json
+/yarn.lock
 
 # misc
 .DS_Store
