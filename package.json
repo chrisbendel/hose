@@ -40,7 +40,15 @@
       "category": "public.app-category.music"
     },
     "win": {
-      "target": "squirrel"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
     },
     "publish": {
       "provider": "s3",
