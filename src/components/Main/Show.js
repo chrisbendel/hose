@@ -214,41 +214,21 @@ export default class Show extends Component {
     PlayerInfo.getShow();
     return (
       <div className="show-container">
-        <div className="show-overview">
-          <img 
-            className="art"
-            alt={show.date} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
-          />
-          <div className="show-details">
-            <NavLink
-              key={show.id} 
-              to={'/shows/tour/' + show.tour_id}
-            >
-              <p>{getTourName(show.tour_id)}</p>
-            </NavLink>
-
-            {/* 
-            TODO: @Jonah
-            Put these over the image like they are on the list
-            <p> {show.tags} </p>
-            <p> {show.remastered ? "Remastered" : null} </p>
-            <p> {show.sbd ? "Soundboard" : null} </p> */}
-            <b> Notes </b>
-            <Interweave
-              tagName="div"
-              content={details.setlistnotes}
+        <div className="show-information-top">
+          <div className="show-overview">
+            <img 
+              className="art"
+              alt={show.date} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
             />
           </div>
+          <div className="right">
+            <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
+            <h3>{show.venue.name}</h3>
+            <h4>{details.location}</h4>
+          </div>
         </div>
-        <div className="right">
-          <div className="show-information-top">
-              <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
-              <h3>{show.venue.name}</h3>
-              <h4>{details.location}</h4>
-          </div>
-          <div className="show-tracks">
-            {this.renderTrackContainer()}
-          </div>
+        <div className="show-tracks">
+          {this.renderTrackContainer()}
         </div>
       </div>
     );
