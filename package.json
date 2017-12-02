@@ -34,15 +34,10 @@
     "request": "^2.83.0"
   },
   "build": {
-    "asar": false,
     "appId": "com.chrissbendel.hose",
     "directories": {
       "output": "dist"
     },
-    "files": [
-      "build/**/*",
-      "node_modules/**/*"
-    ],
     "mac": {
       "category": "public.app-category.music"
     },
