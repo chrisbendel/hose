@@ -2349,7 +2349,7 @@ ejs@^2.5.7:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.5.7.tgz#cc872c168880ae3c7189762fd5ffc00896c9518a"
 
-electron-builder-lib@19.47.1:
+electron-builder-lib@19.47.1, electron-builder-lib@^19.47.1:
   version "19.47.1"
   resolved "https://registry.yarnpkg.com/electron-builder-lib/-/electron-builder-lib-19.47.1.tgz#c8d05000c8d89183c8e3ec2b8e6795971123271f"
   dependencies:
