@@ -40,15 +40,7 @@
       "category": "public.app-category.music"
     },
     "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        }
-      ]
+      "target": "nsis"
     },
     "publish": {
       "provider": "s3",
