@@ -36,9 +36,6 @@ if (isElectron()) {
   }
 }
 
-const updater = require('electron-simple-updater');
-updater.init('https://raw.githubusercontent.com/megahertz/electron-simple-updater/master/example/updates.json');
-
 function createWindow() {
   mainWindow = new BrowserWindow({
     title: 'Hose',
@@ -52,7 +49,7 @@ function createWindow() {
   });
   mainWindow.loadURL('http://localhost:3000');
 
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', function () {
       mainWindow = null
