@@ -16,6 +16,7 @@ install:
   - yarn
   
 build_script:
+  - yarn prerelease
   - yarn release:win
 
 test: off
