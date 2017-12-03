@@ -39,14 +39,13 @@ if (isElectron()) {
 }
 
 function createWindow() {
+  const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
     title: 'Hose',
-    width: 1400, 
-    height: 900,
-    minWidth: 1400,
-    minHeight: 900,
+    width: width * .5,
+    height: height * .5,
     darkTheme: true,
-    icon: path.join(__dirname, 'icons/png/64x64.png'),
+    icon: path.join(__dirname, 'assets/1024x1024.png'),
     webPreferences: prefs
   });
 
