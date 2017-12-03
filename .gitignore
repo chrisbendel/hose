@@ -10,7 +10,7 @@
 /dist
 /package-lock.json
 /yarn.lock
-
+/build
 # misc
 .DS_Store
 .env.local

@@ -26,6 +26,10 @@
   version "7.0.48"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.48.tgz#24bfdc0aa82e8f6dbd017159c58094a2e06d0abb"
 
+"@types/node@^8.0.24":
+  version "8.0.53"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.53.tgz#396b35af826fa66aad472c8cb7b8d5e277f4e6d8"
+
 abab@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"
@@ -1359,18 +1363,9 @@ buffers@~0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/buffers/-/buffers-0.1.1.tgz#b24579c3bed4d6d396aeee6d9a8ae7f5482ab7bb"
 
-builder-util-runtime@3.3.0, builder-util-runtime@^3.3.0:
+builder-util-runtime@3.3.0, builder-util-runtime@^3.3.0, builder-util-runtime@~3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/builder-util-runtime/-/builder-util-runtime-3.3.0.tgz#6374029211544f1a380fc7275658b0616b0e9ae1"
-  dependencies:
-    bluebird-lst "^1.0.5"
-    debug "^3.1.0"
-    fs-extra-p "^4.4.4"
-    sax "^1.2.4"
-
-builder-util-runtime@~3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/builder-util-runtime/-/builder-util-runtime-3.1.0.tgz#60ec66d3c49f028655230a09d7767e77ff6f15b8"
   dependencies:
     bluebird-lst "^1.0.5"
     debug "^3.1.0"
@@ -2522,12 +2517,12 @@ electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.27:
   version "1.3.27"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.27.tgz#78ecb8a399066187bb374eede35d9c70565a803d"
 
-electron-updater@^2.16.1:
-  version "2.16.1"
-  resolved "https://registry.yarnpkg.com/electron-updater/-/electron-updater-2.16.1.tgz#29e85589ec31ae817ca05bcaf10358bd66119188"
+electron-updater@^2.16.3:
+  version "2.16.3"
+  resolved "https://registry.yarnpkg.com/electron-updater/-/electron-updater-2.16.3.tgz#a5b3d7793398d1e4d5faf3b348041c540c4df977"
   dependencies:
     bluebird-lst "^1.0.5"
-    builder-util-runtime "~3.1.0"
+    builder-util-runtime "~3.3.0"
     electron-is-dev "^0.3.0"
     fs-extra-p "^4.4.4"
     js-yaml "^3.10.0"
@@ -2536,11 +2531,19 @@ electron-updater@^2.16.1:
     semver "^5.4.1"
     source-map-support "^0.5.0"
 
-electron@>=1.4.12, electron@^1.7.9:
+electron@>=1.4.12:
   version "1.7.9"
   resolved "https://registry.yarnpkg.com/electron/-/electron-1.7.9.tgz#add54e9f8f83ed02f6519ec10135f698b19336cf"
   dependencies:
     "@types/node" "^7.0.18"
+    electron-download "^3.0.1"
+    extract-zip "^1.0.3"
+
+electron@^1.8.1:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-1.8.1.tgz#19b6f39f2013e204a91a60bc3086dc7a4a07ed88"
+  dependencies:
+    "@types/node" "^8.0.24"
     electron-download "^3.0.1"
     extract-zip "^1.0.3"
 
