@@ -40,9 +40,7 @@
       "category": "public.app-category.music"
     },
     "files": [
-      "**/*",
       "build/**/*",
-      "assets/**/*",
       "node_modules/**/*",
       "package.json"
     ],
