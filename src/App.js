@@ -27,7 +27,7 @@ export default class App extends Component {
                 <Route path="/shows/:type?/:id?" component={Shows}/>
                 <Route path="/song/:id?" component={Songs}/>
             </main>
-            <Redirect from="/" exact to="/shows"/>
+            <Redirect from="/" to="/shows"/>
           </div>
         </Router>
         <footer className="footer">
