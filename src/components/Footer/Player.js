@@ -215,7 +215,7 @@ export default class Player extends Component {
           <Ionicon className="clickable" icon="ios-list-box" fontSize="60px"/>
         </Tooltip>
         <div className="album-art-container clickable" onClick={() => {history.push('/show/' + show.id)}}>
-          <img alt={show.date} src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}/>
+          <img alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}/>
         </div>
         <p className="clickable" onClick={() => {history.push('/show/' + show.id)}}> {show.date}  </p>
         <p className="clickable" onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} </p>
