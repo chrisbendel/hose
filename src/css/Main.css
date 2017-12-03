@@ -63,5 +63,7 @@ html > * {
   height: 100px;
   bottom: 0px;
   width: 100%;
-  background: #3F51B5;
+  background: #FFF;
+  border-top: 1px solid #DDD;
+  z-index: 99999999;
 }
