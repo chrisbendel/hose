@@ -23,4 +23,8 @@ Navigate to https://github.com/chrissbendel/phish and press "New Pull Request" o
 
 
 ### Building for release
-```yarn dist```
+```yarn prerelease```
+#### For mac
+```yarn release:mac```
+#### For windows
+```use appveyor```
