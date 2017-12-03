@@ -45,15 +45,10 @@ function createWindow() {
     width: width * .5,
     height: height * .5,
     darkTheme: true,
-    icon: path.join(__dirname, 'assets/1024x1024.png'),
     webPreferences: prefs
   });
 
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '/../build/index.html')}`);
-  
-  // if (isDev) {
-  //   mainWindow.webContents.openDevTools();
-  // }
 
   mainWindow.on('closed', function () {
       mainWindow = null
