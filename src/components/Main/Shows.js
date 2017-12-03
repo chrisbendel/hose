@@ -76,7 +76,7 @@ export default class Shows extends Component {
               {isJamchart(show.id) ? <div className="tag">Jamcharts</div> : null}
             </div>
             <img 
-              src={process.env.PUBLIC_URL + '/art/' + show.date + '.jpg'}
+              src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}
               alt={show.id}
               id={show.id}
             />

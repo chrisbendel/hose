@@ -40,9 +40,11 @@
       "category": "public.app-category.music"
     },
     "files": [
+      "**/*",
       "build/**/*",
+      "assets/**/*",
       "node_modules/**/*",
-      "package.json"      
+      "package.json"
     ],
     "directories":{
       "buildResources": "assets"
