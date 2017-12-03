@@ -3,6 +3,7 @@ image: Visual Studio 2017
 
 platform:
   - x64
+  - ia32
 
 cache:
   - node_modules
@@ -14,9 +15,11 @@ init:
 install:
   - ps: Install-Product node 8 x64
   - yarn
-  
-build_script:
   - yarn prerelease
+
+build_script:
+  - yarn build
+  - yarn pack
   - yarn release:win
 
 test: off
