@@ -23,16 +23,16 @@ const items = [
     "name": "Songs",
     "path": "/song"
   },
-  {
-    "id": 5,
-    "name": "Settings",
-    "path": "/settings"
-  },
-  {
-    "id": 6,
-    "name": "Profile",
-    "path": "/profile"
-  }
+  // {
+  //   "id": 5,
+  //   "name": "Settings",
+  //   "path": "/settings"
+  // },
+  // {
+  //   "id": 6,
+  //   "name": "Profile",
+  //   "path": "/profile"
+  // }
 ]
 
 export default class SideNav extends Component {
@@ -65,6 +65,7 @@ export default class SideNav extends Component {
           <span className="logo">HOSE</span>
         </div>
         {this.renderList}
+        <a href="https://paypal.me/chrissbendel" target="_blank"> Donate (Coffee!) </a>
       </div>
     );
   }

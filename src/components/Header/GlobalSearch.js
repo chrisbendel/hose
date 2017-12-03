@@ -82,7 +82,7 @@ export default class GlobalSearch extends Component {
     const { value, suggestions } = this.state;
 
     const inputProps = {
-      placeholder: "Search for a song, date, tour or venue.",
+      placeholder: "Search for a song, date (Format: 1997-11-17), tour or venue.",
       value,
       onChange: this.onChange,
       autoFocus: true
