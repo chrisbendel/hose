@@ -15,10 +15,9 @@ init:
 install:
   - ps: Install-Product node 8 x64
   - yarn
-  - yarn prerelease
 
 build_script:
-  - yarn build
+  - yarn prerelease
   - yarn pack
   - yarn release:win
 
