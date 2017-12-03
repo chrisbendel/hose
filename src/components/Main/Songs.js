@@ -148,7 +148,7 @@ export default class Songs extends Component {
     return tracks.map(track => {
       return (
         <li className="show-container-item" key={track.show_id}>
-          <img alt={track.show_date} className="image-cell" src={'https://s3.amazonaws.com/hose/images/' + track.show.date + '.jpg'}/>
+          <img alt={track.show_date} className="image-cell" src={'https://s3.amazonaws.com/hose/images/' + track.show_date + '.jpg'}/>
           <span className="play-cell">
             <span className="play-button-sm">
               <Ionicon 
