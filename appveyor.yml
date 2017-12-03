@@ -14,9 +14,9 @@ init:
 install:
   - ps: Install-Product node 8 x64
   - yarn
-  - npm run pack
   
 build_script:
+  - npm run prepack
   - npm run release-win
 
 test: off
