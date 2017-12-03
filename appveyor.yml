@@ -16,6 +16,6 @@ install:
   - yarn
   
 build_script:
-  - npm run release-win
+  - yarn release:win
 
 test: off
