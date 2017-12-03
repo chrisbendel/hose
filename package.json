@@ -44,7 +44,7 @@
       "node_modules/**/*",
       "package.json"
     ],
-    "directories":{
+    "directories": {
       "buildResources": "assets"
     },
     "publish": {
@@ -59,7 +59,7 @@
     "electron": "electron .",
     "build": "react-scripts build",
     "pack": "build --em.main=build/electron.js",
-    "release": "electron-builder -m --em.main=build/electron.js --publish always",
+    "release:mac": "electron-builder -m --em.main=build/electron.js --publish always",
     "release:win": "electron-builder -w --em.main=build/electron.js --publish always",
     "prerelease": "yarn build",
     "postinstall": "electron-builder install-app-deps"
