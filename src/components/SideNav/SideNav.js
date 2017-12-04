@@ -62,7 +62,9 @@ export default class SideNav extends Component {
     return (
       <div className="sidenav">
         <div className="logo-area">
-          <span className="logo">HOSE</span>
+          <span className="logo">
+            <img src="https://s3.amazonaws.com/hose/images/hose.svg"/>
+          </span>
         </div>
         {this.renderList}
         <a href="https://paypal.me/chrissbendel" target="_blank"> Donate (Coffee!) </a>

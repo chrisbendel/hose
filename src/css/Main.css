@@ -38,7 +38,7 @@ html > * {
   right: 0;
   width: calc(100% - 125px);
   height: 25px;
-  background: #3F51B5;
+  background: #66BB6A;
   top: 0;
   padding: 1rem 0;
   z-index: 9999;
@@ -47,7 +47,7 @@ html > * {
 .content {
   position: absolute;
   top: calc(25px + 2rem);
-  height: calc(100% - 150px);
+  height: calc(100% - 131px);
   bottom: calc(50px + 1rem);
   width: calc(100% - 125px);
   right: 0;
