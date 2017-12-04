@@ -9,6 +9,7 @@ import 'react-select/dist/react-select.css';
 import {emitter} from './../../Emitter';
 import {history} from './../../History';
 import PlayerInfo from './../../PlayerInfo';
+import Spinner from 'react-spinkit';
 
 const isJamchart = (id) => {
   return (showJamcharts.indexOf(id) !== -1);
@@ -136,7 +137,8 @@ export default class Shows extends Component {
     let day = today.getDate().toString();
     let month = (today.getMonth() + 1).toString();
     let date = month + "-" + day;
-    showsToday(date).then(shows => {
+    showsToday(date).then(data => {
+      let shows = this.sortShows('date', 'desc', data);
       this.setState({
         shows: shows,
         allShows: false
@@ -145,7 +147,8 @@ export default class Shows extends Component {
   }
 
   fetchShowsForTour = (tour) => {
-    showsForTour(tour).then(shows => {
+    showsForTour(tour).then(data => {
+      let shows = this.sortShows('date', 'desc', data);
       this.setState({
         shows: shows,
         allShows: false
@@ -162,7 +165,8 @@ export default class Shows extends Component {
         }));
       });
 
-      Promise.all(promises).then(shows => {
+      Promise.all(promises).then(data => {
+        let shows = this.sortShows('date', 'desc', data);
         this.setState({
           shows: shows,
           allShows: false
@@ -172,7 +176,8 @@ export default class Shows extends Component {
   }
 
   fetchShowsForYear = (year) => {
-    showsForYear(year).then(shows => {
+    showsForYear(year).then(data => {
+      let shows = this.sortShows('date', 'desc', data);
       this.setState({
         shows: shows,
         allShows: false
@@ -180,9 +185,8 @@ export default class Shows extends Component {
     })
   }
 
-  sortShows = (attr, order) => {
+  sortShows = (attr, order, shows) => {
     let sorted;
-    let shows = this.state.shows;
     if (attr === 'date') {
       sorted = shows.sort((a, b) => {
         var c = new Date(a.date);
@@ -207,13 +211,12 @@ export default class Shows extends Component {
       });
     }
 
-    this.setState({
-      shows: sorted
-    })
+    return sorted;
   }
 
   fetchAllShows = () => {
-    shows().then(shows => {
+    shows().then(data => {
+      let shows = this.sortShows('date', 'desc', data);
       this.setState({
         shows: shows,
         allShows: true,
@@ -224,8 +227,8 @@ export default class Shows extends Component {
   }
 
   handleChange = (filterOption) => {
-    this.sortShows(filterOption.attr, filterOption.order);
-    this.setState({ filterOption: filterOption });
+    let shows = this.sortShows(filterOption.attr, filterOption.order, this.state.shows);
+    this.setState({ filterOption: filterOption, shows: shows });
   }
 
   loadMoreShows = () => {
@@ -235,7 +238,6 @@ export default class Shows extends Component {
     let page = this.state.page + 1;
     
     shows(page).then(shows => {
-      console.log(shows);
       this.setState(previousState => ({
         loadingShows: false,
         page: page,
@@ -252,7 +254,7 @@ export default class Shows extends Component {
     let shows = this.state.shows;
     
     if (!shows) {
-      return (<div> Loading ... </div>);
+      return (<Spinner name='ball-pulse-rise' />);
     }
 
     return (
