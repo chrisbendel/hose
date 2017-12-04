@@ -24,6 +24,7 @@ Navigate to https://github.com/chrissbendel/phish and press "New Pull Request" o
 ##Future Features
 - Chromecast integration
 - Phish radio - Endless stream of phish music, curated by our recommendation system!
+- Play in background, when window minimized
 
 ### Building for release
 #### For mac
