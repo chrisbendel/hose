@@ -56,8 +56,9 @@
   flex-direction: row;
   flex: 1;
 }
+
 .current-track-information .inline-wrapper.hovering {
-  animation: reveal 6s linear infinite;  
+  animation: reveal 6s linear 1;
 }
 
 .current-track-information:after {

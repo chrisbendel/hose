@@ -24,8 +24,7 @@ export default class Player extends Component {
       show: null,
       downloading: false,
       hoverVenue: false,
-      hoverDate: false,
-      animationLength: 6000
+      hoverDate: false
     }
 
     emitter.addListener('pause', () => {
@@ -65,8 +64,29 @@ export default class Player extends Component {
       emitter.emit('songUpdate', show, currentTrack, currentPosition, playerState.playing);
     }
   }
+
+  componentWillUnmount() {
+    const venue = this.refs.hoverVenue;
+    const date = this.refs.hoverDate;
+
+    venue.removeEventListener('animationend', this.stopScroll);
+    date.removeEventListener('animationend', this.stopScroll);
+  }
   
   componentDidUpdate() {
+    if (this.refs.hoverVenue && this.refs.hoverDate) {
+      const venue = this.refs.hoverVenue;
+      const date = this.refs.hoverDate;
+  
+      venue.addEventListener('animationend', () => {
+        this.stopScroll('hoverVenue');
+      });
+
+      date.addEventListener('animationend', () => {
+        this.stopScroll('hoverDate');
+      });
+    }
+
     if (this.player) {
       let element = this.player.audioElement;
       
@@ -145,7 +165,6 @@ export default class Player extends Component {
     let urls = [];
     
     show.tracks.forEach(function (track) {
-      // ipcRenderer.send('download', {mp3: track.mp3, name: track.title + ".mp3"}, "/" + show.date);
       urls.push(track.mp3);
     });
     let showName = "/" + show.date + "-" + show.venue.name + "-" + show.venue.location;
@@ -185,36 +204,10 @@ export default class Player extends Component {
     });
   }
 
-  handleHoverVenue = (e) => {
-    if(this.state.hoverVenue) {
-      return;
-    }
-
-    console.log("Hover");    
-    
+  stopScroll = (target) => {
     this.setState({
-      hoverVenue: true
+      [target]: false
     });
-    var timeout = setTimeout(() => {
-      this.setState({
-        hoverVenue: false
-      });
-    }, this.state.animationLength);
-  }
-
-  handleHoverDate = (e) => {
-    if(this.state.hoverDate) {
-      return;
-    }
-    
-    this.setState({
-      hoverDate: true
-    });
-    var timeout = setTimeout(() => {
-      this.setState({
-        hoverDate: false
-      });
-    }, this.state.animationLength);
   }
   
   render() {
@@ -236,8 +229,9 @@ export default class Player extends Component {
           </div>
           <div className="current-track-information">
             <div 
+              ref='hoverDate'
               className={this.state.hoverDate ? "inline-wrapper hovering" : "inline-wrapper"}
-              onMouseEnter={this.handleHoverDate}
+              onMouseEnter = {() => {this.setState({hoverDate: true})}}
             >
               <span 
                 onClick={() => {history.push('/show/' + show.id)}}
@@ -253,8 +247,10 @@ export default class Player extends Component {
               </span>
             </div>
             <div 
+              className="inline-wrapper"
+              ref='hoverVenue'
               className={this.state.hoverVenue ? "inline-wrapper hovering" : "inline-wrapper"}
-              onMouseEnter={this.handleHoverVenue}
+              onMouseEnter = {() => {this.setState({hoverVenue: true})}}
             >
               <span className="clickable" 
                 onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} 
@@ -265,6 +261,7 @@ export default class Player extends Component {
             </div>
           </div>
         </div>
+
         <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
         <Ionicon className={this.state.downloading ? "hidden" : "clickable"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download this show?") ? this.downloadShow() : null}/>
         <Audio
