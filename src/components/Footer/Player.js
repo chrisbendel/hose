@@ -216,10 +216,12 @@ export default class Player extends Component {
           <div className="album-art-container clickable" onClick={() => {history.push('/show/' + show.id)}}>
             <img alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}/>
           </div>
-          <div className="current-track-information" ref={(trackInfoContainer) => (this.trackInfoContainer = trackInfoContainer)}>
+          <div className="current-track-information" ref={(trackInfoContainer) => {console.log(trackInfoContainer)}}>
+          {/* <div className="current-track-information" ref={(trackInfoContainer) => (this.trackInfoContainer = trackInfoContainer)}> */}
             <span 
               onClick={() => {history.push('/show/' + show.id)}}
-              ref={(currentDate) => { this.currentDate = currentDate; }}
+              ref={(currentDate) => {console.log(currentDate)}}
+              // ref={(currentDate) => { this.currentDate = currentDate; }}
               className={this.state.textWrapping ? "clickable overflow" : ""}
               // className={ "clickable " + this.calcWidth(this.currentDate) }               
             > 
