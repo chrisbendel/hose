@@ -105,7 +105,9 @@ export default class Player extends Component {
   }
 
   calcWidth = (e) => {
-    
+    if(ReactDOM.findDOMNode(e).scrollWidth > ReactDOM.findDOMNode(this.trackInfoContainer).width) {
+      return "overflow";
+    }
   }
 
   setShow = (showId, position = 0) => {
@@ -203,11 +205,11 @@ export default class Player extends Component {
           <div className="album-art-container clickable" onClick={() => {history.push('/show/' + show.id)}}>
             <img alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}/>
           </div>
-          <div className="current-track-information">
+          <div className="current-track-information" ref={(trackInfoContainer) => (this.trackInfoContainer = trackInfoContainer)}>
             <span 
-              className={ "clickable" + this.calcWidth() } 
               onClick={() => {history.push('/show/' + show.id)}}
               ref={(currentDate) => { this.currentDate = currentDate; }}
+              className={ "clickable " + this.calcWidth(this.currentDate) }               
             > 
               {date.toLocaleDateString('en-US', dateOptions)}  
             </span>
