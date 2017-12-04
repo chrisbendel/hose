@@ -209,6 +209,7 @@ export default class Show extends Component {
 
     let show = this.state.show;
     let details = this.state.showDetails;
+    console.log(details);
     let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     let date = new Date(show.date + ' 00:00');
     PlayerInfo.getShow();
@@ -225,6 +226,7 @@ export default class Show extends Component {
             <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
             <h3>{show.venue.name}</h3>
             <h4>{details.location}</h4>
+            <h4><a style={{'text-decoration': 'none', color: '#BDBDBD'}} target="_blank" href={details.link}>View on Phish.net</a></h4>
           </div>
         </div>
         <div className="show-tracks">
