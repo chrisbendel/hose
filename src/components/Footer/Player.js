@@ -23,7 +23,10 @@ export default class Player extends Component {
       tracks: null,
       show: null,
       downloading: false,
-      textWrapping: false
+      textWrapping: false,
+      infoWidth: null,
+      dateWidth: null,
+      venueWidth: null,
     }
 
     emitter.addListener('pause', () => {
@@ -61,16 +64,6 @@ export default class Player extends Component {
       PlayerInfo.setPlaying(playerState.playing);
 
       emitter.emit('songUpdate', show, currentTrack, currentPosition, playerState.playing);
-    }
-  }
-
-  componentDidMount() {
-    if (this.trackInfoContainer && this.currentDate) {
-      if(this.trackInfoContainer.scrollWidth > this.currentDate.width) {
-        this.setState({textWrapping: true});
-      } else {
-        this.setState({textWrapping: false});
-      }
     }
   }
   
@@ -116,9 +109,10 @@ export default class Player extends Component {
   }
 
   calcWidth = (e) => {
-    if(ReactDOM.findDOMNode(e).scrollWidth > ReactDOM.findDOMNode(this.trackInfoContainer).width) {
-      return "overflow";
-    }
+    // console.log(e);
+    // if(ReactDOM.findDOMNode(e).scrollWidth > ReactDOM.findDOMNode(this.trackInfoContainer).width) {
+    //   return "overflow";
+    // }
   }
 
   setShow = (showId, position = 0) => {
@@ -216,18 +210,20 @@ export default class Player extends Component {
           <div className="album-art-container clickable" onClick={() => {history.push('/show/' + show.id)}}>
             <img alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}/>
           </div>
-          <div className="current-track-information" ref={(trackInfoContainer) => {console.log(trackInfoContainer)}}>
-          {/* <div className="current-track-information" ref={(trackInfoContainer) => (this.trackInfoContainer = trackInfoContainer)}> */}
-            <span 
-              onClick={() => {history.push('/show/' + show.id)}}
-              ref={(currentDate) => {console.log(currentDate)}}
-              // ref={(currentDate) => { this.currentDate = currentDate; }}
-              className={this.state.textWrapping ? "clickable overflow" : ""}
-              // className={ "clickable " + this.calcWidth(this.currentDate) }               
-            > 
-              {date.toLocaleDateString('en-US', dateOptions)}  
-            </span>
-            <span className="clickable" onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} </span>
+          <div className="current-track-information">
+            <div>
+              <span 
+                onClick={() => {history.push('/show/' + show.id)}}
+                // ref={(currentDate) => {this.setState({currentDate: currentDate})}}
+                className={"clickable overflow"}
+                // className={ "clickable " + this.calcWidth(this.currentDate) }          
+              > 
+                {date.toLocaleDateString('en-US', dateOptions)}  
+              </span>
+              <span className="clickable" 
+                onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} 
+              </span>
+            </div>
           </div>
         </div>
         <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
