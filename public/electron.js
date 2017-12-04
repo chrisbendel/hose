@@ -40,6 +40,8 @@ if (isElectron()) {
   }
 }
 
+let willQuitApp = false;
+
 function createWindow() {
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
@@ -52,10 +54,15 @@ function createWindow() {
   });
 
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '/../build/index.html')}`);
-
-  mainWindow.on('closed', function () {
-      mainWindow = null
-  });
+ 
+  mainWindow.on('close', function (event) {
+    if (willQuitApp) {
+      mainWindow = null;
+    } else {
+      event.preventDefault();
+      mainWindow.hide();
+    }
+  })
 }
 
 app.on('ready', () => {
@@ -63,13 +70,13 @@ app.on('ready', () => {
 });
 
 app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') {
-        app.quit()
-    }
+  if (process.platform !== 'darwin') {
+      app.quit()
+  }
 });
 
+app.on('before-quit', () => willQuitApp = true);
+
 app.on('activate', function () {
-    if (mainWindow === null) {
-        createWindow()
-    }
+  mainWindow.show();
 });

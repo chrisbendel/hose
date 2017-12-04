@@ -10,7 +10,7 @@ Starts a local server to host the page at localhost:3000
 ```npm start```
 
 ## Run it in electron
-```npm electron```
+```npm run electron```
 
 ### Contributing
 Branch off of master  
@@ -21,10 +21,13 @@ Make your changes, add your files, commit, and push them
 ```git push```  
 Navigate to https://github.com/chrissbendel/phish and press "New Pull Request" on your branch name (Should appear at the top)
 
+##Future Features
+- Chromecast integration
+- Phish radio - Endless stream of phish music, curated by our recommendation system!
+- Play in background, when window minimized
 
 ### Building for release
-```yarn prerelease```
 #### For mac
-```yarn release:mac```
+```use travis```
 #### For windows
 ```use appveyor```

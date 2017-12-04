@@ -6,7 +6,7 @@
   margin: 0 25px;
   border-radius: 4px;
   cursor: pointer;
-  width: 40px;
+  width: 30px;
 }
 
 .prev svg, .next svg {
@@ -29,8 +29,8 @@
 
 .react-autosuggest__input {
   width: 50%;
-  height: 30px;
-  padding: 10px 20px;
+  height: 20px;
+  padding: 7.5px 10px;
   font-family: Helvetica, sans-serif;
   font-weight: 300;
   font-size: 16px;
