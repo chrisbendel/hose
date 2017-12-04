@@ -22,8 +22,7 @@ export default class Player extends Component {
     this.state = {
       tracks: null,
       show: null,
-      downloading: false,
-      textWrapping: false
+      downloading: false
     }
 
     emitter.addListener('pause', () => {
@@ -201,16 +200,22 @@ export default class Player extends Component {
             <img alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}/>
           </div>
           <div className="current-track-information">
-            <div>
-              <span 
-                onClick={() => {history.push('/show/' + show.id)}}
-                className={"clickable"}
-              > 
-                {date.toLocaleDateString('en-US', dateOptions)}  
-              </span>
-              <span className="clickable" 
-                onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} 
-              </span>
+            <div className="marquee">
+              <div>
+                <span className="clickable" 
+                  onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} 
+                </span>
+              </div>
+            </div>
+            <div className="marquee">
+              <div>
+                <span 
+                  onClick={() => {history.push('/show/' + show.id)}}
+                  className={"clickable"}
+                > 
+                  {date.toLocaleDateString('en-US', dateOptions)}  
+                </span>
+              </div>
             </div>
           </div>
         </div>
