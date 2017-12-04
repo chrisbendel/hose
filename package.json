@@ -40,6 +40,9 @@
     "mac": {
       "category": "public.app-category.music"
     },
+    "win": {
+      "target": "squirrel"
+    },
     "files": [
       "build/**/*",
       "node_modules/**/*",
