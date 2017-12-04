@@ -192,6 +192,13 @@ export default class Player extends Component {
 
     return (
       <div className="controls-container">
+        <div className="show-information-player">
+          <div className="album-art-container clickable" onClick={() => {history.push('/show/' + show.id)}}>
+            <img alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}/>
+          </div>
+          <p className="clickable" onClick={() => {history.push('/show/' + show.id)}}> {show.date}  </p>
+          <p className="clickable" onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} </p>
+        </div>
         <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
         <Ionicon className={this.state.downloading ? "hidden" : "clickable"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download this show?") ? this.downloadShow() : null}/>
         <Audio
@@ -214,11 +221,6 @@ export default class Player extends Component {
         >
           <Ionicon className="clickable" icon="ios-list-box" fontSize="60px"/>
         </Tooltip>
-        <div className="album-art-container clickable" onClick={() => {history.push('/show/' + show.id)}}>
-          <img alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}/>
-        </div>
-        <p className="clickable" onClick={() => {history.push('/show/' + show.id)}}> {show.date}  </p>
-        <p className="clickable" onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} </p>
       </div>
     );
   }
