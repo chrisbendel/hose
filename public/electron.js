@@ -39,22 +39,17 @@ if (isElectron()) {
 }
 
 function createWindow() {
+  const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
     title: 'Hose',
-    width: 1400, 
-    height: 900,
-    minWidth: 1400,
-    minHeight: 900,
+    width: width * .5,
+    height: height * .5,
     darkTheme: true,
-    icon: path.join(__dirname, 'icons/png/64x64.png'),
+    icon: __dirname + 'build/icon.ico',
     webPreferences: prefs
   });
 
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '/../build/index.html')}`);
-  
-  // if (isDev) {
-  //   mainWindow.webContents.openDevTools();
-  // }
 
   mainWindow.on('closed', function () {
       mainWindow = null
