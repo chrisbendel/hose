@@ -107,14 +107,7 @@ export default class Player extends Component {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
     }
   }
-
-  calcWidth = (e) => {
-    // console.log(e);
-    // if(ReactDOM.findDOMNode(e).scrollWidth > ReactDOM.findDOMNode(this.trackInfoContainer).width) {
-    //   return "overflow";
-    // }
-  }
-
+  
   setShow = (showId, position = 0) => {
     show(showId).then(show => {
       let tracks = show.tracks.map(track => {
@@ -214,9 +207,7 @@ export default class Player extends Component {
             <div>
               <span 
                 onClick={() => {history.push('/show/' + show.id)}}
-                // ref={(currentDate) => {this.setState({currentDate: currentDate})}}
-                className={"clickable overflow"}
-                // className={ "clickable " + this.calcWidth(this.currentDate) }          
+                className={"clickable"}
               > 
                 {date.toLocaleDateString('en-US', dateOptions)}  
               </span>

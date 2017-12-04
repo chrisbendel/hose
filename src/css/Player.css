@@ -46,7 +46,7 @@
   flex-wrap: wrap;
 }
 
-.current-track-information div {
+.current-track-information div:hover {
   display: block;
   width: 200%;
   height: 30px;
