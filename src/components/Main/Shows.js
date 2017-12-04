@@ -254,7 +254,11 @@ export default class Shows extends Component {
     let shows = this.state.shows;
     
     if (!shows) {
-      return (<Spinner name='ball-pulse-rise' />);
+      return (
+        <div style={{position:'fixed', top:'50%', left: '50%', transform: 'translate(-50%, 50%)'}} >
+          <Spinner fadeIn='none' name='ball-pulse-rise' />
+        </div>
+      );
     }
 
     return (
