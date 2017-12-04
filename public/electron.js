@@ -9,6 +9,8 @@ const DownloadManager = require("electron-download-manager");
 const isElectron = require('is-electron');
 const isDev = require('electron-is-dev');
 const autoUpdater = require("electron-updater").autoUpdater
+const Analytics  = require('electron-google-analytics');
+const analytics = new Analytics.default('UA-110587683-1');
 
 autoUpdater.checkForUpdatesAndNotify();
 
