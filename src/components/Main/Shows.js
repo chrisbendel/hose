@@ -69,14 +69,14 @@ export default class Shows extends Component {
       let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       let date = new Date(show.date + ' 00:00');
       return (
-        <div key={show.id} className="image-container">
+        <div key={show.id} onClick={() => {history.push('/show/' + show.id)}} className="image-container">
           <div className="show-information-control">
             <div className="show-tags">
               {show.sbd ? <div className="tag">Soundboard</div> : null}
               {show.remastered ? <div className="tag">Remastered</div> : null}
               {isJamchart(show.id) ? <div className="tag">Jamcharts</div> : null}
             </div>
-            <img 
+            <img
               src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}
               alt={show.id}
               id={show.id}
@@ -93,8 +93,8 @@ export default class Shows extends Component {
                 </div>
                 <div className="show-likes">
                   <Ionicon 
-                    icon="ios-thumbs-up" 
-                    fontSize="18px" 
+                    icon="ios-thumbs-up"
+                    fontSize="18px"
                     onClick={() => console.log('like clicked')}
                     color="white"
                   />
@@ -125,8 +125,6 @@ export default class Shows extends Component {
             }
             
             </span>
-
-          {show.remastered ? <p> Remastered: yes </p> : null}
         </div>
       );
     }, this);

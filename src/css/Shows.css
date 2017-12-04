@@ -161,10 +161,11 @@
   position: relative;
   display: grid;
   grid-template-columns: repeat(5, .5fr);
-  grid-gap: 8px;
+  grid-gap: 20px;
   max-width: calc(100% - 10px);
   width: 100%;
   margin: 0 auto;
+  cursor: pointer;
 }
 
 .show-gallery img {
