@@ -63,8 +63,9 @@ function createWindow() {
     }
   })
 
-  
-  mainWindow.webContents.openDevTools()
+  if (isDev) {
+    mainWindow.webContents.openDevTools()
+  }
 }
 
 app.on('ready', () => {
