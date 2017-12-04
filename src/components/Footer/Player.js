@@ -104,7 +104,7 @@ export default class Player extends Component {
     }
   }
 
-  applyOverflowClass = (e) => {
+  calcWidth = (e) => {
     
   }
 
