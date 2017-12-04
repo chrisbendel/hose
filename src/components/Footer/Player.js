@@ -63,6 +63,16 @@ export default class Player extends Component {
       emitter.emit('songUpdate', show, currentTrack, currentPosition, playerState.playing);
     }
   }
+
+  componentDidMount() {
+    if (this.trackInfoContainer && this.currentDate) {
+      if(this.trackInfoContainer.scrollWidth > this.currentDate.width) {
+        this.setState({textWrapping: true});
+      } else {
+        this.setState({textWrapping: false});
+      }
+    }
+  }
   
   componentDidUpdate() {
     if (this.player) {
@@ -76,14 +86,6 @@ export default class Player extends Component {
       // element.removeEventListener('playing', this.setPlayerInfo)
       // element.removeEventListener('play', this.setPlayerInfo)
       // element.removeEventListener('pause', this.setPlayerInfo)
-    }
-
-    if (this.trackInfoContainer && this.currentDate) {
-      if(this.trackInfoContainer.scrollWidth > this.currentDate.width) {
-        this.setState({textWrapping: true});
-      } else {
-        this.setState({textWrapping: false});
-      }
     }
   }
 
