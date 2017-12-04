@@ -37,18 +37,26 @@
 .current-track-information {
   position: relative;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: center;
   padding: .75rem 0;
   height: 50px;
-  width: 200px;  
+  width: 200px;
   overflow: hidden;
   flex-wrap: wrap;
 }
 
+.marquee {
+  height: 50px;
+  width: 100px;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
 .current-track-information div:hover {
   display: block;
-  width: 200%;
+  width: 100%;
   height: 30px;
 
   position: absolute;
@@ -58,8 +66,7 @@
 }
 
 .current-track-information span {
-  float: left;
-  width: 50%;  
+  width: 50%;
 }
 
 @keyframes marquee {
