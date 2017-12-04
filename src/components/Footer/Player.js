@@ -22,7 +22,8 @@ export default class Player extends Component {
     this.state = {
       tracks: null,
       show: null,
-      downloading: false
+      downloading: false,
+      textWrapping: false
     }
 
     emitter.addListener('pause', () => {
