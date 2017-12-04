@@ -4,7 +4,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 const {ipcMain} = require('electron');
-let mainWindow;
+let mainWindow; 
 const DownloadManager = require("electron-download-manager");
 const isElectron = require('is-electron');
 const isDev = require('electron-is-dev');
