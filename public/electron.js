@@ -8,9 +8,7 @@ let mainWindow;
 const DownloadManager = require("electron-download-manager");
 const isElectron = require('is-electron');
 const isDev = require('electron-is-dev');
-const autoUpdater = require("electron-updater").autoUpdater
-const Analytics  = require('electron-google-analytics');
-const analytics = new Analytics.default('UA-110587683-1');
+const autoUpdater = require("electron-updater").autoUpdater;
 
 autoUpdater.checkForUpdatesAndNotify();
 
@@ -27,6 +25,7 @@ ipcMain.on('download', (event, urls, show) => {
     }
   });
 });
+
 
 if (isElectron()) {
   prefs = {
@@ -63,6 +62,9 @@ function createWindow() {
       mainWindow.hide();
     }
   })
+
+  
+  mainWindow.webContents.openDevTools()
 }
 
 app.on('ready', () => {
