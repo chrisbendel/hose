@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, Redirect } from 'react-router-dom';
 import SideNav from './components/SideNav/SideNav';
 import Player from './components/Footer/Player';
 import Show from './components/Main/Show';
@@ -27,6 +27,7 @@ export default class App extends Component {
                 <Route path="/shows/:type?/:id?" component={Shows}/>
                 <Route path="/song/:id?" component={Songs}/>
             </main>
+            <Redirect from="/" exact to="/shows"/>
           </div>
         </Router>
         <footer className="footer">
