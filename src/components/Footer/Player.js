@@ -22,7 +22,9 @@ export default class Player extends Component {
     this.state = {
       tracks: null,
       show: null,
-      downloading: false
+      downloading: false,
+      hoverVenue: false,
+      hoverDate: false
     }
 
     emitter.addListener('pause', () => {
@@ -62,8 +64,29 @@ export default class Player extends Component {
       emitter.emit('songUpdate', show, currentTrack, currentPosition, playerState.playing);
     }
   }
+
+  componentWillUnmount() {
+    const venue = this.refs.hoverVenue;
+    const date = this.refs.hoverDate;
+
+    venue.removeEventListener('animationend', this.stopScroll);
+    date.removeEventListener('animationend', this.stopScroll);
+  }
   
   componentDidUpdate() {
+    if (this.refs.hoverVenue && this.refs.hoverDate) {
+      const venue = this.refs.hoverVenue;
+      const date = this.refs.hoverDate;
+  
+      venue.addEventListener('animationend', () => {
+        this.stopScroll('hoverVenue');
+      });
+
+      date.addEventListener('animationend', () => {
+        this.stopScroll('hoverDate');
+      });
+    }
+
     if (this.player) {
       let element = this.player.audioElement;
       
@@ -142,7 +165,6 @@ export default class Player extends Component {
     let urls = [];
     
     show.tracks.forEach(function (track) {
-      // ipcRenderer.send('download', {mp3: track.mp3, name: track.title + ".mp3"}, "/" + show.date);
       urls.push(track.mp3);
     });
     let showName = "/" + show.date + "-" + show.venue.name + "-" + show.venue.location;
@@ -181,17 +203,65 @@ export default class Player extends Component {
       )
     });
   }
+
+  stopScroll = (target) => {
+    this.setState({
+      [target]: false
+    });
+  }
   
   render() {
     let show = this.state.show;
     let tracks = this.state.tracks;
-
+    
     if (!show) {
       return (<div> Pick a show or song to start listening </div>);
     }
 
+    let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    let date = new Date(show.date + ' 00:00');
+
     return (
       <div className="controls-container">
+        <div className="show-information-player">
+          <div className="album-art-container clickable" onClick={() => {history.push('/show/' + show.id)}}>
+            <img alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}/>
+          </div>
+          <div className="current-track-information">
+            <div 
+              ref='hoverDate'
+              className={this.state.hoverDate ? "inline-wrapper hovering" : "inline-wrapper"}
+              onMouseEnter = {() => {this.setState({hoverDate: true})}}
+            >
+              <span 
+                onClick={() => {history.push('/show/' + show.id)}}
+                className="clickable"
+              > 
+                {date.toLocaleDateString('en-US', dateOptions)}  
+              </span>
+              <span 
+                onClick={() => {history.push('/show/' + show.id)}}
+                className="clickable"
+              > 
+                {date.toLocaleDateString('en-US', dateOptions)}  
+              </span>
+            </div>
+            <div 
+              className="inline-wrapper"
+              ref='hoverVenue'
+              className={this.state.hoverVenue ? "inline-wrapper hovering" : "inline-wrapper"}
+              onMouseEnter = {() => {this.setState({hoverVenue: true})}}
+            >
+              <span className="clickable" 
+                onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} 
+              </span>
+              <span className="clickable" 
+                onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} 
+              </span>
+            </div>
+          </div>
+        </div>
+
         <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
         <Ionicon className={this.state.downloading ? "hidden" : "clickable"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download this show?") ? this.downloadShow() : null}/>
         <Audio
@@ -214,11 +284,6 @@ export default class Player extends Component {
         >
           <Ionicon className="clickable" icon="ios-list-box" fontSize="60px"/>
         </Tooltip>
-        <div className="album-art-container clickable" onClick={() => {history.push('/show/' + show.id)}}>
-          <img alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}/>
-        </div>
-        <p className="clickable" onClick={() => {history.push('/show/' + show.id)}}> {show.date}  </p>
-        <p className="clickable" onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} </p>
       </div>
     );
   }
