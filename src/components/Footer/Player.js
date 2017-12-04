@@ -104,6 +104,10 @@ export default class Player extends Component {
     }
   }
 
+  applyOverflowClass = (e) => {
+    
+  }
+
   setShow = (showId, position = 0) => {
     show(showId).then(show => {
       let tracks = show.tracks.map(track => {
@@ -185,10 +189,13 @@ export default class Player extends Component {
   render() {
     let show = this.state.show;
     let tracks = this.state.tracks;
-
+    
     if (!show) {
       return (<div> Pick a show or song to start listening </div>);
     }
+
+    let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    let date = new Date(show.date + ' 00:00');
 
     return (
       <div className="controls-container">
@@ -196,8 +203,16 @@ export default class Player extends Component {
           <div className="album-art-container clickable" onClick={() => {history.push('/show/' + show.id)}}>
             <img alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}/>
           </div>
-          <p className="clickable" onClick={() => {history.push('/show/' + show.id)}}> {show.date}  </p>
-          <p className="clickable" onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} </p>
+          <div className="current-track-information">
+            <span 
+              className={ "clickable" + this.calcWidth() } 
+              onClick={() => {history.push('/show/' + show.id)}}
+              ref={(currentDate) => { this.currentDate = currentDate; }}
+            > 
+              {date.toLocaleDateString('en-US', dateOptions)}  
+            </span>
+            <span className="clickable" onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} </span>
+          </div>
         </div>
         <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
         <Ionicon className={this.state.downloading ? "hidden" : "clickable"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download this show?") ? this.downloadShow() : null}/>
