@@ -23,10 +23,7 @@ export default class Player extends Component {
       tracks: null,
       show: null,
       downloading: false,
-      textWrapping: false,
-      infoWidth: null,
-      dateWidth: null,
-      venueWidth: null,
+      textWrapping: false
     }
 
     emitter.addListener('pause', () => {
@@ -107,7 +104,7 @@ export default class Player extends Component {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
     }
   }
-  
+
   setShow = (showId, position = 0) => {
     show(showId).then(show => {
       let tracks = show.tracks.map(track => {
