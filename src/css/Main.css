@@ -24,7 +24,7 @@ html > * {
   position: fixed;
   left: 0;
   width: 125px;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 75px);
   top: 0px;
   display: flex;
   background-color: #FFF;
@@ -37,7 +37,7 @@ html > * {
   position: fixed;
   right: 0;
   width: calc(100% - 125px);
-  height: 50px;
+  height: 25px;
   background: #3F51B5;
   top: 0;
   padding: 1rem 0;
@@ -46,8 +46,8 @@ html > * {
 
 .content {
   position: absolute;
-  top: calc(50px + 2rem);
-  height: calc(100% - 182px);
+  top: calc(25px + 2rem);
+  height: calc(100% - 150px);
   bottom: calc(50px + 1rem);
   width: calc(100% - 125px);
   right: 0;
@@ -60,7 +60,7 @@ html > * {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100px;
+  height: 75px;
   bottom: 0px;
   width: 100%;
   background: #FFF;

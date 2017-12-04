@@ -206,8 +206,6 @@ export default class Player extends Component {
     if(this.state.hoverDate) {
       return;
     }
-
-    console.log("Hover");    
     
     this.setState({
       hoverDate: true
