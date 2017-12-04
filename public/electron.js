@@ -45,6 +45,7 @@ function createWindow() {
     width: width * .5,
     height: height * .5,
     darkTheme: true,
+    icon: __dirname + 'build/icon.ico',
     webPreferences: prefs
   });
 
