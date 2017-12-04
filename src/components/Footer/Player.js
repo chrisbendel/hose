@@ -77,6 +77,14 @@ export default class Player extends Component {
       // element.removeEventListener('play', this.setPlayerInfo)
       // element.removeEventListener('pause', this.setPlayerInfo)
     }
+
+    if (this.trackInfoContainer && this.currentDate) {
+      if(this.trackInfoContainer.scrollWidth > this.currentDate.width) {
+        this.setState({textWrapping: true});
+      } else {
+        this.setState({textWrapping: false});
+      }
+    }
   }
 
   play = (e) => {
@@ -210,7 +218,8 @@ export default class Player extends Component {
             <span 
               onClick={() => {history.push('/show/' + show.id)}}
               ref={(currentDate) => { this.currentDate = currentDate; }}
-              className={ "clickable " + this.calcWidth(this.currentDate) }               
+              className={this.state.textWrapping ? "clickable overflow" : ""}
+              // className={ "clickable " + this.calcWidth(this.currentDate) }               
             > 
               {date.toLocaleDateString('en-US', dateOptions)}  
             </span>
