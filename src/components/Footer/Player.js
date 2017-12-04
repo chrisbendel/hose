@@ -23,7 +23,9 @@ export default class Player extends Component {
       tracks: null,
       show: null,
       downloading: false,
-      textWrapping: false
+      hoverVenue: false,
+      hoverDate: false,
+      animationLength: 6000
     }
 
     emitter.addListener('pause', () => {
@@ -182,6 +184,40 @@ export default class Player extends Component {
       )
     });
   }
+
+  handleHoverVenue = (e) => {
+    if(this.state.hoverVenue) {
+      return;
+    }
+
+    console.log("Hover");    
+    
+    this.setState({
+      hoverVenue: true
+    });
+    var timeout = setTimeout(() => {
+      this.setState({
+        hoverVenue: false
+      });
+    }, this.state.animationLength);
+  }
+
+  handleHoverDate = (e) => {
+    if(this.state.hoverDate) {
+      return;
+    }
+
+    console.log("Hover");    
+    
+    this.setState({
+      hoverDate: true
+    });
+    var timeout = setTimeout(() => {
+      this.setState({
+        hoverDate: false
+      });
+    }, this.state.animationLength);
+  }
   
   render() {
     let show = this.state.show;
@@ -201,12 +237,29 @@ export default class Player extends Component {
             <img alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}/>
           </div>
           <div className="current-track-information">
-            <div>
+            <div 
+              className={this.state.hoverDate ? "inline-wrapper hovering" : "inline-wrapper"}
+              onMouseEnter={this.handleHoverDate}
+            >
               <span 
                 onClick={() => {history.push('/show/' + show.id)}}
-                className={"clickable"}
+                className="clickable"
               > 
                 {date.toLocaleDateString('en-US', dateOptions)}  
+              </span>
+              <span 
+                onClick={() => {history.push('/show/' + show.id)}}
+                className="clickable"
+              > 
+                {date.toLocaleDateString('en-US', dateOptions)}  
+              </span>
+            </div>
+            <div 
+              className={this.state.hoverVenue ? "inline-wrapper hovering" : "inline-wrapper"}
+              onMouseEnter={this.handleHoverVenue}
+            >
+              <span className="clickable" 
+                onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} 
               </span>
               <span className="clickable" 
                 onClick={() => {history.push('/shows/venue/' + show.venue.id)}}> {show.venue.name}, {show.venue.location} 
