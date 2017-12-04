@@ -53,7 +53,7 @@
 }
 
 .current-track-information span:hover {
-  animation: reveal 5s linear alternate;  
+  animation: reveal 5s linear infinite;  
 }
 
 .current-track-information:after {
