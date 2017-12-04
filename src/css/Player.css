@@ -38,22 +38,43 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%;
   justify-content: center;
   padding: .75rem 0;
+  height: 50px;
   width: 200px;  
   overflow: hidden;
   flex-wrap: wrap;
-}  
+}
 
-@keyframes reveal{
+.current-track-information div {
+  display: block;
+  width: 200%;
+  height: 30px;
+
+  position: absolute;
+  overflow: hidden;
+
+  animation: marquee 5s linear infinite;
+}
+
+.current-track-information span {
+  float: left;
+  width: 50%;  
+}
+
+@keyframes marquee {
+  0% { left: 0; }
+  100% { left: -100%; }
+}
+
+/* @keyframes slide{
   100% {
     transform: translateX(-100%);
   }
-}
+} */
 
-.current-track-information span:hover {
-  animation: reveal 5s linear infinite;  
+/* .current-track-information span:hover {
+  animation: slide 6s linear infinite;  
 }
 
 .current-track-information:after {
@@ -73,7 +94,7 @@
   box-sizing: border-box;
   white-space: nowrap;
   padding: .25rem 0;
-}  
+}   */
 
 .current-track-information span:first-of-type {
   color: #000;
