@@ -9,6 +9,10 @@ import 'react-select/dist/react-select.css';
 import {emitter} from './../../Emitter';
 import {history} from './../../History';
 import PlayerInfo from './../../PlayerInfo';
+import Spinner from 'react-spinkit';
+import isElectron from 'is-electron';
+import { Tooltip } from 'react-tippy';
+import 'react-tippy/dist/tippy.css';
 
 const isJamchart = (id) => {
   return (showJamcharts.indexOf(id) !== -1);
@@ -51,7 +55,7 @@ export default class Shows extends Component {
         this.fetchShowsForYear(id);
         break;
       case "today":
-        this.fetchShowsToday();
+        this.fetchShowsToday(id);
         break;
       case "venue":
         this.fetchShowsForVenue(id);
@@ -68,21 +72,21 @@ export default class Shows extends Component {
       let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       let date = new Date(show.date + ' 00:00');
       return (
-        <div key={show.id} className="image-container">
+        <div key={show.id} onClick={() => {history.push('/show/' + show.id)}} className="image-container">
           <div className="show-information-control">
             <div className="show-tags">
               {show.sbd ? <div className="tag">Soundboard</div> : null}
               {show.remastered ? <div className="tag">Remastered</div> : null}
               {isJamchart(show.id) ? <div className="tag">Jamcharts</div> : null}
             </div>
-            <img 
+            <img
               src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}
               alt={show.id}
               id={show.id}
             />
             <div className="show-information">
               <div className="center-abs">
-                <div className="play-button" onClick={() => PlayerInfo.updateShowAndPosition(show.id)}>
+                <div className="play-button" onClick={(e) => PlayerInfo.updateShowAndPosition(e,show.id)}>
                   <Ionicon 
                     icon="ios-play" 
                     fontSize="35px" 
@@ -92,8 +96,8 @@ export default class Shows extends Component {
                 </div>
                 <div className="show-likes">
                   <Ionicon 
-                    icon="ios-thumbs-up" 
-                    fontSize="18px" 
+                    icon="ios-thumbs-up"
+                    fontSize="18px"
                     onClick={() => console.log('like clicked')}
                     color="white"
                   />
@@ -124,19 +128,29 @@ export default class Shows extends Component {
             }
             
             </span>
-
-          {show.remastered ? <p> Remastered: yes </p> : null}
         </div>
       );
     }, this);
   }
 
-  fetchShowsToday = () => {
-    let today = new Date();
-    let day = today.getDate().toString();
-    let month = (today.getMonth() + 1).toString();
-    let date = month + "-" + day;
-    showsToday(date).then(shows => {
+  fetchShowsToday = (custom = null) => {
+    let date;
+    if (custom) {
+      console.log(custom);
+      let thing = new Date(custom + ' 00:00');
+      console.log(thing);
+      let day = thing.getDate().toString();
+      let month = (thing.getMonth() + 1).toString();
+      date = month + "-" + day;
+    } else {
+      let today = new Date();
+      let day = today.getDate().toString();
+      let month = (today.getMonth() + 1).toString();
+      date = month + "-" + day;
+    }
+
+    showsToday(date).then(data => {
+      let shows = this.sortShows('date', 'desc', data);
       this.setState({
         shows: shows,
         allShows: false
@@ -145,7 +159,8 @@ export default class Shows extends Component {
   }
 
   fetchShowsForTour = (tour) => {
-    showsForTour(tour).then(shows => {
+    showsForTour(tour).then(data => {
+      let shows = this.sortShows('date', 'desc', data);
       this.setState({
         shows: shows,
         allShows: false
@@ -162,7 +177,8 @@ export default class Shows extends Component {
         }));
       });
 
-      Promise.all(promises).then(shows => {
+      Promise.all(promises).then(data => {
+        let shows = this.sortShows('date', 'desc', data);
         this.setState({
           shows: shows,
           allShows: false
@@ -172,7 +188,8 @@ export default class Shows extends Component {
   }
 
   fetchShowsForYear = (year) => {
-    showsForYear(year).then(shows => {
+    showsForYear(year).then(data => {
+      let shows = this.sortShows('date', 'desc', data);
       this.setState({
         shows: shows,
         allShows: false
@@ -180,9 +197,8 @@ export default class Shows extends Component {
     })
   }
 
-  sortShows = (attr, order) => {
+  sortShows = (attr, order, shows) => {
     let sorted;
-    let shows = this.state.shows;
     if (attr === 'date') {
       sorted = shows.sort((a, b) => {
         var c = new Date(a.date);
@@ -207,13 +223,12 @@ export default class Shows extends Component {
       });
     }
 
-    this.setState({
-      shows: sorted
-    })
+    return sorted;
   }
 
   fetchAllShows = () => {
-    shows().then(shows => {
+    shows().then(data => {
+      let shows = this.sortShows('date', 'desc', data);
       this.setState({
         shows: shows,
         allShows: true,
@@ -224,8 +239,8 @@ export default class Shows extends Component {
   }
 
   handleChange = (filterOption) => {
-    this.sortShows(filterOption.attr, filterOption.order);
-    this.setState({ filterOption: filterOption });
+    let shows = this.sortShows(filterOption.attr, filterOption.order, this.state.shows);
+    this.setState({ filterOption: filterOption, shows: shows });
   }
 
   loadMoreShows = () => {
@@ -235,7 +250,6 @@ export default class Shows extends Component {
     let page = this.state.page + 1;
     
     shows(page).then(shows => {
-      console.log(shows);
       this.setState(previousState => ({
         loadingShows: false,
         page: page,
@@ -252,21 +266,27 @@ export default class Shows extends Component {
     let shows = this.state.shows;
     
     if (!shows) {
-      return (<div> Loading ... </div>);
+      return (
+        <div style={{position:'fixed', top:'50%', left: '50%', transform: 'translate(-50%, 50%)'}} >
+          <Spinner fadeIn='none' name='ball-pulse-rise' />
+        </div>
+      );
     }
 
     return (
       <div>
         <div className="filters">
+        <div className="scroll-top">
           <Ionicon
             className="clickable"
-            icon="ios-arrow-dropup-circle" 
+            icon="ios-arrow-up" 
             fontSize="40px"
             onClick={() => {
               //animate this one day
               this.refs.shows.scrollTop = 0;
             }}
           />
+        </div>
           <div className="filter-display">
             <span>Displaying: {this.state.currentFilter}</span>
             <Ionicon
@@ -317,13 +337,20 @@ export default class Shows extends Component {
           </div>
           {this.state.allShows ?
             <div>
-              <Ionicon className={this.state.loadingShows ? "" : "hidden"} icon="ios-refresh" fontSize="80px" rotate={true} />
-              <div className={this.state.loadingShows ? "hidden" : "load-more"} onClick={() => {
-                  this.loadMoreShows();
-                }}
+              <Ionicon color="#66BB6A" className={this.state.loadingShows ? "" : "hidden"} icon="ios-refresh" fontSize="80px" rotate={true} />
+              <Tooltip
+                trigger="mouseenter"
+                arrowSize={"small"}
+                theme="light"
+                className="clickable"
+                html={<div>Load More Shows</div>}
               >
-                Load more shows
-              </div>
+                <Ionicon color="#66BB6A" className={this.state.loadingShows ? "hidden clickable" : ""} icon="ios-more" fontSize="100px" 
+                  onClick={() => {
+                    this.loadMoreShows();
+                  }}
+                />
+              </Tooltip>
             </div>
             :
             null

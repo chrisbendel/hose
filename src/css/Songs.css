@@ -6,8 +6,10 @@
   height: 75px;
   z-index: 8888;
   flex-wrap: nowrap;
-  width: calc(100% - 125px);
+  width: calc(100% - 175px);
   background: #F9f9F9;
+  padding: 0 1rem;
+  box-sizing: border-box;
   box-shadow: 0 0 7px 0px rgba(0,0,0,0.2);
 }
 
@@ -120,11 +122,11 @@
   width: 100%;
   height: 5px;
   border-radius: 2.5px;
-  background-color: #C5CAE9;
+  background-color: #BBDEFB;
 }
 
 .inside-bar {
-  background-color: #3F51B5;
+  background-color: #2196F3;
   height: 5px;
   border-radius: 2.5px;
   width: 5px;
@@ -145,7 +147,7 @@
 .play-button-sm,
 .pause-button-sm {
   background-color: transparent;
-  border: 1px solid #3F51B5;
+  border: 1px solid #2196F3;
   box-sizing: border-box;
   display: none;
   border-radius: 50%;  
@@ -172,7 +174,7 @@
 
 .track-play,
 .track-pause {
-  fill: #3F51B5;
+  fill: #2196F3;
   padding: .25rem;
   border-radius: 50%;
   position: absolute;
@@ -181,4 +183,8 @@
   left: 50%;
   top: 50%; 
   transform: translate(-50%,-50%);
+}
+
+.track-play {
+  margin-left: 1px;  
 }
