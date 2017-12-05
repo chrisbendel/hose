@@ -10,6 +10,9 @@ import {emitter} from './../../Emitter';
 import {history} from './../../History';
 import PlayerInfo from './../../PlayerInfo';
 import Spinner from 'react-spinkit';
+import isElectron from 'is-electron';
+import { Tooltip } from 'react-tippy';
+import 'react-tippy/dist/tippy.css';
 
 const isJamchart = (id) => {
   return (showJamcharts.indexOf(id) !== -1);
@@ -324,12 +327,19 @@ export default class Shows extends Component {
           {this.state.allShows ?
             <div>
               <Ionicon className={this.state.loadingShows ? "" : "hidden"} icon="ios-refresh" fontSize="80px" rotate={true} />
-              <div className={this.state.loadingShows ? "hidden" : "load-more"} onClick={() => {
-                  this.loadMoreShows();
-                }}
+              <Tooltip
+                trigger="mouseenter"
+                animation="fade"
+                arrowSize={"big"}
+                className="clickable"
+                html={<span>Load More Shows</span>}
               >
-                Load more shows
-              </div>
+                <Ionicon className={this.state.loadingShows ? "hidden clickable" : ""} icon="ios-more" fontSize="80px" 
+                  onClick={() => {
+                    this.loadMoreShows();
+                  }}
+                />
+              </Tooltip>
             </div>
             :
             null
