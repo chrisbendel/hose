@@ -204,6 +204,15 @@ export default class Show extends Component {
     });
   }
 
+  renderShowInfo = () => {
+    return (
+      <div>
+        <h4 className="clickable" onClick={() => {history.push('/shows/today/' + this.state.show.date)}}> Other shows on this date </h4>
+        <h4><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={this.state.showDetails.link}>View on Phish.net</a></h4>
+      </div>
+    );
+  }
+
   render() {
     let show = this.state.show;
 
@@ -231,14 +240,43 @@ export default class Show extends Component {
             />
           </div>
           <div className="right">
+{/* <<<<<<< HEAD
               <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
             <div>
-              <h4 className="clickable" onClick={() => {console.log(show.date); history.push('/shows/today/' + show.date)}}> Other shows on this date </h4>
+              <h4 className="clickable" onClick={() => {history.push('/shows/today/' + show.date)}}> Other shows on this date </h4>
               <h3 className="clickable" onClick={() => {history.push('/venues/' + show.venue.id)}}>{show.venue.name}</h3>
             </div>
             <div>
               <h4>{details.location}</h4>
-              <h4><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={details.link}>View on Phish.net</a></h4>
+              
+======= */}
+            <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
+            {/*  */}
+            <h3 className="clickable" onClick={() => {history.push('/venues/' + show.venue.id)}}>{show.venue.name}</h3>
+            <h4>{details.location}</h4>
+            {/* <h4><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={details.link}>View on Phish.net</a></h4> */}
+            <div className="btn-container">
+
+              <button className="play-btn-lrg green">
+                Play
+              </button>
+              <button className="play-btn-lrg outline">
+                Save
+              </button>
+              <Tooltip
+              trigger="click"
+              interactive
+              arrow={true}
+              position="right"
+              animation="fade"
+              arrowSize={"big"}
+              duration={200}
+              html={this.renderShowInfo()}
+              >
+              <button className="play-btn-lrg round">
+                <Ionicon color="#000" className="more-options" icon="ios-more" />
+              </button>
+              </Tooltip>
             </div>
           </div>
         </div>
