@@ -224,3 +224,24 @@
   opacity: 1;
   transition: .3s opacity ease;
 }
+
+.scroll-top {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2979FF;
+  border-radius: 50%;
+  padding: .5rem;
+  box-shadow: 0 0 14px 0px rgba(0, 0, 0, 0.35);
+}
+
+.scroll-top svg {
+  fill: #FFF;
+  margin-bottom: 3px;
+  width: 25px;
+}

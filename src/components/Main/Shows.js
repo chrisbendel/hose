@@ -262,15 +262,17 @@ export default class Shows extends Component {
     return (
       <div>
         <div className="filters">
+        <div className="scroll-top">
           <Ionicon
             className="clickable"
-            icon="ios-arrow-dropup-circle" 
+            icon="ios-arrow-up" 
             fontSize="40px"
             onClick={() => {
               //animate this one day
               this.refs.shows.scrollTop = 0;
             }}
           />
+        </div>
           <div className="filter-display">
             <span>Displaying: {this.state.currentFilter}</span>
             <Ionicon
