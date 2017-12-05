@@ -280,7 +280,7 @@ export default class Player extends Component {
         </div>
 
         <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
-        <Ionicon className={this.state.downloading ? "hidden" : "clickable"} icon="ios-cloud-download" fontSize="60px" onClick={() => this.downloadShow()}/>
+        <Ionicon className={this.state.downloading ? "hidden" : "clickable ios-cloud-download"} icon="ios-cloud-download" fontSize="60px" onClick={() => this.downloadShow()}/>
         <Audio
           ref={audioComponent => { this.player = audioComponent; }}
           width={500}

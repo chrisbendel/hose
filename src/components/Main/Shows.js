@@ -83,7 +83,7 @@ export default class Shows extends Component {
             />
             <div className="show-information">
               <div className="center-abs">
-                <div className="play-button" onClick={() => PlayerInfo.updateShowAndPosition(show.id)}>
+                <div className="play-button" onClick={(e) => PlayerInfo.updateShowAndPosition(e,show.id)}>
                   <Ionicon 
                     icon="ios-play" 
                     fontSize="35px" 
