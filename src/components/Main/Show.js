@@ -231,11 +231,15 @@ export default class Show extends Component {
             />
           </div>
           <div className="right">
-            <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
-            <h5 className="clickable" onClick={() => {console.log(show.date); history.push('/shows/today/' + show.date)}}> Other shows on this date </h5>
-            <h3 className="clickable" onClick={() => {history.push('/venues/' + show.venue.id)}}>{show.venue.name}</h3>
-            <h4>{details.location}</h4>
-            <h4><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={details.link}>View on Phish.net</a></h4>
+              <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
+            <div>
+              <h4 className="clickable" onClick={() => {console.log(show.date); history.push('/shows/today/' + show.date)}}> Other shows on this date </h4>
+              <h3 className="clickable" onClick={() => {history.push('/venues/' + show.venue.id)}}>{show.venue.name}</h3>
+            </div>
+            <div>
+              <h4>{details.location}</h4>
+              <h4><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={details.link}>View on Phish.net</a></h4>
+            </div>
           </div>
         </div>
         <div className="show-tracks">

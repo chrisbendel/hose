@@ -1,6 +1,7 @@
 .playlist-container {
   border-radius: 25px;
   height: 40vh;
+  background-color: ;
   text-align: left;
   overflow-y: auto;
   padding: .5rem;
@@ -12,7 +13,7 @@
 
 .playlist-container-item {
   cursor: pointer;
-  border-bottom: 1px solid blue;
+  border-bottom: 1px solid #4CAF50;
   margin: 5px;
   padding: .5rem 0;
 }
@@ -66,7 +67,7 @@
   content: '';
   height: 100%;
   width: 10px;
-  background-color: #000;
+  background-color: #BDBDBD;
   right: 0;
   z-index: 9999999999999;
   opacity: 1;

@@ -295,6 +295,7 @@ export default class Player extends Component {
             inertia={true}
             arrow={true}
             animation="scale"
+            theme="light"
             arrowSize={"big"}
             duration={200}
             html={<div className="playlist-container">{this.renderPlaylistContainer()}</div>}
@@ -302,7 +303,7 @@ export default class Player extends Component {
             <Ionicon className="clickable right-icon" icon="ios-list-box" fontSize="60px"/>
           </Tooltip>
           <Ionicon className={this.state.downloading ? "right-icon" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
-          <Ionicon className={this.state.downloading ? "hidden" : "clickable right-icon"} icon="ios-cloud-download" fontSize="60px" onClick={() => this.downloadShow()}/>
+          <Ionicon className={this.state.downloading ? "hidden" : "clickable right-icon"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download " + show.date + "?" ) ? this.downloadShow() : null}/>
         </div>
       </div>
     );
