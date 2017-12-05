@@ -7,6 +7,7 @@ import Ionicon from 'react-ionicons';
 import {trackJamcharts, tourFilters} from './../../filterOptions';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
+import {history} from './../../History';
 import Interweave from 'interweave';
 import PlayerInfo from './../../PlayerInfo';
 import {emitter} from './../../Emitter';
@@ -218,6 +219,7 @@ export default class Show extends Component {
     
     let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     let date = new Date(show.date + ' 00:00');
+
     PlayerInfo.getShow();
     return (
       <div className="show-container">
@@ -230,7 +232,8 @@ export default class Show extends Component {
           </div>
           <div className="right">
             <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
-            <h3>{show.venue.name}</h3>
+            <h5 className="clickable" onClick={() => {console.log(show.date); history.push('/shows/today/' + show.date)}}> Other shows on this date </h5>
+            <h3 className="clickable" onClick={() => {history.push('/venues/' + show.venue.id)}}>{show.venue.name}</h3>
             <h4>{details.location}</h4>
             <h4><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={details.link}>View on Phish.net</a></h4>
           </div>
