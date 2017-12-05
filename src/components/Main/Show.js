@@ -120,8 +120,8 @@ export default class Show extends Component {
                 style={{cursor: 'pointer'}}
                 icon="ios-play"
                 font-size="40px"
-                onClick={() => {
-                  PlayerInfo.updateShowAndPosition(show.id, track.position);
+                onClick={(e) => {
+                  PlayerInfo.updateShowAndPosition(e, show.id, track.position);
                   this.setState({playing: true});
                 }}
                 className="track-play"
