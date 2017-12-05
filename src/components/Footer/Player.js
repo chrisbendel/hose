@@ -10,9 +10,13 @@ import {emitter} from './../../Emitter';
 import {history} from './../../History';
 import PlayerInfo from './../../PlayerInfo';
 import isElectron from 'is-electron';
+import JSZipUtils from 'jszip-utils';
+import JSZip from 'jszip';
+import {saveAs} from 'file-saver'
 
 if (isElectron()) {
-  var {ipcRenderer, remote} = window.require('electron');  
+  var {ipcRenderer, remote} = window.require('electron');
+  var remoteWindow = remote.getCurrentWindow();
 }
 
 export default class Player extends Component {
@@ -161,15 +165,28 @@ export default class Player extends Component {
   downloadShow = () => {
     this.setState({downloading: true})
     let show = this.state.show;
-    
-    let urls = [];
-    
-    show.tracks.forEach(function (track) {
-      urls.push(track.mp3);
+    let tracks = show.tracks;
+    var zip = new JSZip();
+    let count = 0;
+    let showName = show.date + "-" + show.venue.name + "-" + show.venue.location;
+    tracks.forEach(track => {
+      let title = track.title + ".mp3";
+      JSZipUtils.getBinaryContent(track.mp3, (err, data) => {
+        zip.file(title, data, {binary: true});
+        count++;
+        remoteWindow.setProgressBar(count / tracks.length);
+        if (count === tracks.length) {
+          zip.generateAsync({type:'blob'}, (metadata) => {
+            remoteWindow.setProgressBar(metadata.percent);
+          })
+          .then(content => {
+            saveAs(content, showName + ".zip");
+            remoteWindow.setProgressBar(-1);
+            this.setState({downloading: false});
+          });
+        }
+      });
     });
-    let showName = "/" + show.date + "-" + show.venue.name + "-" + show.venue.location;
-    ipcRenderer.send('download', urls, showName);
-    this.setState({downloading: false});
   }
 
   renderPlaylistContent = (set) => {
@@ -261,29 +278,33 @@ export default class Player extends Component {
             </div>
           </div>
         </div>
-
-        <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
-        <Ionicon className={this.state.downloading ? "hidden" : "clickable"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download this show?") ? this.downloadShow() : null}/>
-        <Audio
-          ref={audioComponent => { this.player = audioComponent; }}
-          width={500}
-          height={50}
-          autoPlay={true}
-          playlist={tracks}
-          color="#f88379"
-        />
-        <Tooltip
-          trigger="click"
-          interactive
-          inertia={true}
-          arrow={true}
-          animation="scale"
-          arrowSize={"big"}
-          duration={200}
-          html={<div className="playlist-container">{this.renderPlaylistContainer()}</div>}
-        >
-          <Ionicon className="clickable" icon="ios-list-box" fontSize="60px"/>
-        </Tooltip>
+        <div className="center-container">
+          <Audio
+            ref={audioComponent => { this.player = audioComponent; }}
+            width={500}
+            height={50}
+            autoPlay={true}
+            playlist={tracks}
+            color="#000"
+          />
+        </div>
+        <div className="right-content">
+          <Tooltip
+            trigger="click"
+            interactive
+            inertia={true}
+            arrow={true}
+            animation="scale"
+            theme="light"
+            arrowSize={"big"}
+            duration={200}
+            html={<div className="playlist-container">{this.renderPlaylistContainer()}</div>}
+          >
+            <Ionicon className="clickable right-icon" icon="ios-list-box" fontSize="60px"/>
+          </Tooltip>
+          <Ionicon className={this.state.downloading ? "right-icon" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
+          <Ionicon className={this.state.downloading ? "hidden" : "clickable right-icon"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download " + show.date + "?" ) ? this.downloadShow() : null}/>
+        </div>
       </div>
     );
   }

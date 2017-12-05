@@ -1,4 +1,24 @@
-const base = 'http://phish.in/api/v1/'
+const base = 'https://phish.in/api/v1/'
+
+
+// var myHeaders = new Headers();
+
+// myHeaders.append('Content-Type', 'application/json');
+
+// fetch('http://127.0.0.1:3000/api/v1/users/sign_in', {
+//     method: 'POST',
+//     headers: myHeaders,
+//     mode: 'cors',
+//     cache: 'default',
+//     body: JSON.stringify({user: {email: "phishin@phishin.com", password:"phishin123"} })
+// }).then(function(response) {
+//     return response.json()
+//   }).then(function(json) {
+//     console.log('parsed json', json)
+//   }).catch(function(ex) {
+//     console.log('parsing failed', ex)
+//   })
+
 
 export const randomShow = async() => {
   let data = await (await fetch(base + 'random-show')).json();
