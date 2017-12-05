@@ -97,7 +97,7 @@
   box-sizing: border-box;
 }
 
-.right {
+.right-content {
   display: flex;
   align-items: center;
   justify-content: flex-end;

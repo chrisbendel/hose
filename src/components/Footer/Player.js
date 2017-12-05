@@ -288,7 +288,7 @@ export default class Player extends Component {
             color="#000"
           />
         </div>
-        <div className="right">
+        <div className="right-content">
           <Tooltip
             trigger="click"
             interactive
