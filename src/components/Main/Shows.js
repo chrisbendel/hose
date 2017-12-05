@@ -31,6 +31,7 @@ export default class Shows extends Component {
       loadingShows: false,
       currentFilter: 'All Shows'
     }
+    this.handleScroll = this.handleScroll.bind(this);
   }
   
   componentWillMount = () => {
@@ -39,10 +40,31 @@ export default class Shows extends Component {
     this.loadRelevantData(type, id);
   }
 
+  componentWillUnmount = () => {
+    if (this.refs.shows) {
+      this.refs.shows.removeEventListener('scroll', this.handleScroll);
+    }
+  }
+
+  componentDidUpdate = () => {
+    if (this.refs.shows) {
+      this.refs.shows.addEventListener('scroll', this.handleScroll);
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     let nextType = nextProps.match.params.type;
     let nextId = nextProps.match.params.id;
     this.loadRelevantData(nextType, nextId);
+  }
+
+  handleScroll = (e) => {
+    let el = this.refs.shows;
+    if (el.scrollTop === (el.scrollHeight - el.offsetHeight)) {
+      if (!this.state.loadingShows) {
+        this.loadMoreShows();
+      }
+    }
   }
 
   loadRelevantData = (type = null, id = null) => {
@@ -345,11 +367,7 @@ export default class Shows extends Component {
                 className="clickable"
                 html={<div>Load More Shows</div>}
               >
-                <Ionicon color="#66BB6A" className={this.state.loadingShows ? "hidden clickable" : ""} icon="ios-more" fontSize="100px" 
-                  onClick={() => {
-                    this.loadMoreShows();
-                  }}
-                />
+                <Ionicon color="#66BB6A" className={this.state.loadingShows ? "hidden" : ""} icon="ios-more" fontSize="100px" />
               </Tooltip>
             </div>
             :

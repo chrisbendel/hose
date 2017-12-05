@@ -41,7 +41,11 @@
   "build": {
     "appId": "com.chrissbendel.hose",
     "mac": {
-      "category": "public.app-category.music"
+      "category": "public.app-category.music",
+      "helperBundleId": "com.chrissbendel.hose",
+      "target": ["mas", "dmg"],
+      "type": "distribution",
+      "icon": "build/hose.icns"
     },
     "win": {
       "publisherName": "Christopher Bendel"
@@ -49,7 +53,9 @@
     "files": [
       "build/**/*",
       "node_modules/**/*",
-      "package.json"
+      "package.json",
+      "hose.provisionprofile",
+      "hose.icns"
     ],
     "directories": {
       "buildResources": "assets"
@@ -66,7 +72,7 @@
     "electron": "electron .",
     "build": "react-scripts build",
     "pack": "build --em.main=build/electron.js",
-    "release:mac": "yarn build && yarn prerelease && build -m --em.main=build/electron.js --publish always",
+    "release:mac": "yarn build && yarn prerelease && build -m --em.main=build/electron.js",
     "release:win": "yarn build && yarn prerelease && build -w --em.main=build/electron.js --publish always",
     "prerelease": "yarn build",
     "postinstall": "electron-builder install-app-deps"
