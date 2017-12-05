@@ -71,7 +71,9 @@ class PlayerInfo {
   }
 
   updateShowAndPosition = (e, s, p = 1) => {
-    e.stopPropagation();
+    if(e) {
+      e.stopPropagation();
+    }
     emitter.emit('playlistUpdate', s, p - 1);
   }
 }

@@ -99,6 +99,7 @@
 
 .ios-cloud-download {
   height: 30px;
+  margin-right: 50px;
 }
 
 .album-art-container img {
@@ -118,4 +119,10 @@
 
 .svgBtnDefault {
   display: none;
+}
+
+.center-container {
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
