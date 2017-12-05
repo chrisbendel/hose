@@ -5,27 +5,9 @@ const path = require('path');
 const url = require('url');
 const {ipcMain} = require('electron');
 let mainWindow; 
-const DownloadManager = require("electron-download-manager");
 const isElectron = require('is-electron');
 const isDev = require('electron-is-dev');
 const autoUpdater = require("electron-updater").autoUpdater;
-
-autoUpdater.checkForUpdatesAndNotify();
-
-DownloadManager.register();
-ipcMain.on('download', (event, urls, show) => {
-  DownloadManager.bulkDownload({
-    urls: urls,
-    path: show
-  }, function(error, finished, errors) {
-    if (error){
-      console.log("finished: " + finished);
-      console.log("errors: " + errors);
-      return;
-    }
-  });
-});
-
 
 if (isElectron()) {
   prefs = {
@@ -42,6 +24,7 @@ if (isElectron()) {
 let willQuitApp = false;
 
 function createWindow() {
+  autoUpdater.checkForUpdatesAndNotify();
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
     title: 'Hose',
