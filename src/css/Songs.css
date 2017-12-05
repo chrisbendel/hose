@@ -8,6 +8,8 @@
   flex-wrap: nowrap;
   width: calc(100% - 175px);
   background: #F9f9F9;
+  padding: 0 1rem;
+  box-sizing: border-box;
   box-shadow: 0 0 7px 0px rgba(0,0,0,0.2);
 }
 
