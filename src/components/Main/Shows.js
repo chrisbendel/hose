@@ -55,7 +55,7 @@ export default class Shows extends Component {
         this.fetchShowsForYear(id);
         break;
       case "today":
-        this.fetchShowsToday();
+        this.fetchShowsToday(id);
         break;
       case "venue":
         this.fetchShowsForVenue(id);
@@ -133,11 +133,22 @@ export default class Shows extends Component {
     }, this);
   }
 
-  fetchShowsToday = () => {
-    let today = new Date();
-    let day = today.getDate().toString();
-    let month = (today.getMonth() + 1).toString();
-    let date = month + "-" + day;
+  fetchShowsToday = (custom = null) => {
+    let date;
+    if (custom) {
+      console.log(custom);
+      let thing = new Date(custom + ' 00:00');
+      console.log(thing);
+      let day = thing.getDate().toString();
+      let month = (thing.getMonth() + 1).toString();
+      date = month + "-" + day;
+    } else {
+      let today = new Date();
+      let day = today.getDate().toString();
+      let month = (today.getMonth() + 1).toString();
+      date = month + "-" + day;
+    }
+
     showsToday(date).then(data => {
       let shows = this.sortShows('date', 'desc', data);
       this.setState({
