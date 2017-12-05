@@ -97,9 +97,14 @@
   box-sizing: border-box;
 }
 
-.ios-cloud-download {
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.right-icon {
   height: 30px;
-  margin-right: 50px;
 }
 
 .album-art-container img {
