@@ -92,8 +92,7 @@
 }  
 
 .album-art-container {
-  height: 100px;
-  width: 100px;
+  width: 75px;
   padding: .75rem .75rem .75rem .75rem;
   box-sizing: border-box;
 }
