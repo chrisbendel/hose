@@ -12,6 +12,15 @@ import Interweave from 'interweave';
 import PlayerInfo from './../../PlayerInfo';
 import {emitter} from './../../Emitter';
 import Spinner from 'react-spinkit';
+import JSZipUtils from 'jszip-utils';
+import JSZip from 'jszip';
+import {saveAs} from 'file-saver'
+import isElectron from 'is-electron';
+
+if (isElectron()) {
+  var {ipcRenderer, remote} = window.require('electron');
+  var remoteWindow = remote.getCurrentWindow();
+}
 
 const isJamchart = (id) => {
   return (trackJamcharts.indexOf(id) !== -1);
@@ -204,11 +213,36 @@ export default class Show extends Component {
     });
   }
 
+  downloadShow = () => {
+    let show = this.state.show;
+    let tracks = show.tracks;
+    var zip = new JSZip();
+    let count = 0;
+    let showName = show.date + "-" + show.venue.name + "-" + show.venue.location;
+    tracks.forEach(track => {
+      let title = track.title + ".mp3";
+      JSZipUtils.getBinaryContent(track.mp3, (err, data) => {
+        zip.file(title, data, {binary: true});
+        count++;
+        remoteWindow.setProgressBar(count / tracks.length);
+        if (count === tracks.length) {
+          zip.generateAsync({type:'blob'}, (metadata) => {
+            remoteWindow.setProgressBar(metadata.percent);
+          })
+          .then(content => {
+            saveAs(content, showName + ".zip");
+            remoteWindow.setProgressBar(-1);
+          });
+        }
+      });
+    });
+  }
+
   renderShowInfo = () => {
     return (
       <div>
-        <h4 className="clickable" onClick={() => {history.push('/shows/today/' + this.state.show.date)}}> Other shows on this date </h4>
-        <h4><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={this.state.showDetails.link}>View on Phish.net</a></h4>
+        <h5 className="clickable" onClick={() => {history.push('/shows/today/' + this.state.show.date)}}> Shows this Day </h5>
+        <h5><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={this.state.showDetails.link}>View on Phish.net</a></h5>
       </div>
     );
   }
@@ -240,41 +274,38 @@ export default class Show extends Component {
             />
           </div>
           <div className="right">
-{/* <<<<<<< HEAD
-              <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
-            <div>
-              <h4 className="clickable" onClick={() => {history.push('/shows/today/' + show.date)}}> Other shows on this date </h4>
-              <h3 className="clickable" onClick={() => {history.push('/venues/' + show.venue.id)}}>{show.venue.name}</h3>
-            </div>
-            <div>
-              <h4>{details.location}</h4>
-              
-======= */}
             <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
-            {/*  */}
             <h3 className="clickable" onClick={() => {history.push('/venues/' + show.venue.id)}}>{show.venue.name}</h3>
             <h4>{details.location}</h4>
-            {/* <h4><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={details.link}>View on Phish.net</a></h4> */}
             <div className="btn-container">
-
-              <button className="play-btn-lrg green">
+              <button 
+                className="play-btn-lrg green clickable"
+                onClick={(e) => {
+                  PlayerInfo.updateShowAndPosition(e, show.id);
+                  this.setState({playing: true});
+                }}
+              >
                 Play
               </button>
-              <button className="play-btn-lrg outline">
-                Save
+              <button 
+                onClick={() => window.confirm("Download " + show.date + "?" ) ? this.downloadShow() : null}
+                className="play-btn-lrg outline clickable"
+              >
+                Download
               </button>
               <Tooltip
-              trigger="click"
-              interactive
-              arrow={true}
-              position="right"
-              animation="fade"
-              arrowSize={"big"}
-              duration={200}
-              html={this.renderShowInfo()}
+                trigger="click"
+                interactive
+                arrow={true}
+                position="right"
+                animation="fade"
+                theme="light"
+                arrowSize={"big"}
+                duration={200}
+                html={this.renderShowInfo()}
               >
               <button className="play-btn-lrg round">
-                <Ionicon color="#000" className="more-options" icon="ios-more" />
+                <Ionicon color="#000" className="more-options clickable" icon="ios-more" />
               </button>
               </Tooltip>
             </div>
