@@ -360,15 +360,7 @@ export default class Shows extends Component {
           {this.state.allShows ?
             <div>
               <Ionicon color="#66BB6A" className={this.state.loadingShows ? "" : "hidden"} icon="ios-refresh" fontSize="80px" rotate={true} />
-              <Tooltip
-                trigger="mouseenter"
-                arrowSize={"small"}
-                theme="light"
-                className="clickable"
-                html={<div>Load More Shows</div>}
-              >
-                <Ionicon color="#66BB6A" className={this.state.loadingShows ? "hidden" : ""} icon="ios-more" fontSize="100px" />
-              </Tooltip>
+              <Ionicon color="#66BB6A" className={this.state.loadingShows ? "hidden" : ""} icon="ios-more" fontSize="100px" />
             </div>
             :
             null
