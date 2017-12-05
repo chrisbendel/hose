@@ -43,6 +43,9 @@
     "mac": {
       "category": "public.app-category.music"
     },
+    "win": {
+      "publisherName": "Christopher Bendel"
+    },
     "files": [
       "build/**/*",
       "node_modules/**/*",
