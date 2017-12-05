@@ -11,8 +11,6 @@ import {history} from './../../History';
 import PlayerInfo from './../../PlayerInfo';
 import Spinner from 'react-spinkit';
 import isElectron from 'is-electron';
-import { Tooltip } from 'react-tippy';
-import 'react-tippy/dist/tippy.css';
 
 const isJamchart = (id) => {
   return (showJamcharts.indexOf(id) !== -1);
