@@ -275,18 +275,31 @@ export default class Show extends Component {
           </div>
           <div className="right">
             <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
-            <h3 className="clickable" onClick={() => {history.push('/venues/' + show.venue.id)}}>{show.venue.name}</h3>
+            <h3 className="clickable" onClick={() => {history.push('/shows/venue/' + show.venue.id)}}>{show.venue.name}</h3>
             <h4>{details.location}</h4>
+
             <div className="btn-container">
-              <button 
-                className="play-btn-lrg green clickable"
-                onClick={(e) => {
-                  PlayerInfo.updateShowAndPosition(e, show.id);
-                  this.setState({playing: true});
-                }}
-              >
-                Play
-              </button>
+              {this.state.playing ?
+                <button 
+                  className="play-btn-lrg green clickable"
+                  onClick={(e) => {
+                    PlayerInfo.pause();
+                    this.setState({playing: true});
+                  }}
+                  >
+                  <span> Pause </span>
+                </button>
+                : 
+                <button 
+                  className="play-btn-lrg green clickable"
+                  onClick={(e) => {
+                    PlayerInfo.updateShowAndPosition(e, show.id);
+                    this.setState({playing: true});
+                  }}
+                >
+                  Play
+                </button>
+              }
               <button 
                 onClick={() => window.confirm("Download " + show.date + "?" ) ? this.downloadShow() : null}
                 className="play-btn-lrg outline clickable"
@@ -310,6 +323,11 @@ export default class Show extends Component {
               </Tooltip>
             </div>
           </div>
+          {this.state.playing
+          ?
+            <Spinner color='#4CAF50' name='line-scale-pulse-out-rapid' />
+          : null
+          }
         </div>
         <div className="show-tracks">
           {this.renderTrackContainer()}
