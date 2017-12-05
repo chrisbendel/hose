@@ -146,7 +146,7 @@
   z-index: 8888;
   display: flex;
   flex-wrap: wrap;
-  width: calc(100% - 125px);
+  width: calc(100% - 175px);
   background: #F9f9F9;
   box-shadow: 0 0 7px 0px rgba(0,0,0,0.2);
 }
