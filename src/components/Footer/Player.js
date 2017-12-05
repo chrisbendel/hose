@@ -279,8 +279,6 @@ export default class Player extends Component {
           </div>
         </div>
         <div className="center-container">
-          <Ionicon className={this.state.downloading ? "" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
-          <Ionicon className={this.state.downloading ? "hidden" : "clickable ios-cloud-download"} icon="ios-cloud-download" fontSize="60px" onClick={() => this.downloadShow()}/>
           <Audio
             ref={audioComponent => { this.player = audioComponent; }}
             width={500}
@@ -290,18 +288,22 @@ export default class Player extends Component {
             color="#000"
           />
         </div>
-        <Tooltip
-          trigger="click"
-          interactive
-          inertia={true}
-          arrow={true}
-          animation="scale"
-          arrowSize={"big"}
-          duration={200}
-          html={<div className="playlist-container">{this.renderPlaylistContainer()}</div>}
-        >
-          <Ionicon className="clickable" icon="ios-list-box" fontSize="60px"/>
-        </Tooltip>
+        <div className="right">
+          <Tooltip
+            trigger="click"
+            interactive
+            inertia={true}
+            arrow={true}
+            animation="scale"
+            arrowSize={"big"}
+            duration={200}
+            html={<div className="playlist-container">{this.renderPlaylistContainer()}</div>}
+          >
+            <Ionicon className="clickable right-icon" icon="ios-list-box" fontSize="60px"/>
+          </Tooltip>
+          <Ionicon className={this.state.downloading ? "right-icon" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
+          <Ionicon className={this.state.downloading ? "hidden" : "clickable right-icon"} icon="ios-cloud-download" fontSize="60px" onClick={() => this.downloadShow()}/>
+        </div>
       </div>
     );
   }
