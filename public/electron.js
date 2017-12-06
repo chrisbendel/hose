@@ -26,7 +26,26 @@ if (isElectron()) {
 
 if ( platform.isWin32 ) {
   autoUpdater.on('update-downloaded', function() {
-    autoUpdater.quitAndInstall(false);
+    autoUpdater.addListener("update-downloaded", (info) => {
+      log.info("A new update is ready to install: ", info);
+  
+      if (!mainWindow.isVisible()) {
+        showWindow()
+      }
+  
+      dialog.showMessageBox({
+        type:      'info',
+        title:     'hose',
+        message:   'A new version of ' + app.getName() + ' is ready to install!',
+        buttons:   ['Install update', 'Not now'],
+        defaultId: 0,
+        cancelId:  1,
+      }, (buttonIndex) => {  
+        if (buttonIndex === 0) {
+          autoUpdater.quitAndInstall();
+        }
+      });
+    });
   });
 }
 
@@ -58,9 +77,7 @@ function createWindow() {
 }
 
 app.on('ready', () => { 
-
   createWindow();
-
 });
 
 app.on('window-all-closed', function () {
