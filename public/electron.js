@@ -11,27 +11,6 @@ const autoUpdater = require("electron-updater").autoUpdater;
 let willQuitApp = false;
 
 autoUpdater.checkForUpdatesAndNotify();
-autoUpdater.addListener('update-available', function() {
-  dialog.showMessageBox({
-    type:      'info',
-    title:     'Hose Update',
-    message:   'A new version of ' + app.getName() + ' is ready to install!',
-    buttons:   ['Download the update now!', 'Not now'],
-    defaultId: 0,
-    cancelId:  1,
-  }, (buttonIndex) => {
-    if (buttonIndex === 0) {
-      setImmediate(() => {
-        app.removeAllListeners("window-all-closed")
-        if (mainWindow != null) {
-          willQuitApp = true;
-          mainWindow.close()
-        }
-        autoUpdater.quitAndInstall(false)
-      })
-    }
-  });
-});
 
 if (isElectron()) {
   prefs = {
