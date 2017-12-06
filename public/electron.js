@@ -56,9 +56,9 @@ function createWindow() {
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '/../build/index.html')}`);
  
   mainWindow.on('close', function (event) {
-    if (willQuitApp) {
+    if (willQuitApp || platform.isWin32) {
       mainWindow = null;
-      process.exit(0);
+      app.exit(0);
     } else {
       event.preventDefault();
       mainWindow.hide();
