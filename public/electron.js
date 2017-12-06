@@ -11,7 +11,7 @@ const autoUpdater = require("electron-updater").autoUpdater;
 let willQuitApp = false;
 
 autoUpdater.checkForUpdatesAndNotify();
-autoUpdater.addListener('update-available', () => {
+autoUpdater.addListener('update-available', function() {
   dialog.showMessageBox({
     type:      'info',
     title:     'Hose Update',
@@ -23,12 +23,11 @@ autoUpdater.addListener('update-available', () => {
     if (buttonIndex === 0) {
       setImmediate(() => {
         app.removeAllListeners("window-all-closed")
-        willQuitApp = true;
         if (mainWindow != null) {
+          willQuitApp = true;
           mainWindow.close()
         }
         autoUpdater.quitAndInstall(false)
-        app.quit();
       })
     }
   });
