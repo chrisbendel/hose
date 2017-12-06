@@ -24,6 +24,11 @@ if (isElectron()) {
   }
 }
 
+if ( platform.isWin32 ) {
+  autoUpdater.on('update-downloaded', function() {
+    autoUpdater.quitAndInstall(false);
+  });
+}
 
 function createWindow() {
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
