@@ -69,6 +69,9 @@ export default class SideNav extends Component {
         {this.renderList}
         <a href="https://paypal.me/chrissbendel" target="_blank"> Donate (Coffee!) </a>
         <a href="https://admin.gear.mycelium.com/gateways/3704/orders/new" target="_blank">Donate (Bitcoin)</a>
+        <div className="btn-share">
+          Share!
+        </div>
       </div>
     );
   }

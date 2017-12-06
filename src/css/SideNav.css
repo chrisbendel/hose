@@ -22,8 +22,12 @@
 }
 
 .sidenav {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   align-self: flex-start;
+  justify-content: center;
+  align-items: center;
 }
 
 .sidenav a {
@@ -34,6 +38,8 @@
   color: #BDBDBD;
   display: block;
   transition: .15s ease all;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .sidenav a.active {
@@ -44,5 +50,14 @@
 .sidenav a:not(.active):hover, .offcanvas a:focus{
   background-color: #64B5F6;
   color: #FFF;
+}
+
+.btn-share {
+  border: 0;
+  padding: .65rem 3rem;
+  background-color: #2979FF;
+  color: #FFF;
+  border-radius: 50px;
+  margin-top: 5rem;
 }
 

@@ -1,7 +1,7 @@
 {
   "name": "hose",
   "productName": "hose",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "main": "public/electron.js",
   "author": "Christopher Bendel",
@@ -73,7 +73,7 @@
     "build": "react-scripts build",
     "pack": "build --em.main=build/electron.js",
     "release:mac": "yarn build && yarn prerelease && build -m --em.main=build/electron.js --publish always",
-    "release:win": "yarn build && yarn prerelease && build -w --em.main=build/electron.js --publish always",
+    "release:win": "yarn build && yarn prerelease && build -w --ia32 --x64 --em.main=build/electron.js --publish always",
     "prerelease": "yarn build",
     "postinstall": "electron-builder install-app-deps"
   },
