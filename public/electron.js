@@ -44,6 +44,7 @@ if ( platform.isWin32 ) {
       }, (buttonIndex) => {  
         if (buttonIndex === 0) {
           autoUpdater.quitAndInstall();
+          // shell.openExternal('https://s3.amazonaws.com/hose/hose+Setup+' + app.getVersion() + '.exe')
         }
       });
     });
