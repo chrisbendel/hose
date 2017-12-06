@@ -1,7 +1,7 @@
 {
   "name": "hose",
   "productName": "hose",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "main": "public/electron.js",
   "author": "Christopher Bendel",
