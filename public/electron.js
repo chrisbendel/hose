@@ -25,7 +25,22 @@ if (isElectron()) {
   }
 }
 
-
+if ( platform.isWin32 ) {
+  autoUpdater.addListener("update-downloaded", (info) => {
+    dialog.showMessageBox({
+      type:      'info',
+      title:     'hose update ready',
+      message:   'Version ' +  info.version + ' of ' + app.getName() + ' is ready to install!',
+      buttons:   ['Install update', 'Not now'],
+      defaultId: 0,
+      cancelId:  1,
+    }, (buttonIndex) => {  
+      if (buttonIndex === 0) {
+        shell.openExternal('https://s3.amazonaws.com/hose/hose+Setup+' + info.version + '.exe')
+      }
+    });
+  });
+}
 
 function createWindow() {
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
@@ -38,22 +53,7 @@ function createWindow() {
     webPreferences: prefs
   });
 
-  if ( platform.isWin32 ) {
-    autoUpdater.on("update-downloaded", (info) => {
-      dialog.showMessageBox({
-        type:      'info',
-        title:     'hose update ready',
-        message:   'Version ' +  info.version + ' of ' + app.getName() + ' is ready to install!',
-        buttons:   ['Install update', 'Not now'],
-        defaultId: 0,
-        cancelId:  1,
-      }, (buttonIndex) => {  
-        if (buttonIndex === 0) {
-          shell.openExternal('https://s3.amazonaws.com/hose/hose+Setup+' + info.version + '.exe')
-        }
-      });
-    });
-  }
+
 
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '/../build/index.html')}`);
  
@@ -76,9 +76,7 @@ app.on('ready', () => {
 });
 
 app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') {
-      app.quit()
-  }
+  app.quit()
 });
 
 app.on('before-quit', () => willQuitApp = true);
