@@ -1,7 +1,7 @@
 {
   "name": "hose",
   "productName": "hose",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "main": "public/electron.js",
   "author": "Christopher Bendel",
@@ -43,12 +43,19 @@
     "mac": {
       "category": "public.app-category.music",
       "helperBundleId": "com.chrissbendel.hose",
-      "target": ["mas", "dmg"],
+      "target": [
+        "mas",
+        "dmg"
+      ],
       "type": "distribution",
       "icon": "build/hose.icns"
     },
     "win": {
       "publisherName": "Christopher Bendel"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": true
     },
     "files": [
       "build/**/*",
