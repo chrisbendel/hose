@@ -42,14 +42,14 @@ function createWindow() {
     autoUpdater.on("update-downloaded", (info) => {
       dialog.showMessageBox({
         type:      'info',
-        title:     'hose',
-        message:   'A new version of ' + app.getName() + ' is ready to install!',
+        title:     'hose update ready',
+        message:   'Version ' +  info.version + ' of ' + app.getName() + ' is ready to install!',
         buttons:   ['Install update', 'Not now'],
         defaultId: 0,
         cancelId:  1,
       }, (buttonIndex) => {  
         if (buttonIndex === 0) {
-          shell.openExternal('https://s3.amazonaws.com/hose/hose+Setup+0.2.3.exe')
+          shell.openExternal('https://s3.amazonaws.com/hose/hose+Setup+' + info.version + '.exe')
         }
       });
     });
