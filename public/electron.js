@@ -4,6 +4,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 const {ipcMain, dialog, shell} = require('electron');
+const platform = require('electron-platform');
 let mainWindow; 
 const isElectron = require('is-electron');
 const isDev = require('electron-is-dev');
