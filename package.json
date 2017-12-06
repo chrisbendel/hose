@@ -43,7 +43,6 @@
     "mac": {
       "category": "public.app-category.music",
       "helperBundleId": "com.chrissbendel.hose",
-      "type": "distribution",
       "icon": "build/hose.icns"
     },
     "win": {
