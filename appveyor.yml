@@ -6,7 +6,6 @@ branches:
     - master
 
 platform:
-  - x64
   - ia32
 
 cache:
@@ -18,7 +17,7 @@ init:
 
 install:
   - ps: Install-Product node 8 x64
-  - yarn
+  - yarn && yarn build
 
 build_script:
   - yarn release:win

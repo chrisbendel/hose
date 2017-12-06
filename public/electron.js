@@ -8,6 +8,7 @@ let mainWindow;
 const isElectron = require('is-electron');
 const isDev = require('electron-is-dev');
 const autoUpdater = require("electron-updater").autoUpdater;
+autoUpdater.checkForUpdatesAndNotify();
 
 if (isElectron()) {
   prefs = {
@@ -24,7 +25,6 @@ if (isElectron()) {
 let willQuitApp = false;
 
 function createWindow() {
-  autoUpdater.checkForUpdatesAndNotify();
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
     title: 'Hose',
