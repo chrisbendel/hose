@@ -8,6 +8,8 @@ let mainWindow;
 const isElectron = require('is-electron');
 const isDev = require('electron-is-dev');
 const autoUpdater = require("electron-updater").autoUpdater;
+let willQuitApp = false;
+
 autoUpdater.checkForUpdatesAndNotify();
 autoUpdater.addListener('update-available', () => {
   dialog.showMessageBox({
@@ -44,7 +46,6 @@ if (isElectron()) {
   }
 }
 
-let willQuitApp = false;
 
 function createWindow() {
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
