@@ -3,7 +3,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
-const {ipcMain, dialog, shell} = require('electron');
+const {ipcMain, dialog, shell, process} = require('electron');
 const platform = require('electron-platform');
 let mainWindow; 
 const isElectron = require('is-electron');
@@ -58,6 +58,7 @@ function createWindow() {
   mainWindow.on('close', function (event) {
     if (willQuitApp) {
       mainWindow = null;
+      process.exit(0);
     } else {
       event.preventDefault();
       mainWindow.hide();
