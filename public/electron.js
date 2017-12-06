@@ -25,31 +25,7 @@ if (isElectron()) {
   }
 }
 
-if ( platform.isWin32 ) {
-  autoUpdater.on('update-downloaded', function() {
-    autoUpdater.addListener("update-downloaded", (info) => {
-      log.info("A new update is ready to install: ", info);
-  
-      if (!mainWindow.isVisible()) {
-        showWindow()
-      }
-  
-      dialog.showMessageBox({
-        type:      'info',
-        title:     'hose',
-        message:   'A new version of ' + app.getName() + ' is ready to install!',
-        buttons:   ['Install update', 'Not now'],
-        defaultId: 0,
-        cancelId:  1,
-      }, (buttonIndex) => {  
-        if (buttonIndex === 0) {
-          autoUpdater.quitAndInstall();
-          // shell.openExternal('https://s3.amazonaws.com/hose/hose+Setup+' + app.getVersion() + '.exe')
-        }
-      });
-    });
-  });
-}
+
 
 function createWindow() {
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
@@ -61,6 +37,23 @@ function createWindow() {
     icon: __dirname + 'build/icon.ico',
     webPreferences: prefs
   });
+
+  if ( platform.isWin32 ) {
+    autoUpdater.on("update-downloaded", (info) => {
+      dialog.showMessageBox({
+        type:      'info',
+        title:     'hose',
+        message:   'A new version of ' + app.getName() + ' is ready to install!',
+        buttons:   ['Install update', 'Not now'],
+        defaultId: 0,
+        cancelId:  1,
+      }, (buttonIndex) => {  
+        if (buttonIndex === 0) {
+          shell.openExternal('https://s3.amazonaws.com/hose/hose+Setup+0.2.3.exe')
+        }
+      });
+    });
+  }
 
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '/../build/index.html')}`);
  
