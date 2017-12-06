@@ -23,11 +23,8 @@ before_install:
     
 before_script:
   - git lfs pull
-  - yarn build
-  
 
 script:
-  - yarn prerelease
   - yarn release:mac
   
 before_cache:
