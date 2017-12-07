@@ -23,8 +23,6 @@ if (isElectron()) {
   }
 }
 
-
-
 function createWindow() {
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
@@ -57,7 +55,7 @@ app.on('ready', () => {
   autoUpdater.checkForUpdatesAndNotify();
   
   if ( platform.isWin32 ) {
-    autoUpdater.addListener("update-downloaded", (info) => {
+    autoUpdater.addListener("update-available", (info) => {
       dialog.showMessageBox({
         type:      'info',
         title:     'hose update ready',
