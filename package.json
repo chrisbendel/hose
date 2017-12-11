@@ -67,6 +67,7 @@
     "start": "react-scripts start",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "publishaws": "npm run build && aws s3 sync build/ s3://hose.live",
     "electron": "electron .",
     "build": "react-scripts build",
     "pack": "build --em.main=build/electron.js",

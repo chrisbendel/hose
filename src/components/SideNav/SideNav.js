@@ -24,9 +24,9 @@ const items = [
     "path": "/song"
   },
   // {
-  //   "id": 5,
-  //   "name": "Settings",
-  //   "path": "/settings"
+  //   "id": 4,
+  //   "name": "Login",
+  //   "path": "/login"
   // },
   // {
   //   "id": 6,

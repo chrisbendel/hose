@@ -1,5 +1,5 @@
+import {email, password} from './../config';
 const base = 'https://phish.in/api/v1/'
-
 
 // var myHeaders = new Headers();
 
@@ -8,10 +8,10 @@ const base = 'https://phish.in/api/v1/'
 export const login = async() => {
   fetch('http://phish.in/api/v1/users/sign_in', {
     method: 'POST',
-    headers: myHeaders,
-    mode: 'cors',
+    mode: 'no-cors',
+    origin: "https://google.com",
     cache: 'default',
-    body: JSON.stringify({user: {email: "phishin@phishin.com", password:"phishin123"} })
+    body: JSON.stringify({user: {email: email, password: password} })
   }).then(function(response) {
     return response.json()
   }).then(function(json) {
@@ -20,8 +20,6 @@ export const login = async() => {
     console.log('parsing failed', ex)
   })
 }
-
-
 
 export const randomShow = async() => {
   let data = await (await fetch(base + 'random-show')).json();
@@ -39,7 +37,7 @@ export const testFunc = async() => {
 }
 
 export const shows = async(page = 1) => {
-  let data = await (await fetch(base + 'shows?per_page=50&page=' + page)).json();
+  let data = await (await fetch(base + 'shows?sort_attr=date&sort_dir=desc&per_page=50&page=' + page)).json();
   return data.data;
 }
 

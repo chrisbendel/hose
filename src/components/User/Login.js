@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './../../css/Login.css';
+import {login} from './../../api/phishin';
 
 export default class Login extends Component {
   constructor(props) {
@@ -8,6 +9,6 @@ export default class Login extends Component {
   }
 
   render() {
-    return <div> placeholder </div>
+    return <div onClick={() => login()}> login </div>
   }
 }
