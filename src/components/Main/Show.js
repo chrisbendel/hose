@@ -68,14 +68,6 @@ export default class Show extends Component {
         playing: playing
       });
     });
-
-    // let info = PlayerInfo.getInfo();
-    // this.setState({
-    //   playingShow: info.show,
-    //   playingTrack: info.track,
-    //   playingPosition: info.position,
-    //   playing: info.playing
-    // });
     
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();

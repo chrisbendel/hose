@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './../../css/Player.css'
+import './../../css/Player.css';
 import Audio from 'react-audioplayer';
 import { show } from './../../api/phishin';
 import Ionicon from 'react-ionicons';

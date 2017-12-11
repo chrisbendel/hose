@@ -5,6 +5,7 @@ import Player from './components/Footer/Player';
 import Show from './components/Main/Show';
 import Shows from './components/Main/Shows';
 import Songs from './components/Main/Songs';
+import Login from './components/User/Login';
 import {history} from './History';
 import GlobalSearch from './components/Header/GlobalSearch';
 import {emitter} from './Emitter';
@@ -20,12 +21,13 @@ export default class App extends Component {
               <SideNav />
             </nav>
             <header className="header">
-              <GlobalSearch history={history}/>
+              <GlobalSearch/>
             </header>
             <main className="content">
-                <Route path="/show/:id" component={Show}/>
-                <Route path="/shows/:type?/:id?" component={Shows}/>
-                <Route path="/song/:id?" component={Songs}/>
+                <Route exact path="/show/:id" component={Show}/>
+                <Route exact path="/shows/:type?/:id?" component={Shows}/>
+                <Route exact path="/song/:id?" component={Songs}/>
+                {/* <Route path="/login" component={Login}/> */}
             </main>
             <Redirect from="/" exact to="/shows"/>
           </div>
