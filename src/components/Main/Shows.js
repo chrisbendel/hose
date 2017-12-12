@@ -156,9 +156,7 @@ export default class Shows extends Component {
   fetchShowsToday = (custom = null) => {
     let date;
     if (custom) {
-      console.log(custom);
       let thing = new Date(custom + ' 00:00');
-      console.log(thing);
       let day = thing.getDate().toString();
       let month = (thing.getMonth() + 1).toString();
       date = month + "-" + day;
