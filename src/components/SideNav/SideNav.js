@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import './../../css/SideNav.css'
+import { history } from './../../History';
 
 const items = [
   {
@@ -22,6 +23,11 @@ const items = [
     "id": 3,
     "name": "Songs",
     "path": "/song"
+  },
+  {
+    "id": 4,
+    "name": "Radio",
+    "path": "/radio"
   },
   // {
   //   "id": 4,
@@ -61,17 +67,18 @@ export default class SideNav extends Component {
   render() {
     return (
       <div className="sidenav">
-        <div className="logo-area">
+        <div className="logo-area" style={{cursor: 'pointer'}} onClick={() => {
+          history.push('/shows');
+        }}>
           <span className="logo">
-            <img src="https://s3.amazonaws.com/hose/images/hose.svg"/>
+            <img alt="logo" src="https://s3.amazonaws.com/hose/images/hose.svg"/>
           </span>
         </div>
         {this.renderList}
         <a href="https://paypal.me/chrissbendel" target="_blank"> Donate (Coffee!) </a>
-        <a href="https://admin.gear.mycelium.com/gateways/3704/orders/new" target="_blank">Donate (Bitcoin)</a>
-        <div className="btn-share">
+        {/* <div className="btn-share">
           Share!
-        </div>
+        </div> */}
       </div>
     );
   }

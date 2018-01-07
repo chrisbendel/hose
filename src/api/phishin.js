@@ -58,7 +58,7 @@ export const showsForYear = async(year) => {
 
 export const showsForTour = async(tour) => {
   let data = await (await fetch(base + 'tours/' + tour)).json();
-  return data.data.shows;
+  return data.data;
 }
 
 export const showsToday = async(day) => {

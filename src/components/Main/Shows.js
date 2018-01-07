@@ -16,7 +16,6 @@ const isJamchart = (id) => {
   return (showJamcharts.indexOf(id) !== -1);
 }
 
-//TODO create default empty state if no shows found
 export default class Shows extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +25,7 @@ export default class Shows extends Component {
       allShows: true,
       filterOption: '',
       page: 1,
+      loadMoreShows: true,
       loadingShows: false,
       currentFilter: 'All Shows'
     }
@@ -59,7 +59,7 @@ export default class Shows extends Component {
   handleScroll = (e) => {
     let el = this.refs.shows;
     if (el.scrollTop === (el.scrollHeight - el.offsetHeight)) {
-      if (!this.state.loadingShows) {
+      if (!this.state.loadingShows && this.state.loadMoreShows) {
         this.loadMoreShows();
       }
     }
@@ -128,15 +128,10 @@ export default class Shows extends Component {
               </div>
             </div>
           </div>
-          <span 
-            onClick={() => {history.push('/show/' + show.id)}}
-            className="show-date"
-          >
+          <span onClick={() => {history.push('/show/' + show.id)}} className="show-date">
             {date.toLocaleDateString('en-US', dateOptions)}
           </span>
-          <span className="show-venue"
-            
-          >
+          <span className="show-venue">
             {show.venue ? 
               <span onClick={() => {history.push('/shows/venue/' + show.venue.id)}}>
                 {show.venue.name} {show.venue.location
@@ -146,8 +141,7 @@ export default class Shows extends Component {
                 {show.venue_name} {show.location}  
               </span>
             }
-            
-            </span>
+          </span>
         </div>
       );
     }, this);
@@ -155,13 +149,15 @@ export default class Shows extends Component {
 
   fetchShowsToday = (custom = null) => {
     let date;
+    let today;
+
     if (custom) {
-      let thing = new Date(custom + ' 00:00');
-      let day = thing.getDate().toString();
-      let month = (thing.getMonth() + 1).toString();
+      today = new Date(custom + ' 00:00');
+      let day = today.getDate().toString();
+      let month = (today.getMonth() + 1).toString();
       date = month + "-" + day;
     } else {
-      let today = new Date();
+      today = new Date();
       let day = today.getDate().toString();
       let month = (today.getMonth() + 1).toString();
       date = month + "-" + day;
@@ -171,19 +167,23 @@ export default class Shows extends Component {
       let shows = this.sortShows('date', 'desc', data);
       this.setState({
         shows: shows,
-        allShows: false
-      })
-    })
+        loadMoreShows: false,
+        allShows: false,
+        currentFilter: "Shows on " + today.toLocaleDateString()
+      });
+    });
   }
 
   fetchShowsForTour = (tour) => {
     showsForTour(tour).then(data => {
-      let shows = this.sortShows('date', 'desc', data);
+      let shows = this.sortShows('date', 'desc', data.shows);
       this.setState({
         shows: shows,
-        allShows: false
-      })
-    })
+        loadMoreShows: false,
+        allShows: false,
+        currentFilter: data.name
+      });
+    });
   }
 
   fetchShowsForVenue = (venue) => {
@@ -199,10 +199,12 @@ export default class Shows extends Component {
         let shows = this.sortShows('date', 'desc', data);
         this.setState({
           shows: shows,
-          allShows: false
-        })
-      })
-    })
+          loadMoreShows: false,
+          allShows: false,
+          currentFilter: data[0].venue.name + ', ' + data[0].venue.location
+        });
+      });
+    });
   }
 
   fetchShowsForYear = (year) => {
@@ -210,9 +212,11 @@ export default class Shows extends Component {
       let shows = this.sortShows('date', 'desc', data);
       this.setState({
         shows: shows,
-        allShows: false
-      })
-    })
+        loadMoreShows: false,
+        allShows: false,
+        currentFilter: year
+      });
+    });
   }
 
   sortShows = (attr, order, shows) => {
@@ -251,6 +255,7 @@ export default class Shows extends Component {
         shows: shows,
         allShows: true,
         page: 1,
+        loadMoreShows: true,
         currentFilter: "All Shows"
       })
     })
@@ -294,29 +299,12 @@ export default class Shows extends Component {
     return (
       <div>
         <div className="filters">
-        <div className="scroll-top">
-          <Ionicon
-            className="clickable"
-            icon="ios-arrow-up" 
-            fontSize="40px"
-            onClick={() => {
-              //animate this one day
-              this.refs.shows.scrollTop = 0;
-            }}
-          />
-        </div>
-          <div className="filter-display">
-            <span>Displaying: {this.state.currentFilter}</span>
-            <Ionicon
-            className="clickable"
-            icon="md-close-circle" 
-            fontSize="20px"
-            onClick={() => {
-              this.fetchAllShows()
-            }}
-          />
+          <div className="scroll-top" onClick={() => {
+                this.refs.shows.scrollTop = 0;
+              }}>
+            <Ionicon icon="ios-arrow-up" fontSize="40px"/>
           </div>
-
+          
           <Filter
             setTitle={this.setCurrentFilter.bind(this)}
             name={"Years"}
@@ -338,7 +326,6 @@ export default class Shows extends Component {
             placeholder={"Venues"}
             options={venueFilters}
           />
-
           <div className="search-filter">
             <Select
               name={"Sort by"}
@@ -350,8 +337,21 @@ export default class Shows extends Component {
           </div>
         </div>
         <div className="shows-container" ref="shows">
+          <div className="filter-display">
+          <span>{this.state.currentFilter}  </span>
+            <Ionicon
+              className="clickable"
+              icon="md-close-circle" 
+              fontSize="15px"
+              onClick={() => {
+                this.fetchAllShows()
+              }}
+            />
+          </div>
           <div className="show-gallery">
-            {this.renderShows(shows)}
+            {shows.length ? this.renderShows(shows) 
+            :
+            <div>No shows found</div>}
           </div>
           {this.state.allShows ?
             <div>

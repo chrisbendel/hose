@@ -52,13 +52,16 @@ export default class Songs extends Component {
   fetchTracks = (song) => {
     if (song) {
       tracksForSong(song).then(tracks => {
-        this.setState({
-          tracks: tracks,
-          trackId: song
-        })
+        if (tracks.length) {
+          this.setState({
+            tracks: tracks,
+            trackId: song,
+            filterDisplay: tracks[0].title
+          });
+        }
       });
     } else {
-      this.setState({tracks: null})
+      this.setState({tracks: null});
     }
   }
   
@@ -147,28 +150,40 @@ export default class Songs extends Component {
     let tracks = this.state.tracks;
     return tracks.map(track => {
       return (
-        <li className="show-container-item" key={track.show_id}>
-          <img alt={track.show_date} className="image-cell" src={'https://s3.amazonaws.com/hose/images/' + track.show_date + '.jpg'}/>
-          <span className="play-cell">
-            <span className="play-button-sm">
-              <Ionicon 
-                style={{cursor: 'pointer'}}
-                icon="ios-play"
-                font-size="40px"
-                onClick={() => {PlayerInfo.updateShowAndPosition(track.show_id, track.position)}}
-                className="track-play"
-              />
-            </span>
-            <span className="pause-button-sm">
-              <Ionicon 
-                style={{cursor: 'pointer'}}
-                icon="ios-pause"
-                font-size="40px"
-                onClick={() => {emitter.emit('pause')}}
-                className="track-pause"
-              />
-            </span>
-          </span>
+        <li className="show-container-item" key={track.id}>
+          <div className="show-information-control image-cell">
+            <img
+              src={'https://s3.amazonaws.com/hose/images/' + track.show_date + '.jpg'}
+              className="image-cell"
+              alt={track.show_id}
+              id={track.id}
+            />
+            <div className="show-information">
+              <div className="center-abs">
+                <div className="play-button" onClick={
+                  (e) => PlayerInfo.updateShowAndPosition(e,track.show_id, track.position)
+                }>
+                  <Ionicon 
+                    icon="ios-play" 
+                    fontSize="25px" 
+                    color="white"
+                    className="left-10"
+                  />
+                </div>
+                <div className="show-likes">
+                  <Ionicon 
+                    icon="ios-thumbs-up"
+                    fontSize="10px"
+                    onClick={() => console.log('like clicked')}
+                    color="white"
+                  />
+                  <span className="likes-num"> 
+                    {track.likes_count} 
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
           <span className="title-cell">{track.title}</span>
           <NavLink className="title-cell" to={'/show/' + track.show_id}><span>{track.show_date}</span></NavLink>
           <span className="jamcharts-cell">{isJamchart(track.id) ? "Jamcharts" : ""}</span>
@@ -200,11 +215,10 @@ export default class Songs extends Component {
 
   renderTrackContainer = () => {
     return (
-      <ul key='top' className="playlist-section">
-        <li key='header' className="show-container-item header-cell">
+      <ul className="playlist-section">
+        <li className="show-container-item header-cell">
           <span className="image-cell-header"></span>
-          <span className="play-cell"> </span>
-          <span className="title-cell">Title</span>
+          <span className="title-cell">Song</span>
           <span className="title-cell" onClick={() => {this.sortShows('date')}}>Date</span>
           <span className="jamcharts-cell" onClick={() => {this.sortShows('jamcharts')}}>Jamcharts</span>
           <span className="length-cell">
@@ -240,22 +254,13 @@ export default class Songs extends Component {
     return (
       <div>
         <div className="filters">
-          <Ionicon
-            className="clickable"
-            icon="ios-arrow-dropup-circle" 
-            fontSize="40px"
-            onClick={() => {
-              //animate this one day
+          <div className="scroll-top" onClick={() => {
+            if (this.refs.tracks) {
               this.refs.tracks.scrollTop = 0;
-            }}
-          />
-          {this.state.filterDisplay ?
-            <div className="filter-display">
-              Song: {this.state.filterDisplay}
-            </div>
-            :
-            null
-          }
+            }
+          }}>
+            <Ionicon icon="ios-arrow-up" fontSize="40px"/>
+          </div>
           <div className="search-filter">
             <Filter 
               setTitle={this.setFilterDisplay.bind(this)}
@@ -266,13 +271,20 @@ export default class Songs extends Component {
             />
           </div>
         </div>
-        {tracks ? 
-          <div className="tracks-container" ref="tracks">
-              {this.renderTrackContainer(tracks)}
-          </div>
-          : 
-          <div className="tracks-container">Choose a song from the list!</div>
-        }
+
+        <div className="tracks-container" ref="tracks">
+          {this.state.filterDisplay ?
+            <div className="filter-display">
+              {this.state.filterDisplay}
+            </div> : null
+          }
+
+          {tracks ? 
+            this.renderTrackContainer(tracks)
+            : 
+            <div className="tracks-container">Choose a song from the list!</div>
+          }
+        </div>
       </div>
     );
   }
