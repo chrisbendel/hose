@@ -87,11 +87,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   flex-grow: 1;
+  text-decoration: none;
 }
 
 .jamcharts-cell {
   cursor: pointer;
   width: 20%;
+  font-weight: bold;
   min-width: 100px;
   white-space: nowrap;
   overflow: hidden;
@@ -187,4 +189,101 @@
 
 .track-play {
   margin-left: 1px;  
+}
+
+.scroll-top {
+  position: fixed;
+  cursor: pointer;
+  bottom: 100px;
+  right: 30px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2979FF;
+  border-radius: 50%;
+  padding: .5rem;
+  box-shadow: 0 0 14px 0px rgba(0, 0, 0, 0.35);
+}
+
+.scroll-top svg {
+  fill: #FFF;
+  margin-bottom: 3px;
+  width: 25px;
+}
+
+.show-information-control {
+  position: relative;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.35);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.show-information {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .15s ease opacity; 
+}
+
+.show-information:hover {
+  opacity: 1;
+}
+
+.center-abs {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.play-button {
+  border: 1px solid #FFF; 
+  border-radius: 50%;
+  padding: .5rem; 
+  background-color: rgba(0, 0, 0, 0.35);
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+.play-button:hover {
+  transform: scale(1.1);
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.play-button svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(calc(-50% + 3px),-50%);
+}
+
+.show-likes {
+  color: #FFF;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  line-height: 1;
+  cursor: pointer;  
+  padding: .5rem;
+  align-items: center;
+  font-size: 18px;
+}
+
+.likes-num {
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+.left-10 {
+  position: absolute;
+  left: 12px;
 }

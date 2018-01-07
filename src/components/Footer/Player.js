@@ -15,7 +15,7 @@ import JSZip from 'jszip';
 import {saveAs} from 'file-saver'
 
 if (isElectron()) {
-  var {ipcRenderer, remote} = window.require('electron');
+  var {remote} = window.require('electron');
   var remoteWindow = remote.getCurrentWindow();
 }
 
@@ -55,6 +55,7 @@ export default class Player extends Component {
     if (this.player) {
       let show = this.state.show;
       let playerState = this.player.state;
+      
       let currentPosition = playerState.currentPlaylistPos + 1;
       let currentTrack = show.tracks.find(track => {
         return track.position === currentPosition;

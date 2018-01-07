@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './../../css/Show.css';
-import { NavLink } from 'react-router-dom';
 import { show, randomShow } from './../../api/phishin';
 import { showDetails } from './../../api/phishnet';
 import Ionicon from 'react-ionicons';
@@ -8,7 +7,6 @@ import {trackJamcharts, tourFilters} from './../../filterOptions';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
 import {history} from './../../History';
-import Interweave from 'interweave';
 import PlayerInfo from './../../PlayerInfo';
 import {emitter} from './../../Emitter';
 import Spinner from 'react-spinkit';
@@ -60,7 +58,6 @@ export default class Show extends Component {
 
   componentWillMount() {
     emitter.addListener('songUpdate', (show, track, position, playing) => {
-      // console.log(show, track, position, playing);
       this.setState({
         playingShow: show,
         playingTrack: track,
@@ -106,7 +103,6 @@ export default class Show extends Component {
     return tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
-      // console.log(PlayerInfo.isPlaying(), PlayerInfo.getPosition(), track.position, PlayerInfo.getShow(), show.id)
       return (
         <li
           className={
@@ -251,7 +247,8 @@ export default class Show extends Component {
     }
 
     let details = this.state.showDetails;
-    
+    console.log(show);
+    console.log(details);
     let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     let date = new Date(show.date + ' 00:00');
 
@@ -269,7 +266,7 @@ export default class Show extends Component {
             <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
             <h3 className="clickable" onClick={() => {history.push('/shows/venue/' + show.venue.id)}}>{show.venue.name}</h3>
             <h4>{details.location}</h4>
-
+            <h4 className="clickable" onClick={() => {history.push('/shows/tour/' + show.tour_id)}}>{details.tourname}</h4>
             <div className="btn-container">
               {this.state.playing ?
                 <button 
