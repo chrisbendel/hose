@@ -13,7 +13,9 @@ import Spinner from 'react-spinkit';
 import isElectron from 'is-electron';
 
 const isJamchart = (id) => {
-  return (showJamcharts.indexOf(id) !== -1);
+  if (showJamcharts) {
+    return (showJamcharts.indexOf(id) !== -1);
+  }
 }
 
 export default class Shows extends Component {
@@ -269,7 +271,7 @@ export default class Shows extends Component {
   loadMoreShows = () => {
     this.setState({
       loadingShows: true
-    })
+    });
     let page = this.state.page + 1;
     
     shows(page).then(shows => {
