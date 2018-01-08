@@ -1,10 +1,6 @@
 import {email, password} from './../config';
 const base = 'https://phish.in/api/v1/'
 
-// var myHeaders = new Headers();
-
-// myHeaders.append('Content-Type', 'application/json');
-
 export const login = async() => {
   fetch('http://phish.in/api/v1/users/sign_in', {
     method: 'POST',

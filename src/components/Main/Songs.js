@@ -8,9 +8,9 @@ import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css'
 import './../../css/Songs.css';
 import 'react-select/dist/react-select.css';
-import {emitter} from './../../Emitter';
 import {history} from './../../History';
 import PlayerInfo from './../../PlayerInfo';
+import Spinner from 'react-spinkit';
 
 const isJamchart = (id) => {
   return (trackJamcharts.indexOf(id) !== -1);
@@ -29,13 +29,13 @@ export default class Songs extends Component {
     this.state = {
       tracks: null,
       filterOption: '',
-      loadingShows: false,
       songSearch: '',
       filterDisplay: null,
       likesOrder: false,
       timeOrder: false,
       dateOrder: false,
-      jamcharts: false
+      jamcharts: false,
+      loading: false
     }
   }
   
@@ -50,18 +50,23 @@ export default class Songs extends Component {
   }
 
   fetchTracks = (song) => {
+    this.setState({loading: true});
     if (song) {
       tracksForSong(song).then(tracks => {
         if (tracks.length) {
           this.setState({
             tracks: tracks,
             trackId: song,
-            filterDisplay: tracks[0].title
+            filterDisplay: tracks[0].title,
+            loading: false,
           });
         }
       });
     } else {
-      this.setState({tracks: null});
+      this.setState({
+        tracks: null,
+        loading: false
+      });
     }
   }
   
@@ -250,7 +255,7 @@ export default class Songs extends Component {
 
   render() {
     let tracks = this.state.tracks;
-    
+
     return (
       <div>
         <div className="filters">
@@ -271,7 +276,11 @@ export default class Songs extends Component {
             />
           </div>
         </div>
-
+        {this.state.loading ? 
+        <div style={{position:'fixed', top:'50%', left: '50%', transform: 'translate(-50%, 50%)'}} >
+          <Spinner fadeIn='none' name='ball-pulse-rise' />
+        </div>
+        :
         <div className="tracks-container" ref="tracks">
           {this.state.filterDisplay ?
             <div className="filter-display">
@@ -285,6 +294,7 @@ export default class Songs extends Component {
             <div className="tracks-container">Choose a song from the list!</div>
           }
         </div>
+        }
       </div>
     );
   }

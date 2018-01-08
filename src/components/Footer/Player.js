@@ -39,6 +39,14 @@ export default class Player extends Component {
       this.play();
     });
 
+    emitter.addListener('next', () => {
+      this.skipToNext();
+    });
+
+    emitter.addListener('prev', () => {
+      this.skipToPrevious();
+    });
+
     emitter.addListener('playlistUpdate', (showId, position) => {
       if (this.state.show != null) {
         if (this.state.show.id === showId && this.player.state.currentPlaylistPos === position) {
@@ -55,7 +63,7 @@ export default class Player extends Component {
     if (this.player) {
       let show = this.state.show;
       let playerState = this.player.state;
-      
+
       let currentPosition = playerState.currentPlaylistPos + 1;
       let currentTrack = show.tracks.find(track => {
         return track.position === currentPosition;
@@ -123,12 +131,14 @@ export default class Player extends Component {
   skipToNext = (e) => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
+      this.setPlayerInfo();
     }
   }
 
   skipToPrevious = (e) => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
+      this.setPlayerInfo();
     }
   }
 

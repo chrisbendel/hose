@@ -15,15 +15,6 @@ class PlayerInfo {
     });
   }
 
-  getInfo = () => {
-    return {
-      show: this.show,
-      track: this.track,
-      position: this.position,
-      playing: this.playing
-    }
-  }
-
   isPlaying = () => {
     return this.playing;
   }
