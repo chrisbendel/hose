@@ -8,7 +8,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import {emitter} from './../../Emitter';
 import {history} from './../../History';
-import PlayerInfo from './../../PlayerInfo';
+import Controls from './../../Controls';
 import Spinner from 'react-spinkit';
 import isElectron from 'is-electron';
 
@@ -108,12 +108,11 @@ export default class Shows extends Component {
             />
             <div className="show-information">
               <div className="center-abs">
-                <div className="play-button" onClick={(e) => PlayerInfo.updateShowAndPosition(e,show.id)}>
+                <div className="play-button" onClick={(e) => Controls.updateShowAndPosition(e,show.id)}>
                   <Ionicon 
                     icon="ios-play" 
                     fontSize="35px" 
                     color="white"
-                    className="left-10"
                   />
                 </div>
                 <div className="show-likes">
@@ -259,8 +258,8 @@ export default class Shows extends Component {
         page: 1,
         loadMoreShows: true,
         currentFilter: "All Shows"
-      })
-    })
+      });
+    });
   }
 
   handleChange = (filterOption) => {

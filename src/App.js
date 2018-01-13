@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Route, Redirect } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import SideNav from './components/SideNav/SideNav';
 import Player from './components/Footer/Player';
 import Show from './components/Main/Show';
@@ -25,13 +25,11 @@ export default class App extends Component {
               <GlobalSearch/>
             </header>
             <main className="content">
-                <Route exact path="/show/:id" component={Show}/>
-                <Route exact path="/shows/:type?/:id?" component={Shows}/>
-                <Route exact path="/song/:id?" component={Songs}/>
-                <Route exact path="/radio" component={Radio}/>
-                {/* <Route path="/login" component={Login}/> */}
+              <Route exact path="/show/:id" component={Show}/>
+              <Route exact path="/shows/:type?/:id?" component={Shows}/>
+              <Route exact path="/song/:id?" component={Songs}/>
+              <Route exact path="/radio" component={Radio}/>
             </main>
-            <Redirect from="/" exact to="/shows"/>
           </div>
         </Router>
         <footer className="footer">

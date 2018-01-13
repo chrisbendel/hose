@@ -7,7 +7,7 @@ import {trackJamcharts, tourFilters} from './../../filterOptions';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
 import {history} from './../../History';
-import PlayerInfo from './../../PlayerInfo';
+import Controls from './../../Controls';
 import {emitter} from './../../Emitter';
 import Spinner from 'react-spinkit';
 import JSZipUtils from 'jszip-utils';
@@ -37,7 +37,10 @@ export default class Show extends Component {
     this.state = {
       show: null,
       showDetails: null,
-      playing: false
+      playing: false,
+      playingShow: null,
+      playingTrack: null,
+      playingPosition: null
     }
   }
 
@@ -106,7 +109,7 @@ export default class Show extends Component {
       return (
         <li
           className={
-              PlayerInfo.isPlaying() && PlayerInfo.getPosition() === track.position && PlayerInfo.getShow().id === this.state.show.id
+              this.state.playing && Controls.position === track.position && this.state.playingShow.id === this.state.show.id
               ? "show-container-item playing"
               : "show-container-item"
             }
@@ -119,7 +122,7 @@ export default class Show extends Component {
                 icon="ios-play"
                 font-size="40px"
                 onClick={(e) => {
-                  PlayerInfo.updateShowAndPosition(e, show.id, track.position);
+                  Controls.updateShowAndPosition(e, show.id, track.position);
                   this.setState({playing: true});
                 }}
                 className="track-play"
@@ -131,7 +134,7 @@ export default class Show extends Component {
                 icon="ios-pause"
                 font-size="40px"
                 onClick={() => {
-                  PlayerInfo.pause();
+                  Controls.pause();
                   this.setState({playing: true});
                 }}
                 className="track-pause"
@@ -252,7 +255,6 @@ export default class Show extends Component {
     let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     let date = new Date(show.date + ' 00:00');
 
-    PlayerInfo.getShow();
     return (
       <div className="show-container">
         <div className="show-information-top">
@@ -272,7 +274,7 @@ export default class Show extends Component {
                 <button 
                   className="play-btn-lrg green clickable"
                   onClick={(e) => {
-                    PlayerInfo.pause();
+                    Controls.pause();
                     this.setState({playing: true});
                   }}
                   >
@@ -282,7 +284,7 @@ export default class Show extends Component {
                 <button 
                   className="play-btn-lrg green clickable"
                   onClick={(e) => {
-                    PlayerInfo.updateShowAndPosition(e, show.id);
+                    Controls.updateShowAndPosition(e, show.id);
                     this.setState({playing: true});
                   }}
                 >
@@ -324,10 +326,4 @@ export default class Show extends Component {
       </div>
     );
   }
-}
-
-const getTourName = (id) => {
-  return tourFilters.find(tour => {
-    return tour.value === id;
-  }).label;
 }

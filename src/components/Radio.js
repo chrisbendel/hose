@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PlayerInfo from './../PlayerInfo';
+import Controls from './../Controls';
 import {emitter} from './../Emitter';
 import Ionicon from 'react-ionicons';
 import './../css/Radio.css';
