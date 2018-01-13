@@ -6,7 +6,7 @@ const tours = async() => {
   return data.data;
 }
 
-export let tourFilters;
+export let tourFilters = [];
 
 tours().then(data => {
   tourFilters = data.map(tour => {
@@ -24,7 +24,7 @@ const venues = async() => {
   return data.data;
 }
 
-export let venueFilters;
+export let venueFilters = [];
 
 venues().then(data => {
   venueFilters = data.map(venue => {
@@ -42,7 +42,7 @@ const songs = async() => {
   return data.data;
 }
 
-export let songFilters;
+export let songFilters = [];
 
 songs().then(data => {
   songFilters = data.map(song => {
@@ -59,7 +59,7 @@ const years = async() => {
   return data.data;
 }
 
-export let yearFilters;
+export let yearFilters = [];
 
 years().then(data => {
   yearFilters = data.map(year => {
@@ -78,7 +78,7 @@ const trackSBD = async() => {
   return data.data;
 }
 
-export let trackSoundboards;
+export let trackSoundboards = [];
 
 trackSBD().then(data => {
   trackSoundboards = data.map(track => {
@@ -93,7 +93,7 @@ const trackJams = async() => {
   return data.data;
 }
 
-export let trackJamcharts;
+export let trackJamcharts = [];
 
 trackJams().then(data => {
   trackJamcharts = data.map(track => {
@@ -107,7 +107,7 @@ const showSBD = async() => {
   return data.data;
 }
 
-export let showSoundboards;
+export let showSoundboards = [];
 
 showSBD().then(data => {
   showSoundboards = data.map(show => {
@@ -122,7 +122,7 @@ const showJams = async() => {
   return data.data;
 }
 
-export let showJamcharts;
+export let showJamcharts = [];
 
 showJams().then(data => {
   showJamcharts = data.map(show => {

@@ -89,7 +89,7 @@
 }
 
 .play-button:hover {
-  transform: scale(1.1);
+  transform: scale(1);
   background-color: rgba(0, 0, 0, 0.6);
 }
 
@@ -97,7 +97,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(calc(-50% + 3px),-50%);
+  transform: translate(-50%,-50%);
 }
 
 .show-likes {
@@ -121,11 +121,6 @@
 
 .likes-num {
   margin-left: 5px;
-}
-
-.left-10 {
-  position: absolute;
-  left: 12px;
 }
 
 .clickable {

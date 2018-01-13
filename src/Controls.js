@@ -1,6 +1,6 @@
 import {emitter} from './Emitter';
 
-class PlayerInfo {
+class Controls {
   constructor () {
     this.show = null;
     this.track = null;
@@ -13,42 +13,6 @@ class PlayerInfo {
       this.position = position;
       this.playing = playing;
     });
-  }
-
-  isPlaying = () => {
-    return this.playing;
-  }
-
-  getShow = () => {
-    return this.show;
-  }
-
-  getTrack = () => {
-    return this.track;
-  }
-
-  getPosition = () => {
-    return this.position;
-  }
-
-  setShow = (s) => {
-    this.show = s;
-  }
-
-  setTrack = (t) => {
-    this.track = t;
-  }
-
-  setPosition = (p) => {
-    this.position = p;
-  }
-
-  setPlaying = (p) => {
-    this.playing = p;
-  }
-
-  getPlaying = () => {
-    return this.playing;
   }
 
   pause = () => {
@@ -66,4 +30,4 @@ class PlayerInfo {
   }
 }
 
-export default new PlayerInfo();
+export default new Controls();

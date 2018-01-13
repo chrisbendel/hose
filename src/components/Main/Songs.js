@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { tracksForSong } from './../../api/phishin';
-import { sortByOptions, trackJamcharts, songFilters  } from './../../filterOptions';
+import { trackJamcharts, songFilters } from './../../filterOptions';
 import {NavLink} from 'react-router-dom';
 import Ionicon from 'react-ionicons';
 import Filter from './Filter';
@@ -8,9 +8,9 @@ import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css'
 import './../../css/Songs.css';
 import 'react-select/dist/react-select.css';
-import {history} from './../../History';
-import PlayerInfo from './../../PlayerInfo';
+import Controls from './../../Controls';
 import Spinner from 'react-spinkit';
+import {emitter} from './../../Emitter';
 
 const isJamchart = (id) => {
   return (trackJamcharts.indexOf(id) !== -1);
@@ -29,18 +29,26 @@ export default class Songs extends Component {
     this.state = {
       tracks: null,
       filterOption: '',
-      songSearch: '',
       filterDisplay: null,
       likesOrder: false,
       timeOrder: false,
       dateOrder: false,
       jamcharts: false,
-      loading: false
+      loading: false,
+      currentTrack: null,
+      playing: false
     }
   }
   
-  componentWillMount = () => {
+  componentDidMount = () => {
     let id = this.props.match.params.id;
+    emitter.addListener('songUpdate', (show, track, position, playing) => {
+      console.log(track);
+      this.setState({
+        currentTrack: track,
+        playing: playing
+      });
+    });
     this.fetchTracks(id);
   }
 
@@ -165,16 +173,27 @@ export default class Songs extends Component {
             />
             <div className="show-information">
               <div className="center-abs">
-                <div className="play-button" onClick={
-                  (e) => PlayerInfo.updateShowAndPosition(e,track.show_id, track.position)
-                }>
-                  <Ionicon 
-                    icon="ios-play" 
-                    fontSize="25px" 
-                    color="white"
-                    className="left-10"
-                  />
-                </div>
+                {this.state.playing && track.id == this.state.currentTrack.id ? 
+                  <div className="play-button" onClick={(e) => {
+                    Controls.pause();
+                  }}>
+                    <Ionicon 
+                      icon="ios-pause" 
+                      fontSize="25px" 
+                      color="white"
+                    />
+                  </div>
+                :
+                  <div className="play-button" onClick={(e) => {
+                    Controls.updateShowAndPosition(e,track.show_id, track.position);
+                  }}>
+                    <Ionicon 
+                      icon="ios-play" 
+                      fontSize="25px" 
+                      color="white"
+                    />
+                  </div>
+                }
                 <div className="show-likes">
                   <Ionicon 
                     icon="ios-thumbs-up"
@@ -189,6 +208,12 @@ export default class Songs extends Component {
               </div>
             </div>
           </div>
+          <span className="playing-cell">
+            {this.state.playing && track.id == this.state.currentTrack.id ?
+              <Spinner color='#4CAF50' name='line-scale-pulse-out-rapid' />
+              : null
+            }
+          </span>
           <span className="title-cell">{track.title}</span>
           <NavLink className="title-cell" to={'/show/' + track.show_id}><span>{track.show_date}</span></NavLink>
           <span className="jamcharts-cell">{isJamchart(track.id) ? "Jamcharts" : ""}</span>
@@ -223,6 +248,7 @@ export default class Songs extends Component {
       <ul className="playlist-section">
         <li className="show-container-item header-cell">
           <span className="image-cell-header"></span>
+          <span className="playing-cell"></span>
           <span className="title-cell">Song</span>
           <span className="title-cell" onClick={() => {this.sortShows('date')}}>Date</span>
           <span className="jamcharts-cell" onClick={() => {this.sortShows('jamcharts')}}>Jamcharts</span>
