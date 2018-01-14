@@ -75,8 +75,8 @@ export default class SideNav extends Component {
           </span>
         </div>
         {this.renderList}
-        <a href="https://paypal.me/chrissbendel" target="_blank">Donations</a>
-        <a href="https://chrissbendel.github.io/hose/" target="_blank">Get the App</a>
+        <a href="https://paypal.me/chrissbendel" target="_blank" rel="noopener noreferrer">Donations</a>
+        <a href="https://chrissbendel.github.io/hose/" target="_blank" rel="noopener noreferrer">Get the App</a>
       </div>
     );
   }

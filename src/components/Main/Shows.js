@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { shows, showsForYear, showsForVenue, showsForTour, showsToday, show } from './../../api/phishin';
-import {yearFilters, tourFilters, venueFilters, sortByOptions, showJamcharts, showSoundboards} from './../../filterOptions';
+import {yearFilters, tourFilters, venueFilters, sortByOptions} from './../../filterOptions';
 import {isShowJamchart, isShowSoundboard} from './../../Utils';
 import './../../css/Shows.css';
 import Ionicon from 'react-ionicons';
@@ -220,7 +220,7 @@ export default class Shows extends Component {
         var d = new Date(b.date);
         if (order === 'asc') {
           return c-d;
-        } else if (order === 'desc') {
+        } else {
           return d-c;
         }
       });
