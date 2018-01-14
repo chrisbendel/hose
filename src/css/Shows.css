@@ -157,10 +157,10 @@
 }
 
 .show-gallery {
-  flex-grow: 5;
+  flex-grow: 4;
   position: relative;
   display: grid;
-  grid-template-columns: repeat(5, .5fr);
+  grid-template-columns: repeat(4, .5fr);
   grid-gap: 20px;
   max-width: calc(100% - 10px);
   width: 100%;
