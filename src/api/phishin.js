@@ -1,24 +1,21 @@
+import {email, password} from './../config';
 const base = 'https://phish.in/api/v1/'
 
-
-// var myHeaders = new Headers();
-
-// myHeaders.append('Content-Type', 'application/json');
-
-// fetch('http://127.0.0.1:3000/api/v1/users/sign_in', {
-//     method: 'POST',
-//     headers: myHeaders,
-//     mode: 'cors',
-//     cache: 'default',
-//     body: JSON.stringify({user: {email: "phishin@phishin.com", password:"phishin123"} })
-// }).then(function(response) {
-//     return response.json()
-//   }).then(function(json) {
-//     console.log('parsed json', json)
-//   }).catch(function(ex) {
-//     console.log('parsing failed', ex)
-//   })
-
+export const login = async() => {
+  fetch('http://phish.in/api/v1/users/sign_in', {
+    method: 'POST',
+    mode: 'no-cors',
+    origin: "https://google.com",
+    cache: 'default',
+    body: JSON.stringify({user: {email: email, password: password} })
+  }).then(function(response) {
+    return response.json()
+  }).then(function(json) {
+    console.log('parsed json', json)
+  }).catch(function(ex) {
+    console.log('parsing failed', ex)
+  })
+}
 
 export const randomShow = async() => {
   let data = await (await fetch(base + 'random-show')).json();
@@ -26,67 +23,67 @@ export const randomShow = async() => {
 }
 
 export const show = async(id) => {
-  let data = await (await fetch(base + 'shows/' + id)).json();
+  let data = await (await cachedFetch(base + 'shows/' + id)).json();
   return data.data;
 }
 
 export const testFunc = async() => {
-  let data = await (await fetch(base + 'songs?per_page=1000&sort_attr=title')).json();
+  let data = await (await cachedFetch(base + 'songs?per_page=1000&sort_attr=title')).json();
   return data.data;
 }
 
 export const shows = async(page = 1) => {
-  let data = await (await fetch(base + 'shows?per_page=50&page=' + page)).json();
+  let data = await (await cachedFetch(base + 'shows?sort_attr=date&sort_dir=desc&per_page=50&page=' + page)).json();
   return data.data;
 }
 
 export const tracksForSong = async(track) => {
-  let data = await (await fetch(base + 'songs/' + track)).json();
+  let data = await (await cachedFetch(base + 'songs/' + track)).json();
   return data.data.tracks;
 }
 
 export const showsForVenue = async(venue) => {
-  let data = await (await fetch(base + 'venues/' + venue)).json();
+  let data = await (await cachedFetch(base + 'venues/' + venue)).json();
   return data.data.show_ids;
 }
 
 export const showsForYear = async(year) => {
-  let data = await (await fetch(base + 'years/' + year)).json();
+  let data = await (await cachedFetch(base + 'years/' + year)).json();
   return data.data;
 }
 
 export const showsForTour = async(tour) => {
-  let data = await (await fetch(base + 'tours/' + tour)).json();
-  return data.data.shows;
+  let data = await (await cachedFetch(base + 'tours/' + tour)).json();
+  return data.data;
 }
 
 export const showsToday = async(day) => {
-  let data = await (await fetch(base + 'shows-on-day-of-year/' + day)).json();
+  let data = await (await cachedFetch(base + 'shows-on-day-of-year/' + day)).json();
   return data.data;
 }
 
 export const years = async() => {
-  let data = await (await fetch(base + 'years')).json();
+  let data = await (await cachedFetch(base + 'years')).json();
   return data.data;
 }
 
 export const tours = async() => {
-  let data = await (await fetch(base + 'tours?sort_attr=starts_on&per_page=1000')).json();
+  let data = await (await cachedFetch(base + 'tours?sort_attr=starts_on&per_page=1000')).json();
   return data.data;
 }
 
 export const venues = async() => {
-  let data = await (await fetch(base + 'venues?per_page=1000&sort_attr=shows_count&sort_dir=desc')).json();
+  let data = await (await cachedFetch(base + 'venues?per_page=1000&sort_attr=shows_count&sort_dir=desc')).json();
   return data.data;
 }
 
 export const tracks = async() => {
-  let data = await (await fetch(base + 'tracks')).json();
+  let data = await (await cachedFetch(base + 'tracks')).json();
   return data.data;
 }
 
 export const search = async(query) => {
-  let data = await (await fetch(base + 'search/' + query)).json();
+  let data = await (await cachedFetch(base + 'search/' + query)).json();
 
   let terms = [];
 
@@ -155,4 +152,41 @@ export const search = async(query) => {
   }
 
   return terms;
+}
+
+const cachedFetch = (url, options) => {
+  let expiry = 1000;
+  if (typeof options === 'number') {
+    expiry = options
+    options = undefined
+  } else if (typeof options === 'object') {
+    expiry = options.seconds || expiry
+  }
+  
+  let cacheKey = url
+  let cached = localStorage.getItem(cacheKey)
+  let whenCached = localStorage.getItem(cacheKey + ':ts')
+  if (cached !== null && whenCached !== null) {
+    let age = (Date.now() - whenCached) / 1000
+    if (age < expiry) {
+      let response = new Response(new Blob([cached]))
+      return Promise.resolve(response)
+    } else {
+      localStorage.removeItem(cacheKey)
+      localStorage.removeItem(cacheKey + ':ts')
+    }
+  }
+
+  return fetch(url, options).then(response => {
+    if (response.status === 200) {
+      let ct = response.headers.get('Content-Type')
+      if (ct && (ct.match(/application\/json/i) || ct.match(/text\//i))) {
+        response.clone().text().then(content => {
+          localStorage.setItem(cacheKey, content)
+          localStorage.setItem(cacheKey+':ts', Date.now().toString())
+        })
+      }
+    }
+    return response
+  })
 }

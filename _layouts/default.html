@@ -3,30 +3,214 @@
   <head>
     <meta charset="UTF-8">
     <title> Hose </title>
-    {% seo %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
-    <!-- Begin of Chaport Live Chat code -->
-    <script type="text/javascript">
-      (function(w,d,v2){
-      w.chaport = { app_id : '5a25b7637fb8e8028507270d' };
-      
-      v2=w.chaport;v2._q=[];v2._l={};v2.q=function(){v2._q.push(arguments)};v2.on=function(e,fn){if(!v2._l[e])v2._l[e]=[];v2._l[e].push(fn)};var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://app.chaport.com/javascripts/insert.js';var ss=d.getElementsByTagName('script')[0];ss.parentNode.insertBefore(s,ss)})(window, document);
-    </script>
-  <!-- End of Chaport Live Chat code -->
+    
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Varela+Round);
+
+      .slides {
+          padding: 0;
+          width: 609px;
+          height: 420px;
+          display: block;
+          margin: 0 auto;
+          position: relative;
+      }
+
+      .slides * {
+          user-select: none;
+          -ms-user-select: none;
+          -moz-user-select: none;
+          -khtml-user-select: none;
+          -webkit-user-select: none;
+          -webkit-touch-callout: none;
+      }
+
+      .slides input { display: none; }
+
+      .slide-container { display: block; }
+
+      .slide {
+          top: 0;
+          opacity: 0;
+          width: 609px;
+          height: 420px;
+          display: block;
+          position: absolute;
+
+          transform: scale(0);
+
+          transition: all .7s ease-in-out;
+      }
+
+      .slide img {
+          width: 100%;
+          height: 100%;
+      }
+
+      .nav label {
+          width: 200px;
+          height: 100%;
+          display: none;
+          position: absolute;
+
+          opacity: 0;
+          z-index: 9;
+          cursor: pointer;
+
+          transition: opacity .2s;
+
+          color: #FFF;
+          font-size: 156pt;
+          text-align: center;
+          line-height: 380px;
+          font-family: "Varela Round", sans-serif;
+          background-color: rgba(255, 255, 255, .3);
+          text-shadow: 0px 0px 15px rgb(119, 119, 119);
+      }
+
+      .slide:hover + .nav label { opacity: 0.5; }
+
+      .nav label:hover { opacity: 1; }
+
+      .nav .next { right: 0; }
+
+      input:checked + .slide-container  .slide {
+          opacity: 1;
+
+          transform: scale(1);
+
+          transition: opacity 1s ease-in-out;
+      }
+
+      input:checked + .slide-container .nav label { display: block; }
+
+      .nav-dots {
+        width: 100%;
+        bottom: 9px;
+        height: 11px;
+        display: block;
+        position: absolute;
+        text-align: center;
+      }
+
+      .nav-dots .nav-dot {
+        top: -5px;
+        width: 11px;
+        height: 11px;
+        margin: 0 4px;
+        position: relative;
+        border-radius: 100%;
+        display: inline-block;
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+
+      .nav-dots .nav-dot:hover {
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      input#img-1:checked ~ .nav-dots label#img-dot-1,
+      input#img-2:checked ~ .nav-dots label#img-dot-2,
+      input#img-3:checked ~ .nav-dots label#img-dot-3,
+      input#img-4:checked ~ .nav-dots label#img-dot-4,
+      input#img-5:checked ~ .nav-dots label#img-dot-5,
+      input#img-6:checked ~ .nav-dots label#img-dot-6 {
+        background: rgba(0, 0, 0, 0.8);
+      }
+    </style>
   </head>
   <body>
     <section class="page-header">
       <h1 class="project-name">{{ site.title }} (Beta)</h1>
       <h2 class="project-tagline">{{ site.description }}</h2>
-        <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
-        <a target="_blank" href="https://s3.amazonaws.com/hose/hose-0.2.3.dmg" class="btn">For Mac</a>
-        <a target="_blank" href="https://s3.amazonaws.com/hose/hose+Setup+0.2.3.exe" class="btn">For Windows</a>
+        <a target="_blank" href="https://s3.amazonaws.com/hose/hose-0.2.4.dmg" class="btn">For Mac</a>
+        <a target="_blank" href="https://s3.amazonaws.com/hose/hose+Setup+0.2.4.exe" class="btn">For Windows</a>
+        <a target="_blank" href="https://hose.live" class="btn">Web</a>
+        <!-- <a target="_blank" href="https://hose.live" class="btn">iOS</a>
+        <a target="_blank" href="https://hose.live" class="btn">Android</a> -->
     </section>
 
     <section class="main-content">
+      <ul class="slides">
+        <input type="radio" name="radio-btn" id="img-1" checked />
+        <li class="slide-container">
+          <div class="slide">
+            <img src="https://s3.amazonaws.com/hose/app-previews/shows.png" />
+              </div>
+          <div class="nav">
+            <label for="img-6" class="prev">&#x2039;</label>
+            <label for="img-2" class="next">&#x203a;</label>
+          </div>
+        </li>
+    
+        <input type="radio" name="radio-btn" id="img-2" />
+        <li class="slide-container">
+          <div class="slide">
+            <img src="https://s3.amazonaws.com/hose/app-previews/show.png" />
+          </div>
+          <div class="nav">
+            <label for="img-1" class="prev">&#x2039;</label>
+            <label for="img-3" class="next">&#x203a;</label>
+          </div>
+        </li>
+    
+        <input type="radio" name="radio-btn" id="img-3" />
+        <li class="slide-container">
+          <div class="slide">
+            <img src="https://s3.amazonaws.com/hose/app-previews/random-show.png" />
+          </div>
+          <div class="nav">
+            <label for="img-2" class="prev">&#x2039;</label>
+            <label for="img-4" class="next">&#x203a;</label>
+          </div>
+        </li>
+    
+        <input type="radio" name="radio-btn" id="img-4" />
+        <li class="slide-container">
+          <div class="slide">
+            <img src="https://s3.amazonaws.com/hose/app-previews/songs.png" />
+          </div>
+          <div class="nav">
+            <label for="img-3" class="prev">&#x2039;</label>
+            <label for="img-5" class="next">&#x203a;</label>
+          </div>
+        </li>
+    
+        <input type="radio" name="radio-btn" id="img-5" />
+        <li class="slide-container">
+            <div class="slide">
+              <img src="https://s3.amazonaws.com/hose/app-previews/tour.png" />
+            </div>
+          <div class="nav">
+            <label for="img-4" class="prev">&#x2039;</label>
+            <label for="img-6" class="next">&#x203a;</label>
+          </div>
+        </li>
+    
+        <input type="radio" name="radio-btn" id="img-6" />
+        <li class="slide-container">
+          <div class="slide">
+            <img src="https://s3.amazonaws.com/hose/app-previews/venues.png" />
+          </div>
+          <div class="nav">
+            <label for="img-5" class="prev">&#x2039;</label>
+            <label for="img-1" class="next">&#x203a;</label>
+          </div>
+        </li>
+    
+        <li class="nav-dots">
+          <label for="img-1" class="nav-dot" id="img-dot-1"></label>
+          <label for="img-2" class="nav-dot" id="img-dot-2"></label>
+          <label for="img-3" class="nav-dot" id="img-dot-3"></label>
+          <label for="img-4" class="nav-dot" id="img-dot-4"></label>
+          <label for="img-5" class="nav-dot" id="img-dot-5"></label>
+          <label for="img-6" class="nav-dot" id="img-dot-6"></label>
+        </li>
+      </ul>
       <footer class="site-footer">
         <p>Questions, Feedback, Bugs, and more - Contact chrissbendel@gmail.com</p>
         {% if site.github.is_project_page %}

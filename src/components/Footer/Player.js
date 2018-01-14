@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './../../css/Player.css'
+import './../../css/Player.css';
 import Audio from 'react-audioplayer';
 import { show } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
@@ -8,14 +8,14 @@ import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
 import {emitter} from './../../Emitter';
 import {history} from './../../History';
-import PlayerInfo from './../../PlayerInfo';
+import Controls from './../../Controls';
 import isElectron from 'is-electron';
 import JSZipUtils from 'jszip-utils';
 import JSZip from 'jszip';
 import {saveAs} from 'file-saver'
 
 if (isElectron()) {
-  var {ipcRenderer, remote} = window.require('electron');
+  var {remote} = window.require('electron');
   var remoteWindow = remote.getCurrentWindow();
 }
 
@@ -39,6 +39,14 @@ export default class Player extends Component {
       this.play();
     });
 
+    emitter.addListener('next', () => {
+      this.skipToNext();
+    });
+
+    emitter.addListener('prev', () => {
+      this.skipToPrevious();
+    });
+
     emitter.addListener('playlistUpdate', (showId, position) => {
       if (this.state.show != null) {
         if (this.state.show.id === showId && this.player.state.currentPlaylistPos === position) {
@@ -51,19 +59,15 @@ export default class Player extends Component {
     });
   }
 
-  setPlayerInfo = () => {
+  setControls = () => {
     if (this.player) {
       let show = this.state.show;
       let playerState = this.player.state;
+
       let currentPosition = playerState.currentPlaylistPos + 1;
       let currentTrack = show.tracks.find(track => {
         return track.position === currentPosition;
       });
-      
-      PlayerInfo.setPosition(currentPosition);
-      PlayerInfo.setShow(show);
-      PlayerInfo.setTrack(currentTrack);
-      PlayerInfo.setPlaying(playerState.playing);
 
       emitter.emit('songUpdate', show, currentTrack, currentPosition, playerState.playing);
     }
@@ -94,40 +98,37 @@ export default class Player extends Component {
     if (this.player) {
       let element = this.player.audioElement;
       
-      element.addEventListener('playing', this.setPlayerInfo);
-      element.addEventListener('play', this.setPlayerInfo);
-      element.addEventListener('pause', this.setPlayerInfo);
-
-      // Unbind event listeners, @Jonah TODO idk what to do with these
-      // element.removeEventListener('playing', this.setPlayerInfo)
-      // element.removeEventListener('play', this.setPlayerInfo)
-      // element.removeEventListener('pause', this.setPlayerInfo)
+      element.addEventListener('playing', this.setControls);
+      element.addEventListener('play', this.setControls);
+      element.addEventListener('pause', this.setControls);
     }
   }
 
   play = (e) => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-play'));
-      this.setPlayerInfo();
+      this.setControls();
     }
   }
 
   pause = (e) => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
-      this.setPlayerInfo();
+      this.setControls();
     }
   }
   
   skipToNext = (e) => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
+      this.setControls();
     }
   }
 
   skipToPrevious = (e) => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
+      this.setControls();
     }
   }
 
@@ -144,7 +145,7 @@ export default class Player extends Component {
         this.setPlaylistPosition(position);
       });
     }).then(() => {
-      this.setPlayerInfo();
+      this.setControls();
     });
   }
 
@@ -174,14 +175,20 @@ export default class Player extends Component {
       JSZipUtils.getBinaryContent(track.mp3, (err, data) => {
         zip.file(title, data, {binary: true});
         count++;
-        remoteWindow.setProgressBar(count / tracks.length);
+        if (isElectron()) {
+          remoteWindow.setProgressBar(count / tracks.length);
+        }
         if (count === tracks.length) {
           zip.generateAsync({type:'blob'}, (metadata) => {
-            remoteWindow.setProgressBar(metadata.percent);
+            if (isElectron()) {
+              remoteWindow.setProgressBar(metadata.percent);
+            }
           })
           .then(content => {
             saveAs(content, showName + ".zip");
-            remoteWindow.setProgressBar(-1);
+            if (isElectron()) {
+              remoteWindow.setProgressBar(-1);
+            }
             this.setState({downloading: false});
           });
         }
@@ -264,7 +271,6 @@ export default class Player extends Component {
               </span>
             </div>
             <div 
-              className="inline-wrapper"
               ref='hoverVenue'
               className={this.state.hoverVenue ? "inline-wrapper hovering" : "inline-wrapper"}
               onMouseEnter = {() => {this.setState({hoverVenue: true})}}

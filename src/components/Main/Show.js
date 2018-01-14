@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import './../../css/Show.css';
-import { NavLink } from 'react-router-dom';
 import { show, randomShow } from './../../api/phishin';
-import { showDetails } from './../../api/phishnet';
 import Ionicon from 'react-ionicons';
-import {trackJamcharts, tourFilters} from './../../filterOptions';
+import {getLikesPercent, msToSec, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName} from './../../Utils';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
 import {history} from './../../History';
-import Interweave from 'interweave';
-import PlayerInfo from './../../PlayerInfo';
+import Controls from './../../Controls';
 import {emitter} from './../../Emitter';
 import Spinner from 'react-spinkit';
 import JSZipUtils from 'jszip-utils';
@@ -18,18 +15,8 @@ import {saveAs} from 'file-saver'
 import isElectron from 'is-electron';
 
 if (isElectron()) {
-  var {ipcRenderer, remote} = window.require('electron');
+  var {remote} = window.require('electron');
   var remoteWindow = remote.getCurrentWindow();
-}
-
-const isJamchart = (id) => {
-  return (trackJamcharts.indexOf(id) !== -1);
-}
-
-const msToSec = (time) => {
-  var minutes = Math.floor(time / 60000);
-  var seconds = ((time % 60000) / 1000).toFixed(0);
-  return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
 export default class Show extends Component {
@@ -38,8 +25,10 @@ export default class Show extends Component {
 
     this.state = {
       show: null,
-      showDetails: null,
-      playing: false
+      playing: false,
+      playingShow: null,
+      playingTrack: null,
+      playingPosition: null
     }
   }
 
@@ -60,7 +49,6 @@ export default class Show extends Component {
 
   componentWillMount() {
     emitter.addListener('songUpdate', (show, track, position, playing) => {
-      // console.log(show, track, position, playing);
       this.setState({
         playingShow: show,
         playingTrack: track,
@@ -68,14 +56,6 @@ export default class Show extends Component {
         playing: playing
       });
     });
-
-    // let info = PlayerInfo.getInfo();
-    // this.setState({
-    //   playingShow: info.show,
-    //   playingTrack: info.track,
-    //   playingPosition: info.position,
-    //   playing: info.playing
-    // });
     
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();
@@ -86,26 +66,14 @@ export default class Show extends Component {
 
   fetchShow = (id) => {
     return show(id).then(show => {
-      showDetails(show.date).then(details => {
-        this.setState({show: show, showDetails: details})
-      })
+      this.setState({show: show});
     });
   }
 
   fetchRandomShow = () => {
     return randomShow().then(show => {
-      showDetails(show.date).then(details => {
-        this.setState({show: show, showDetails: details})
-      })
-    })
-  }
-
-  getLikesPercent = (likes) => {
-    const max = Math.max.apply(Math,this.state.show.tracks.map(function(o){
-      return o.likes_count;
-    }));
-    let percent = Math.ceil((likes / max) * 100);
-    return percent > 0 ? percent + "%" : "5px";
+      this.setState({show: show});
+    });
   }
 
   renderTracks = (set) => {
@@ -114,15 +82,13 @@ export default class Show extends Component {
     return tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
-      // console.log(PlayerInfo.isPlaying(), PlayerInfo.getPosition(), track.position, PlayerInfo.getShow(), show.id)
       return (
-        <li
-          className={
-              PlayerInfo.isPlaying() && PlayerInfo.getPosition() === track.position && PlayerInfo.getShow().id === this.state.show.id
+        <li className={
+              this.state.playing && Controls.position == track.position && this.state.playingShow.id == this.state.show.id
               ? "show-container-item playing"
               : "show-container-item"
             }
-          key={track.position}
+            key={track.position}
         >
           <span className="play-cell">
             <span className="play-button-sm">
@@ -131,7 +97,7 @@ export default class Show extends Component {
                 icon="ios-play"
                 font-size="40px"
                 onClick={(e) => {
-                  PlayerInfo.updateShowAndPosition(e, show.id, track.position);
+                  Controls.updateShowAndPosition(e, show.id, track.position);
                   this.setState({playing: true});
                 }}
                 className="track-play"
@@ -143,7 +109,7 @@ export default class Show extends Component {
                 icon="ios-pause"
                 font-size="40px"
                 onClick={() => {
-                  PlayerInfo.pause();
+                  Controls.pause();
                   this.setState({playing: true});
                 }}
                 className="track-pause"
@@ -152,7 +118,7 @@ export default class Show extends Component {
             <span className="track-number">{track.position}</span>
           </span>
           <span className="title-cell">{track.title}</span>
-          <span className="jamcharts-cell">{isJamchart(track.id) ? "Jamcharts" : ""}</span>
+          <span className="jamcharts-cell">{isTrackJamchart(track.id) ? "Jamcharts" : ""}</span>
           <span className="length-cell">{msToSec(track.duration)}</span>
           <span className="likes-cell">
             <Tooltip
@@ -168,7 +134,7 @@ export default class Show extends Component {
               <div className="likes-bar">
                 <div 
                   className="inside-bar"
-                  style={{width: this.getLikesPercent(track.likes_count)}}
+                  style={{width: getLikesPercent(tracks, track.likes_count)}}
                 >
                 </div>
               </div>
@@ -224,14 +190,20 @@ export default class Show extends Component {
       JSZipUtils.getBinaryContent(track.mp3, (err, data) => {
         zip.file(title, data, {binary: true});
         count++;
-        remoteWindow.setProgressBar(count / tracks.length);
+        if (isElectron()) {
+          remoteWindow.setProgressBar(count / tracks.length);
+        }
         if (count === tracks.length) {
           zip.generateAsync({type:'blob'}, (metadata) => {
-            remoteWindow.setProgressBar(metadata.percent);
+            if (isElectron()) {
+              remoteWindow.setProgressBar(metadata.percent);
+            }
           })
           .then(content => {
             saveAs(content, showName + ".zip");
-            remoteWindow.setProgressBar(-1);
+            if (isElectron()) {
+              remoteWindow.setProgressBar(-1);
+            }
           });
         }
       });
@@ -239,10 +211,11 @@ export default class Show extends Component {
   }
 
   renderShowInfo = () => {
+    let show = this.state.show;
     return (
       <div>
-        <h5 className="clickable" onClick={() => {history.push('/shows/today/' + this.state.show.date)}}> Shows this Day </h5>
-        <h5><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={this.state.showDetails.link}>View on Phish.net</a></h5>
+        <h5 className="clickable" onClick={() => {history.push('/shows/today/' + show.date)}}> Shows this Day </h5>
+        <h5><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={"https://phish.net/setlists/?d=" + show.date.replace(/\//g, "-")}>View on Phish.net</a></h5>
       </div>
     );
   }
@@ -258,12 +231,9 @@ export default class Show extends Component {
       );
     }
 
-    let details = this.state.showDetails;
-    
     let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     let date = new Date(show.date + ' 00:00');
 
-    PlayerInfo.getShow();
     return (
       <div className="show-container">
         <div className="show-information-top">
@@ -275,15 +245,20 @@ export default class Show extends Component {
           </div>
           <div className="right">
             <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
+            <p>
+              <span style={{marginRight: 5}}>{isShowJamchart(show.id) && "Jamcharts"}</span>
+              <span style={{marginRight: 5}}>{isShowSoundboard(show.id) && "Soundboard"}</span>
+            </p>
+            
             <h3 className="clickable" onClick={() => {history.push('/shows/venue/' + show.venue.id)}}>{show.venue.name}</h3>
-            <h4>{details.location}</h4>
-
+            <h4>{show.venue.location}</h4>
+            <h4 className="clickable" onClick={() => {history.push('/shows/tour/' + show.tour_id)}}>{getTourName(show.tour_id)}</h4>
             <div className="btn-container">
               {this.state.playing ?
                 <button 
                   className="play-btn-lrg green clickable"
                   onClick={(e) => {
-                    PlayerInfo.pause();
+                    Controls.pause();
                     this.setState({playing: true});
                   }}
                   >
@@ -293,7 +268,7 @@ export default class Show extends Component {
                 <button 
                   className="play-btn-lrg green clickable"
                   onClick={(e) => {
-                    PlayerInfo.updateShowAndPosition(e, show.id);
+                    Controls.updateShowAndPosition(e, show.id);
                     this.setState({playing: true});
                   }}
                 >
@@ -335,10 +310,4 @@ export default class Show extends Component {
       </div>
     );
   }
-}
-
-const getTourName = (id) => {
-  return tourFilters.find(tour => {
-    return tour.value === id;
-  }).label;
 }
