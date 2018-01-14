@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { tracksForSong } from './../../api/phishin';
-import { trackJamcharts, songFilters } from './../../filterOptions';
+import { trackJamcharts, songFilters, trackSoundboards } from './../../filterOptions';
+import {isTrackJamchart, isTrackSoundboard, getLikesPercent, msToSec} from './../../Utils';
 import {NavLink} from 'react-router-dom';
 import Ionicon from 'react-ionicons';
 import Filter from './Filter';
@@ -11,16 +12,6 @@ import 'react-select/dist/react-select.css';
 import Controls from './../../Controls';
 import Spinner from 'react-spinkit';
 import {emitter} from './../../Emitter';
-
-const isJamchart = (id) => {
-  return (trackJamcharts.indexOf(id) !== -1);
-}
-
-const msToSec = (time) => {
-  var minutes = Math.floor(time / 60000);
-  var seconds = ((time % 60000) / 1000).toFixed(0);
-  return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-}
 
 export default class Songs extends Component {
   constructor(props) {
@@ -34,6 +25,7 @@ export default class Songs extends Component {
       timeOrder: false,
       dateOrder: false,
       jamcharts: false,
+      soundboard: false,
       loading: false,
       currentTrack: null,
       playing: false
@@ -80,6 +72,7 @@ export default class Songs extends Component {
   
   sortShows = (attr) => {
     let tracks = this.state.tracks;
+
     if (attr === 'date') {
       let sorted = tracks.sort((a, b) => {
         var c = new Date(a.show_date);
@@ -108,21 +101,37 @@ export default class Songs extends Component {
       this.setState({
         tracks: sorted,
         timeOrder: !this.state.timeOrder
-      })
+      });
     }
     
     if (attr === 'jamcharts') {
       if (!this.state.jamcharts) {
         let sorted = tracks.filter(track => {
-          return isJamchart(track.id);        
-        })
+          return isTrackJamchart(track.id);
+        });
 
         this.setState({
           tracks: sorted,
           jamcharts: !this.state.jamcharts
-        })
+        });
       } else {
         this.setState({jamcharts: !this.state.jamcharts})
+        this.fetchTracks(this.state.trackId);
+      }
+    }
+
+    if (attr === 'soundboard') {
+      if (!this.state.soundboard) {
+        let sorted = tracks.filter(track => {
+          return isTrackSoundboard(track.id);
+        });
+
+        this.setState({
+          tracks: sorted,
+          soundboard: !this.state.soundboard
+        });
+      } else {
+        this.setState({soundboard: !this.state.soundboard});
         this.fetchTracks(this.state.trackId);
       }
     }
@@ -138,7 +147,7 @@ export default class Songs extends Component {
       this.setState({
         tracks: sorted,
         likesOrder: !this.state.likesOrder
-      })
+      });
     }
   }
 
@@ -149,14 +158,6 @@ export default class Songs extends Component {
 
   setFilterDisplay = (title) => {
     this.setState({filterDisplay: title});
-  }
-
-  getLikesPercent = (likes) => {
-    const max = Math.max.apply(Math,this.state.tracks.map(function(o) {
-      return o.likes_count;
-    }));
-    let percent = Math.ceil((likes / max) * 100);
-    return percent > 0 ? percent + "%" : "5px";
   }
 
   renderTracks = () => {
@@ -216,7 +217,8 @@ export default class Songs extends Component {
           </span>
           <span className="title-cell">{track.title}</span>
           <NavLink className="title-cell" to={'/show/' + track.show_id}><span>{track.show_date}</span></NavLink>
-          <span className="jamcharts-cell">{isJamchart(track.id) ? "Jamcharts" : ""}</span>
+          <span className="jamcharts-cell">{isTrackJamchart(track.id) ? "Jamcharts" : ""}</span>
+          <span className="jamcharts-cell">{isTrackSoundboard(track.id) ? "Soundboard" : ""}</span>
           <span className="length-cell">{msToSec(track.duration)}</span>
           <span className="likes-cell">
             <Tooltip
@@ -232,7 +234,7 @@ export default class Songs extends Component {
               <div className="likes-bar">
                 <div 
                   className="inside-bar"
-                  style={{width: this.getLikesPercent(track.likes_count)}}
+                  style={{width: getLikesPercent(tracks, track.likes_count)}}
                 >
                 </div>
               </div>
@@ -252,6 +254,7 @@ export default class Songs extends Component {
           <span className="title-cell">Song</span>
           <span className="title-cell" onClick={() => {this.sortShows('date')}}>Date</span>
           <span className="jamcharts-cell" onClick={() => {this.sortShows('jamcharts')}}>Jamcharts</span>
+          <span className="jamcharts-cell" onClick={() => {this.sortShows('soundboard')}}>Soundboard</span>
           <span className="length-cell">
             <Ionicon
               style={{cursor: 'pointer'}}

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './../../css/Show.css';
 import { show, randomShow } from './../../api/phishin';
-import { showDetails } from './../../api/phishnet';
 import Ionicon from 'react-ionicons';
-import {trackJamcharts, tourFilters} from './../../filterOptions';
+import {showJamcharts, trackJamcharts, tourFilters, showSoundboards, trackSoundboards} from './../../filterOptions';
+import {getLikesPercent, msToSec, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName} from './../../Utils';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
 import {history} from './../../History';
@@ -20,23 +20,12 @@ if (isElectron()) {
   var remoteWindow = remote.getCurrentWindow();
 }
 
-const isJamchart = (id) => {
-  return (trackJamcharts.indexOf(id) !== -1);
-}
-
-const msToSec = (time) => {
-  var minutes = Math.floor(time / 60000);
-  var seconds = ((time % 60000) / 1000).toFixed(0);
-  return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-}
-
 export default class Show extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       show: null,
-      showDetails: null,
       playing: false,
       playingShow: null,
       playingTrack: null,
@@ -78,26 +67,14 @@ export default class Show extends Component {
 
   fetchShow = (id) => {
     return show(id).then(show => {
-      showDetails(show.date).then(details => {
-        this.setState({show: show, showDetails: details})
-      })
+      this.setState({show: show});
     });
   }
 
   fetchRandomShow = () => {
     return randomShow().then(show => {
-      showDetails(show.date).then(details => {
-        this.setState({show: show, showDetails: details})
-      })
-    })
-  }
-
-  getLikesPercent = (likes) => {
-    const max = Math.max.apply(Math,this.state.show.tracks.map(function(o){
-      return o.likes_count;
-    }));
-    let percent = Math.ceil((likes / max) * 100);
-    return percent > 0 ? percent + "%" : "5px";
+      this.setState({show: show});
+    });
   }
 
   renderTracks = (set) => {
@@ -107,13 +84,12 @@ export default class Show extends Component {
       return track.set_name === set;
     }).map(track => {
       return (
-        <li
-          className={
-              this.state.playing && Controls.position === track.position && this.state.playingShow.id === this.state.show.id
+        <li className={
+              this.state.playing && Controls.position == track.position && this.state.playingShow.id == this.state.show.id
               ? "show-container-item playing"
               : "show-container-item"
             }
-          key={track.position}
+            key={track.position}
         >
           <span className="play-cell">
             <span className="play-button-sm">
@@ -143,7 +119,7 @@ export default class Show extends Component {
             <span className="track-number">{track.position}</span>
           </span>
           <span className="title-cell">{track.title}</span>
-          <span className="jamcharts-cell">{isJamchart(track.id) ? "Jamcharts" : ""}</span>
+          <span className="jamcharts-cell">{isTrackJamchart(track.id) ? "Jamcharts" : ""}</span>
           <span className="length-cell">{msToSec(track.duration)}</span>
           <span className="likes-cell">
             <Tooltip
@@ -159,7 +135,7 @@ export default class Show extends Component {
               <div className="likes-bar">
                 <div 
                   className="inside-bar"
-                  style={{width: this.getLikesPercent(track.likes_count)}}
+                  style={{width: getLikesPercent(tracks, track.likes_count)}}
                 >
                 </div>
               </div>
@@ -215,14 +191,20 @@ export default class Show extends Component {
       JSZipUtils.getBinaryContent(track.mp3, (err, data) => {
         zip.file(title, data, {binary: true});
         count++;
-        remoteWindow.setProgressBar(count / tracks.length);
+        if (isElectron()) {
+          remoteWindow.setProgressBar(count / tracks.length);
+        }
         if (count === tracks.length) {
           zip.generateAsync({type:'blob'}, (metadata) => {
-            remoteWindow.setProgressBar(metadata.percent);
+            if (isElectron()) {
+              remoteWindow.setProgressBar(metadata.percent);
+            }
           })
           .then(content => {
             saveAs(content, showName + ".zip");
-            remoteWindow.setProgressBar(-1);
+            if (isElectron()) {
+              remoteWindow.setProgressBar(-1);
+            }
           });
         }
       });
@@ -230,10 +212,11 @@ export default class Show extends Component {
   }
 
   renderShowInfo = () => {
+    let show = this.state.show;
     return (
       <div>
-        <h5 className="clickable" onClick={() => {history.push('/shows/today/' + this.state.show.date)}}> Shows this Day </h5>
-        <h5><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={this.state.showDetails.link}>View on Phish.net</a></h5>
+        <h5 className="clickable" onClick={() => {history.push('/shows/today/' + show.date)}}> Shows this Day </h5>
+        <h5><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={"https://phish.net/setlists/?d=" + show.date.replace(/\//g, "-")}>View on Phish.net</a></h5>
       </div>
     );
   }
@@ -249,9 +232,6 @@ export default class Show extends Component {
       );
     }
 
-    let details = this.state.showDetails;
-    console.log(show);
-    console.log(details);
     let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     let date = new Date(show.date + ' 00:00');
 
@@ -266,9 +246,14 @@ export default class Show extends Component {
           </div>
           <div className="right">
             <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
+            <p>
+              <span style={{marginRight: 5}}>{isShowJamchart(show.id) && "Jamcharts"}</span>
+              <span style={{marginRight: 5}}>{isShowSoundboard(show.id) && "Soundboard"}</span>
+            </p>
+            
             <h3 className="clickable" onClick={() => {history.push('/shows/venue/' + show.venue.id)}}>{show.venue.name}</h3>
-            <h4>{details.location}</h4>
-            <h4 className="clickable" onClick={() => {history.push('/shows/tour/' + show.tour_id)}}>{details.tourname}</h4>
+            <h4>{show.venue.location}</h4>
+            <h4 className="clickable" onClick={() => {history.push('/shows/tour/' + show.tour_id)}}>{getTourName(show.tour_id)}</h4>
             <div className="btn-container">
               {this.state.playing ?
                 <button 

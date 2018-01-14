@@ -244,8 +244,8 @@
   border-radius: 50%;
   padding: .5rem; 
   background-color: rgba(0, 0, 0, 0.35);
-  height: 30px;
-  width: 30px;
+  height: 15px;
+  width: 15px;
   cursor: pointer;
   position: relative;
 }

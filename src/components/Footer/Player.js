@@ -175,14 +175,20 @@ export default class Player extends Component {
       JSZipUtils.getBinaryContent(track.mp3, (err, data) => {
         zip.file(title, data, {binary: true});
         count++;
-        remoteWindow.setProgressBar(count / tracks.length);
+        if (isElectron()) {
+          remoteWindow.setProgressBar(count / tracks.length);
+        }
         if (count === tracks.length) {
           zip.generateAsync({type:'blob'}, (metadata) => {
-            remoteWindow.setProgressBar(metadata.percent);
+            if (isElectron()) {
+              remoteWindow.setProgressBar(metadata.percent);
+            }
           })
           .then(content => {
             saveAs(content, showName + ".zip");
-            remoteWindow.setProgressBar(-1);
+            if (isElectron()) {
+              remoteWindow.setProgressBar(-1);
+            }
             this.setState({downloading: false});
           });
         }

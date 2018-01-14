@@ -1,22 +1,16 @@
 import React, { Component } from 'react';
 import { shows, showsForYear, showsForVenue, showsForTour, showsToday, show } from './../../api/phishin';
-import {yearFilters, tourFilters, venueFilters, sortByOptions, showJamcharts} from './../../filterOptions';
+import {yearFilters, tourFilters, venueFilters, sortByOptions, showJamcharts, showSoundboards} from './../../filterOptions';
+import {isShowJamchart, isShowSoundboard} from './../../Utils';
 import './../../css/Shows.css';
 import Ionicon from 'react-ionicons';
 import Filter from './Filter';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import {emitter} from './../../Emitter';
 import {history} from './../../History';
 import Controls from './../../Controls';
 import Spinner from 'react-spinkit';
 import isElectron from 'is-electron';
-
-const isJamchart = (id) => {
-  if (showJamcharts) {
-    return (showJamcharts.indexOf(id) !== -1);
-  }
-}
 
 export default class Shows extends Component {
   constructor(props) {
@@ -24,13 +18,13 @@ export default class Shows extends Component {
     
     this.state = {
       shows: null,
-      allShows: true,
       filterOption: '',
       page: 1,
       loadMoreShows: true,
       loadingShows: false,
       currentFilter: 'All Shows'
     }
+
     this.handleScroll = this.handleScroll.bind(this);
   }
   
@@ -97,9 +91,10 @@ export default class Shows extends Component {
         <div key={show.id} onClick={() => {history.push('/show/' + show.id)}} className="image-container">
           <div className="show-information-control">
             <div className="show-tags">
-              {show.sbd ? <div className="tag">Soundboard</div> : null}
-              {show.remastered ? <div className="tag">Remastered</div> : null}
-              {isJamchart(show.id) ? <div className="tag">Jamcharts</div> : null}
+              {show.sbd && <div className="tag">Soundboard</div>}
+              {show.remastered && <div className="tag">Remastered</div>}
+              {isShowJamchart(show.id) && <div className="tag">Jamcharts</div>}
+              {isShowSoundboard(show.id) && <div className="tag">Soundboard</div>}
             </div>
             <img
               src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}
@@ -169,7 +164,6 @@ export default class Shows extends Component {
       this.setState({
         shows: shows,
         loadMoreShows: false,
-        allShows: false,
         currentFilter: "Shows on " + today.toLocaleDateString()
       });
     });
@@ -181,7 +175,6 @@ export default class Shows extends Component {
       this.setState({
         shows: shows,
         loadMoreShows: false,
-        allShows: false,
         currentFilter: data.name
       });
     });
@@ -201,7 +194,6 @@ export default class Shows extends Component {
         this.setState({
           shows: shows,
           loadMoreShows: false,
-          allShows: false,
           currentFilter: data[0].venue.name + ', ' + data[0].venue.location
         });
       });
@@ -214,7 +206,6 @@ export default class Shows extends Component {
       this.setState({
         shows: shows,
         loadMoreShows: false,
-        allShows: false,
         currentFilter: year
       });
     });
@@ -222,6 +213,7 @@ export default class Shows extends Component {
 
   sortShows = (attr, order, shows) => {
     let sorted;
+
     if (attr === 'date') {
       sorted = shows.sort((a, b) => {
         var c = new Date(a.date);
@@ -236,8 +228,14 @@ export default class Shows extends Component {
 
     if (attr === 'jamcharts') {
       sorted = shows.filter(show => {
-        return isJamchart(show.id);
-      })
+        return isShowJamchart(show.id);
+      });
+    }
+
+    if (attr === 'soundboard') {
+      sorted = shows.filter(show => {
+        return isShowSoundboard(show.id);
+      });
     }
 
     if (attr === 'likes_count') {
@@ -254,7 +252,6 @@ export default class Shows extends Component {
       let shows = this.sortShows('date', 'desc', data);
       this.setState({
         shows: shows,
-        allShows: true,
         page: 1,
         loadMoreShows: true,
         currentFilter: "All Shows"
@@ -264,7 +261,7 @@ export default class Shows extends Component {
 
   handleChange = (filterOption) => {
     let shows = this.sortShows(filterOption.attr, filterOption.order, this.state.shows);
-    this.setState({ filterOption: filterOption, shows: shows });
+    this.setState({ filterOption: filterOption, shows: shows, loadMoreShows: false });
   }
 
   loadMoreShows = () => {
@@ -354,14 +351,12 @@ export default class Shows extends Component {
             :
             <div>No shows found</div>}
           </div>
-          {this.state.allShows ?
+          {this.state.loadMoreShows &&
             <div>
               <Ionicon color="#66BB6A" className={this.state.loadingShows ? "" : "hidden"} icon="ios-refresh" fontSize="80px" rotate={true} />
               <Ionicon color="#66BB6A" className={this.state.loadingShows ? "hidden" : ""} icon="ios-more" fontSize="100px" />
             </div>
-            :
-            null
-            }
+          }
         </div>
       </div>
     );

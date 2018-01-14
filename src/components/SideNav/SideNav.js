@@ -24,11 +24,11 @@ const items = [
     "name": "Songs",
     "path": "/song"
   },
-  {
-    "id": 4,
-    "name": "Radio",
-    "path": "/radio"
-  },
+  // {
+  //   "id": 4,
+  //   "name": "Radio",
+  //   "path": "/radio"
+  // },
   // {
   //   "id": 4,
   //   "name": "Login",
@@ -75,10 +75,8 @@ export default class SideNav extends Component {
           </span>
         </div>
         {this.renderList}
-        <a href="https://paypal.me/chrissbendel" target="_blank"> Donate (Coffee!) </a>
-        {/* <div className="btn-share">
-          Share!
-        </div> */}
+        <a href="https://paypal.me/chrissbendel" target="_blank">Donations</a>
+        <a href="https://chrissbendel.github.io/hose/" target="_blank">Get the App</a>
       </div>
     );
   }
