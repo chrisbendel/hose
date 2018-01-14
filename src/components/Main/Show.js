@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './../../css/Show.css';
 import { show, randomShow } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
-import {showJamcharts, trackJamcharts, tourFilters, showSoundboards, trackSoundboards} from './../../filterOptions';
 import {getLikesPercent, msToSec, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName} from './../../Utils';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
@@ -16,7 +15,7 @@ import {saveAs} from 'file-saver'
 import isElectron from 'is-electron';
 
 if (isElectron()) {
-  var {ipcRenderer, remote} = window.require('electron');
+  var {remote} = window.require('electron');
   var remoteWindow = remote.getCurrentWindow();
 }
 

@@ -9,7 +9,6 @@ import Login from './components/User/Login';
 import Radio from './components/Radio';
 import {history} from './History';
 import GlobalSearch from './components/Header/GlobalSearch';
-import {emitter} from './Emitter';
 import {loadFilters} from './filterOptions';
 import Spinner from 'react-spinkit';
 import './css/Main.css';
