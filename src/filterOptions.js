@@ -1,68 +1,99 @@
 const base = 'https://phish.in/api/v1/'
 
 //Tours
+export let tourFilters;
 const tours = async() => {
   let data = await (await cachedFetch(base + 'tours?sort_attr=starts_on&per_page=1000')).json();
-  return data.data;
+  tourFilters = data.data.map(tour => {
+    return {
+      label: tour.name,
+      value: tour.id,
+      showCount: tour.shows_count
+    };
+  }).reverse();
 }
-
-export let tourFilters;
 
 //Venues
+export let venueFilters;
 const venues = async() => {
   let data = await (await cachedFetch(base + 'venues?sort_attr=shows_count&sort_dir=desc&per_page=50000')).json();
-  return data.data;
+  venueFilters = data.data.map(venue => {
+    return {
+      label: venue.name,
+      value: venue.id,
+      showCount: venue.shows_count
+    };
+  });
+  // return data.data;
 }
-
-export let venueFilters;
 
 //Songs
+export let songFilters;
 const songs = async() => {
   let data = await (await cachedFetch(base + 'songs?sort_attr=tracks_count&sort_dir=desc&per_page=50000')).json();
-  return data.data;
+  songFilters = data.data.map(song => {
+    return {
+      label: song.title,
+      value: song.alias_for ? song.alias_for : song.id
+    };
+  });
+  // return data.data;
 }
-
-export let songFilters;
 
 //Years
+export let yearFilters;
 const years = async() => {
   let data = await (await cachedFetch(base + 'years')).json();
-  return data.data;
+  yearFilters = data.data.map(year => {
+    return {
+      label: year,
+      value: year
+    };
+  });
+  yearFilters.push({label: "All Shows", value: "all"});
+  yearFilters.reverse();
+  // return data.data;
 }
-
-export let yearFilters;
 
 //Track soundboards
+export let trackSoundboards;
 const trackSBD = async() => {
   let data = await (await cachedFetch(base + 'tracks?tag=SBD&per_page=50000')).json();
-  return data.data;
+  trackSoundboards = data.data.map(track => {
+    return track.id;
+  });
+  // return data.data;
 }
-
-export let trackSoundboards;
 
 //Track Jamcharts
+export let trackJamcharts;
 const trackJams = async() => {
   let data = await (await cachedFetch(base + 'tracks?tag=Jamcharts&per_page=50000')).json();
-  return data.data;
+  trackJamcharts = data.data.map(track => {
+    return track.id;
+  });
+  // return data.data;
 }
-
-export let trackJamcharts;
 
 //Show soundboards
+export let showSoundboards;
 const showSBD = async() => {
   let data = await (await cachedFetch(base + 'tracks?tag=Jamcharts&per_page=50000')).json();
-  return data.data;
+  showSoundboards = data.data.map(show => {
+    return show.id;
+  });
+  // return data.data;
 }
-
-export let showSoundboards;
 
 //Show Jamcharts
+export let showJamcharts;
 const showJams = async() => {
   let data = await (await cachedFetch(base + 'shows?tag=Jamcharts&per_page=50000')).json();
-  return data.data;
+  showJamcharts = data.data.map(show => {
+    return show.id;
+  });
+  // return data.data;
 }
-
-export let showJamcharts;
 
 export const sortByOptions = [
   {label: 'Jamcharts', value: "jamcharts", attr: "jamcharts", order: "desc"},
@@ -73,61 +104,71 @@ export const sortByOptions = [
 ];
 
 export const loadFilters = async() => {
-  let tourData = await tours();
-  tourFilters = tourData.map(tour => {
-    return {
-      label: tour.name,
-      value: tour.id,
-      showCount: tour.shows_count
-    };
-  }).reverse();
+  return await Promise.all([
+    tours(),
+    venues(),
+    songs(),
+    years(),
+    trackSBD(),
+    trackJams(),
+    showSBD(),
+    showJams()
+  ]);
+  // let tourData = await tours();
+  // tourFilters = tourData.map(tour => {
+  //   return {
+  //     label: tour.name,
+  //     value: tour.id,
+  //     showCount: tour.shows_count
+  //   };
+  // }).reverse();
 
-  let venueData = await venues();
-  venueFilters = venueData.map(venue => {
-    return {
-      label: venue.name,
-      value: venue.id,
-      showCount: venue.shows_count
-    };
-  });
+  // let venueData = await venues();
+  // venueFilters = venueData.map(venue => {
+  //   return {
+  //     label: venue.name,
+  //     value: venue.id,
+  //     showCount: venue.shows_count
+  //   };
+  // });
 
-  let songData = await songs();
-  songFilters = songData.map(song => {
-    return {
-      label: song.title,
-      value: song.alias_for ? song.alias_for : song.id
-    };
-  });
+  // let songData = await songs();
+  // songFilters = songData.map(song => {
+  //   return {
+  //     label: song.title,
+  //     value: song.alias_for ? song.alias_for : song.id
+  //   };
+  // });
 
-  let yearData = await years();
-  yearFilters = yearData.map(year => {
-    return {
-      label: year,
-      value: year
-    };
-  });
-  yearFilters.push({label: "All Shows", value: "all"});
-  yearFilters.reverse();
+  // let yearData = await years();
+  // yearFilters = yearData.map(year => {
+  //   return {
+  //     label: year,
+  //     value: year
+  //   };
+  // });
+  // yearFilters.push({label: "All Shows", value: "all"});
+  // yearFilters.reverse();
 
-  let trackSBDS = await trackSBD();
-  trackSoundboards = trackSBDS.map(track => {
-    return track.id;
-  });
+  // let trackSBDS = await trackSBD();
+  // trackSoundboards = trackSBDS.map(track => {
+  //   return track.id;
+  // });
 
-  let trackData = await trackJams();
-  trackJamcharts = trackData.map(track => {
-    return track.id;
-  });
+  // let trackData = await trackJams();
+  // trackJamcharts = trackData.map(track => {
+  //   return track.id;
+  // });
 
-  let showSBDS = await showSBD();
-  showSoundboards = showSBDS.map(show => {
-    return show.id;
-  });
+  // let showSBDS = await showSBD();
+  // showSoundboards = showSBDS.map(show => {
+  //   return show.id;
+  // });
 
-  let showJamData = await showJams();
-  showJamcharts = showJamData.map(show => {
-    return show.id;
-  });
+  // let showJamData = await showJams();
+  // showJamcharts = showJamData.map(show => {
+  //   return show.id;
+  // });
 }
 
 const cachedFetch = (url, options) => {

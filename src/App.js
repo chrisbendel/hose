@@ -26,7 +26,7 @@ export default class App extends Component {
     loadFilters().then(() => {
       history.push('/shows');
       this.setState({loading: false});
-    })
+    });
   }
 
   render() {
