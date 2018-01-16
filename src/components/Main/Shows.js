@@ -149,15 +149,13 @@ export default class Shows extends Component {
 
     if (custom) {
       today = new Date(custom + ' 00:00');
-      let day = today.getDate().toString();
-      let month = (today.getMonth() + 1).toString();
-      date = month + "-" + day;
     } else {
       today = new Date();
-      let day = today.getDate().toString();
-      let month = (today.getMonth() + 1).toString();
-      date = month + "-" + day;
     }
+
+    let day = today.getDate().toString();
+    let month = (today.getMonth() + 1).toString();
+    date = month + "-" + day;
 
     showsToday(date).then(data => {
       let shows = this.sortShows('date', 'desc', data);

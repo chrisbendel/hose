@@ -49,7 +49,7 @@ export default class Player extends Component {
 
     emitter.addListener('playlistUpdate', (showId, position) => {
       if (this.state.show != null) {
-        if (this.state.show.id === showId && this.player.state.currentPlaylistPos === position) {
+        if (this.state.show.id == showId && this.player.state.currentPlaylistPos == position) {
           this.play();
           return;
         }
