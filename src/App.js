@@ -9,7 +9,6 @@ import Login from './components/User/Login';
 import Radio from './components/Radio';
 import {history} from './History';
 import GlobalSearch from './components/Header/GlobalSearch';
-import {loadFilters} from './filterOptions';
 import Spinner from 'react-spinkit';
 import './css/Main.css';
 
@@ -23,10 +22,8 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    loadFilters().then(() => {
-      history.push('/shows');
-      this.setState({loading: false});
-    });
+    history.push('/shows');
+    this.setState({loading: false});
   }
 
   render() {

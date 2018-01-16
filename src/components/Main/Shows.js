@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { shows, showsForYear, showsForVenue, showsForTour, showsToday, show } from './../../api/phishin';
-import {yearFilters, tourFilters, venueFilters, sortByOptions} from './../../filterOptions';
+import {yearFilters, tourFilters, venueFilters, sortByOptions} from './../../filters';
 import {isShowJamchart, isShowSoundboard} from './../../Utils';
 import './../../css/Shows.css';
 import Ionicon from 'react-ionicons';

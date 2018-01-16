@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { tracksForSong } from './../../api/phishin';
-import { songFilters } from './../../filterOptions';
+import { songFilters } from './../../filters';
 import {isTrackJamchart, isTrackSoundboard, getLikesPercent, msToSec} from './../../Utils';
 import {NavLink} from 'react-router-dom';
 import Ionicon from 'react-ionicons';

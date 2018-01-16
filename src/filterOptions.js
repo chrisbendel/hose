@@ -114,61 +114,6 @@ export const loadFilters = async() => {
     showSBD(),
     showJams()
   ]);
-  // let tourData = await tours();
-  // tourFilters = tourData.map(tour => {
-  //   return {
-  //     label: tour.name,
-  //     value: tour.id,
-  //     showCount: tour.shows_count
-  //   };
-  // }).reverse();
-
-  // let venueData = await venues();
-  // venueFilters = venueData.map(venue => {
-  //   return {
-  //     label: venue.name,
-  //     value: venue.id,
-  //     showCount: venue.shows_count
-  //   };
-  // });
-
-  // let songData = await songs();
-  // songFilters = songData.map(song => {
-  //   return {
-  //     label: song.title,
-  //     value: song.alias_for ? song.alias_for : song.id
-  //   };
-  // });
-
-  // let yearData = await years();
-  // yearFilters = yearData.map(year => {
-  //   return {
-  //     label: year,
-  //     value: year
-  //   };
-  // });
-  // yearFilters.push({label: "All Shows", value: "all"});
-  // yearFilters.reverse();
-
-  // let trackSBDS = await trackSBD();
-  // trackSoundboards = trackSBDS.map(track => {
-  //   return track.id;
-  // });
-
-  // let trackData = await trackJams();
-  // trackJamcharts = trackData.map(track => {
-  //   return track.id;
-  // });
-
-  // let showSBDS = await showSBD();
-  // showSoundboards = showSBDS.map(show => {
-  //   return show.id;
-  // });
-
-  // let showJamData = await showJams();
-  // showJamcharts = showJamData.map(show => {
-  //   return show.id;
-  // });
 }
 
 const cachedFetch = (url, options) => {

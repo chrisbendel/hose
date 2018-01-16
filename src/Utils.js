@@ -1,5 +1,5 @@
 //TODO move the soundboard, jamchart, datetime helpers into here and import them where used.
-import {trackJamcharts, trackSoundboards, showJamcharts, showSoundboards, tourFilters} from './filterOptions';
+import {trackJamcharts, trackSoundboards, showJamcharts, showSoundboards, tourFilters} from './filters';
 
 export const getLikesPercent = (tracks, likes) => {
   const max = Math.max.apply(Math, tracks.map(function(o) {
