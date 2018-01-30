@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import './../../css/Shows.css';
 import { shows, showsForYear, showsForVenue, showsForTour, showsToday, show } from './../../api/phishin';
 import {yearFilters, tourFilters, venueFilters, sortByOptions} from './../../filters';
 import {isShowJamchart, isShowSoundboard} from './../../Utils';
-import './../../css/Shows.css';
 import Ionicon from 'react-ionicons';
 import Filter from './Filter';
 import Select from 'react-select';
@@ -103,17 +103,17 @@ export default class Shows extends Component {
             />
             <div className="show-information">
               <div className="center-abs">
-                <div className="play-button" onClick={(e) => Controls.updateShowAndPosition(e,show.id)}>
+                <div onClick={(e) => Controls.updateShowAndPosition(e,show.id)}>
                   <Ionicon 
                     icon="ios-play" 
-                    fontSize="35px" 
+                    fontSize="60px" 
                     color="white"
                   />
                 </div>
                 <div className="show-likes">
                   <Ionicon 
                     icon="ios-thumbs-up"
-                    fontSize="18px"
+                    fontSize="20px"
                     onClick={() => console.log('like clicked')}
                     color="white"
                   />

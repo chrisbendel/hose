@@ -84,7 +84,7 @@ export default class Show extends Component {
     }).map(track => {
       return (
         <li className={
-              this.state.playing && Controls.position == track.position && this.state.playingShow.id == this.state.show.id
+              this.state.playing && Controls.position == track.position && Controls.show.id == show.id
               ? "show-container-item playing"
               : "show-container-item"
             }

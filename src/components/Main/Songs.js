@@ -35,7 +35,6 @@ export default class Songs extends Component {
   componentDidMount = () => {
     let id = this.props.match.params.id;
     emitter.addListener('songUpdate', (show, track, position, playing) => {
-      console.log(track);
       this.setState({
         currentTrack: track,
         playing: playing
