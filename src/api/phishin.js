@@ -17,6 +17,11 @@ export const login = async() => {
   })
 }
 
+export const fetchRandomTrack = async() => {
+  let data = await (await fetch(base + 'tracks/7688')).json();
+  return data.data;
+}
+
 export const randomShow = async() => {
   let data = await (await fetch(base + 'random-show')).json();
   return data.data;

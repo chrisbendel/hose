@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Controls from './../Controls';
 import {emitter} from './../Emitter';
 import Ionicon from 'react-ionicons';
+import {fetchRandomTrack} from './../api/phishin';
 import './../css/Radio.css';
 
 export default class Radio extends Component {
@@ -23,13 +24,19 @@ export default class Radio extends Component {
     });
   }
 
+  fetchTrack() {
+    fetchRandomTrack().then(track => {
+      this.setState({currentTrack: track})
+    });
+  }
+
   render() {
     let track = this.state.currentTrack;
 
     if (!track) {
       return (
         <div className="radio-container">
-          <button className="start">
+          <button onClick={() => {this.fetchTrack()}} className="start">
             Play Radio
           </button>
         </div>
