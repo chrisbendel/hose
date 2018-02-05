@@ -1,8 +1,18 @@
 .radio-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 1rem;
   height: calc(100% - 75px);
+}
+
+.top {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .control {
@@ -24,8 +34,8 @@
 }
 
 .art {
-  width: 250px;
-  display: flex;
+  width: 200px;
+  height: 200px;
   cursor: pointer;
 }
 

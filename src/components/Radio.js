@@ -54,7 +54,8 @@ export default class Radio extends Component {
     console.log(show)
     return (
       <div className="radio-container"> 
-        <div className="information">
+        <div className="top">
+          <Ionicon className="control" icon="ios-thumbs-up" fontSize="50px" />
           <img 
             className="art"
             alt={track.show_date} src={'https://s3.amazonaws.com/hose/images/' + track.show_date + '.jpg'}
@@ -62,13 +63,14 @@ export default class Radio extends Component {
               history.push("/show/" + show.id)
             }}
           />
+          <Ionicon className="control" icon="ios-thumbs-down" fontSize="50px" />
+        </div>
           <div className="show-details">
             <div>{show.date}</div>
             <div>{show.venue.name}</div>
             <div>{show.venue.location}</div>
           </div>    
-        </div>
-          
+        
         <div className="track-info">
           <div> text </div>
           <div> text2 </div>
