@@ -84,7 +84,7 @@ def extractAudioFeatures():
 
 songs = pd.read_csv("output.csv", header=None).fillna(0)
 # songs = pd.read_csv("output.csv", header=None, nrows=20).fillna(0)
-numClusters = 10
+numClusters = 7
 
 # ==== This section is for setting our initial centroids, if we choose to === #
 # =========================================================================== #
@@ -113,68 +113,40 @@ numClusters = 10
 # remove the ids for clustering
 data = songs.drop(songs.columns[0], axis=1)
 
-data = (data - data.mean()) / (data.max() - data.min())
+data = (data - data.min()) / (data.max() - data.min())
 
-km = KMeans(n_clusters=numClusters, init='k-means++', n_jobs=-1, n_init=50)
+km = KMeans(n_clusters=numClusters, init='k-means++', n_jobs=-1, n_init=300, algorithm="elkan")
 km.fit(data)
 
 labels = km.labels_
-centroids = km.cluster_centers_
+#centroids = km.cluster_centers_
 
 clusters = km.fit_predict(data)
-data['Cluster'] = clusters
-labels = km.labels_
-fig,ax = plt.subplots()
-annot = ax.annotate("", xy=(0,0), xytext=(-20,20),textcoords="offset points",
-                    bbox=dict(boxstyle="round", fc="w"),
-                    arrowprops=dict(arrowstyle="->"))
-annot.set_visible(False)
+#data['Cluster'] = clusters
 
-for i in range(numClusters):
-    ds = data[data['Cluster'] == i]
-    ds.drop('Cluster',1)
-    pyplot.plot(ds.iloc[:,0],ds.iloc[:,1],'o')
-    lines = pyplot.plot(centroids[i,0],centroids[i,1],'kx')
-    pyplot.setp(lines,ms=15.0)
-    pyplot.setp(lines,mew=2.0)
+#for i in set(labels):
+#    index = labels == i
+#    plt.plot(data.iloc[index,0], data.iloc[index,1], 'o')
+#plt.show()
 
-def update_annot(ind):
-    # x,y = line.get_data()
-    # annot.xy = (x[ind["ind"][0]], y[ind["ind"][0]])
-    # text = "test"
-    # # text = "{}, {}".format(" ".join(list(map(str,ind["ind"]))), 
-    # #                        " ".join([names[n] for n in ind["ind"]]))
-    # annot.set_text(text)
-    # annot.get_bbox_patch().set_alpha(0.4)
+#for i in range(numClusters):
+#    ds = data[data['Cluster'] == i]
+#    ds.drop('Cluster',1)
+#    pyplot.plot(ds.iloc[:,0],ds.iloc[:,1],'o')
+#    lines = pyplot.plot(centroids[i,0],centroids[i,1],'kx')
+#    pyplot.setp(lines,ms=15.0)
+#    pyplot.setp(lines,mew=2.0)
 
+songs['Cluster'] = clusters
+with open('songs.csv', 'wb') as outcsv:
+    writer = csv.writer(outcsv)
+    writer.writerow(["id", "Song", "Date", "Set", "Cluster"])
+ 
+    for i in range(numClusters):
+        for x in songs[songs['Cluster'] == i][0]:
+            res = requests.get("http://phish.in/api/v1/tracks/" + str(x)).json()
+            writer.writerow([res['data']['id']] + [res['data']['title'].encode('utf-8')] + [res['data']['show_date']] + [res['data']['set']] + [i])
+        print("<-------------->")
 
-def hover(event):
-    vis = annot.get_visible()
-    if event.inaxes == ax:
-        cont, ind = line.contains(event)
-        if cont:
-            update_annot(ind)
-            annot.set_visible(True)
-            fig.canvas.draw_idle()
-        else:
-            if vis:
-                annot.set_visible(False)
-                fig.canvas.draw_idle()
-fig.canvas.mpl_connect("motion_notify_event", hover)
-pyplot.show()
-
-# songs['Cluster'] = clusters
-# with open('songs.csv', 'wb') as outcsv:
-#     writer = csv.writer(outcsv)
-#     writer.writerow(["ID", "Song", "Date", "Set", "Cluster"])
-  
-#     for i in range(numClusters):
-#         print ("Cluster: " + str(i))
-#         for x in songs[songs['Cluster'] == i][0]:
-#             res = requests.get("http://phish.in/api/v1/tracks/" + str(x)).json()
-#             writer.writerow([res['data']['id']] + [res['data']['title']] + [res['data']['show_date']] + [res['data']['set']] + [i])
-#             print(res['data']['title'], res['data']['show_date'], res['data']['id'])
-#         print("<-------------->")
-
-# songs.to_csv("clusters.csv", index = False)
+#songs.to_csv("clusters.csv", index = False)
 
