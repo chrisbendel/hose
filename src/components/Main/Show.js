@@ -97,7 +97,7 @@ export default class Show extends Component {
                 icon="ios-play"
                 font-size="40px"
                 onClick={(e) => {
-                  Controls.updateShowAndPosition(e, show.id, track.position);
+                  Controls.updateShowAndPosition(show.id, track.position);
                   this.setState({playing: true});
                 }}
                 className="track-play"
@@ -268,7 +268,7 @@ export default class Show extends Component {
                 <button 
                   className="play-btn-lrg green clickable"
                   onClick={(e) => {
-                    Controls.updateShowAndPosition(e, show.id);
+                    Controls.updateShowAndPosition(show.id);
                     this.setState({playing: true});
                   }}
                 >

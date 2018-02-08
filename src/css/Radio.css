@@ -34,8 +34,8 @@
 }
 
 .art {
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   cursor: pointer;
 }
 
@@ -49,16 +49,7 @@
   align-self: center;
 }
 
-/* .show-overview {
-  background-color: #FFF;
-  box-shadow: 0 0 14px 2px rgba(0, 0, 0, 0.1);
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-} */
-
-.information {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
+.song {
+  font-weight: bold;
+  font-size: 18px;
 }

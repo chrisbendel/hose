@@ -3,7 +3,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
-const {ipcMain, dialog, shell, process} = require('electron');
+const {ipcMain, dialog, shell, process, Tray, Menu} = require('electron');
 const platform = require('electron-platform');
 let mainWindow; 
 const isElectron = require('is-electron');
@@ -51,7 +51,7 @@ function createWindow() {
   }
 }
 
-app.on('ready', () => { 
+app.on('ready', () => {
   autoUpdater.checkForUpdatesAndNotify();
   
   if ( platform.isWin32 ) {
@@ -71,7 +71,7 @@ app.on('ready', () => {
     });
   }
 
-  createWindow();
+  createWindow(); 
 });
 
 app.on('window-all-closed', function () {

@@ -115,7 +115,7 @@ data = songs.drop(songs.columns[0], axis=1)
 
 data = (data - data.min()) / (data.max() - data.min())
 
-km = KMeans(n_clusters=numClusters, init='k-means++', n_jobs=-1, n_init=300, algorithm="elkan")
+km = KMeans(n_clusters=numClusters, init='k-means++', n_jobs=-1, n_init=50, algorithm="elkan")
 km.fit(data)
 
 labels = km.labels_
@@ -138,14 +138,14 @@ clusters = km.fit_predict(data)
 #    pyplot.setp(lines,mew=2.0)
 
 songs['Cluster'] = clusters
-with open('songs.csv', 'wb') as outcsv:
+with open('songdates.csv', 'wb') as outcsv:
     writer = csv.writer(outcsv)
-    writer.writerow(["id", "Song", "Date", "Set", "Cluster"])
+    writer.writerow(["id", "Song", "Year", "Set", "Duration", "Cluster"])
  
     for i in range(numClusters):
         for x in songs[songs['Cluster'] == i][0]:
             res = requests.get("http://phish.in/api/v1/tracks/" + str(x)).json()
-            writer.writerow([res['data']['id']] + [res['data']['title'].encode('utf-8')] + [res['data']['show_date']] + [res['data']['set']] + [i])
+            writer.writerow([res['data']['id']] + [res['data']['title'].encode('utf-8')] + [res['data']['show_date']] + [res['data']['set']] + [res['data']['duration']] + [i])
         print("<-------------->")
 
 #songs.to_csv("clusters.csv", index = False)

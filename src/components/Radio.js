@@ -3,7 +3,8 @@ import Controls from './../Controls';
 import {emitter} from './../Emitter';
 import Ionicon from 'react-ionicons';
 import {history} from './../History';
-import {fetchRandomTrack, show} from './../api/phishin';
+import {fetchRandomTrack, show, trackInfo} from './../api/phishin';
+import Spinner from 'react-spinkit';
 import './../css/Radio.css';
 
 export default class Radio extends Component {
@@ -11,27 +12,42 @@ export default class Radio extends Component {
     super(props);
     this.state = {
       currentTrack: null,
-      currentShow: null
+      currentShow: null,
+      radioPlaying: false,
+      liked: false,
+      disliked: false
     };
   }
 
   componentWillMount() {
+    if (Controls.radioPlaying) {
+      this.setState({
+        currentShow: Controls.show,
+        currentTrack: Controls.track,
+        playing: Controls.playing,
+        radioPlaying: Controls.radioPlaying
+      });
+    }
+
     emitter.addListener('songUpdate', (show, track, position, playing) => {
       this.setState({
         currentShow: show,
         currentTrack: track,
-        playingPosition: position,
-        playing: playing
+        playing: playing,
+        radioPlaying: Controls.radioPlaying
       });
     });
   }
 
-  fetchTrack() {
-    fetchRandomTrack().then(track => {
-      show(track.show_id).then(show => {
-        this.setState({
-          currentTrack: track,
-          currentShow: show
+  componentWillUnmount() {
+    emitter.removeAllListeners('songUpdate');
+  }
+
+  fetchRandomTrack() {
+    fetchRandomTrack().then(tracks => {
+      trackInfo(tracks[Math.floor(Math.random() * tracks.length)].id).then(track => {
+        show(track.show_id).then(show => {
+          Controls.updateShowAndPosition(show.id, track.position, true);
         });
       });
     });
@@ -41,45 +57,61 @@ export default class Radio extends Component {
     let track = this.state.currentTrack;
     let show = this.state.currentShow;
 
-    if (!track) {
+    if (!Controls.radioPlaying) {
       return (
         <div className="radio-container">
-          <button onClick={() => {this.fetchTrack()}} className="start">
+          <button onClick={() => {this.fetchRandomTrack()}} className="start">
             Play Radio
           </button>
         </div>
       )
     }
-    console.log(track)
-    console.log(show)
+
+    console.log(track);
+
     return (
       <div className="radio-container"> 
         <div className="top">
-          <Ionicon className="control" icon="ios-thumbs-up" fontSize="50px" />
+          <Ionicon 
+            className="control" 
+            icon={this.state.disliked ? "ios-thumbs-down" : "ios-thumbs-down-outline"}
+            color={this.state.disliked ? "#4CAF50" : "#000"} 
+            fontSize="50px"
+            onClick={() => {
+              if (this.state.liked) {
+                this.setState({disliked: !this.state.disliked, liked: false})
+              } else {
+                this.setState({disliked: !this.state.disliked})  
+              }
+            }}
+          />
           <img 
             className="art"
-            alt={track.show_date} src={'https://s3.amazonaws.com/hose/images/' + track.show_date + '.jpg'}
+            alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}
             onClick={() => {
               history.push("/show/" + show.id)
             }}
           />
-          <Ionicon className="control" icon="ios-thumbs-down" fontSize="50px" />
+          <Ionicon 
+            className="control" 
+            icon={this.state.liked ? "ios-thumbs-up" : "ios-thumbs-up-outline"}
+            color={this.state.liked ? "#4CAF50" : "#000"} 
+            fontSize="50px" 
+            onClick={() => {
+              if (this.state.disliked) {
+                this.setState({liked: !this.state.liked, disliked: false})    
+              } else {
+                this.setState({liked: !this.state.liked})
+              }
+            }}
+          />
         </div>
           <div className="show-details">
+            <div className="song">{track.title}</div>
             <div>{show.date}</div>
             <div>{show.venue.name}</div>
             <div>{show.venue.location}</div>
-          </div>    
-        
-        <div className="track-info">
-          <div> text </div>
-          <div> text2 </div>
-        </div>
-        <div className="player">
-          <Ionicon className="control" icon="ios-skip-backward" fontSize="50px" />
-          <Ionicon className="control" icon="ios-play" fontSize="50px" />
-          <Ionicon className="control" icon="ios-skip-forward" fontSize="50px" />
-        </div>
+          </div>
       </div>
     );
   }

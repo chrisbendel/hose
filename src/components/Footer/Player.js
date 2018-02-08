@@ -50,12 +50,11 @@ export default class Player extends Component {
     emitter.addListener('playlistUpdate', (showId, position) => {
       if (this.state.show != null) {
         if (this.state.show.id == showId && this.player.state.currentPlaylistPos == position) {
-          this.play();
-          return;
+          return this.play();
         }
       }
       
-      this.setShow(showId, position);
+      this.setPlaying(showId, position);
     });
   }
 
@@ -132,7 +131,7 @@ export default class Player extends Component {
     }
   }
 
-  setShow = (showId, position = 0) => {
+  setPlaying = (showId, position = 0) => {
     show(showId).then(show => {
       let tracks = show.tracks.map(track => {
         return {id: track.id, name: track.title, src: track.mp3}

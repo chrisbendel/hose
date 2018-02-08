@@ -6,6 +6,7 @@ class Controls {
     this.track = null;
     this.position = null;
     this.playing = false;
+    this.radioPlaying = false;
 
     emitter.addListener('songUpdate', (show, track, position, playing) => {
       this.show = show;
@@ -25,7 +26,8 @@ class Controls {
     emitter.emit('play');
   }
 
-  updateShowAndPosition = (e, s, p = 1) => {
+  updateShowAndPosition = (s, p = 1, radio = false) => {
+    this.radioPlaying = radio;
     emitter.emit('playlistUpdate', s, p - 1);
   }
 }

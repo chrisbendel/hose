@@ -185,7 +185,7 @@ export default class Songs extends Component {
                   </div>
                 :
                   <div className="play-button" onClick={(e) => {
-                    Controls.updateShowAndPosition(e,track.show_id, track.position);
+                    Controls.updateShowAndPosition(track.show_id, track.position);
                   }}>
                     <Ionicon 
                       icon="ios-play" 

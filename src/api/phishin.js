@@ -18,7 +18,12 @@ export const login = async() => {
 }
 
 export const fetchRandomTrack = async() => {
-  let data = await (await fetch(base + 'tracks/7688')).json();
+  let data = await (await fetch(base + 'tracks?per_page=100')).json();
+  return data.data;
+}
+
+export const trackInfo = async(id) => {
+  let data = await (await fetch(base + 'tracks/' + id)).json();
   return data.data;
 }
 
@@ -29,11 +34,6 @@ export const randomShow = async() => {
 
 export const show = async(id) => {
   let data = await (await cachedFetch(base + 'shows/' + id)).json();
-  return data.data;
-}
-
-export const testFunc = async() => {
-  let data = await (await cachedFetch(base + 'songs?per_page=1000&sort_attr=title')).json();
   return data.data;
 }
 
