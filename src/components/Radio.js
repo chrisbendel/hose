@@ -3,6 +3,7 @@ import Controls from './../Controls';
 import {emitter} from './../Emitter';
 import Ionicon from 'react-ionicons';
 import {history} from './../History';
+import {msToSec} from './../Utils';
 import {fetchRandomTrack, show, trackInfo} from './../api/phishin';
 import Spinner from 'react-spinkit';
 import './../css/Radio.css';
@@ -95,8 +96,8 @@ export default class Radio extends Component {
           <Ionicon 
             className="control" 
             icon={this.state.liked ? "ios-thumbs-up" : "ios-thumbs-up-outline"}
-            color={this.state.liked ? "#4CAF50" : "#000"} 
-            fontSize="50px" 
+            color={this.state.liked ? "#4CAF50" : "#000"}
+            fontSize="50px"
             onClick={() => {
               if (this.state.disliked) {
                 this.setState({liked: !this.state.liked, disliked: false})    
@@ -108,6 +109,12 @@ export default class Radio extends Component {
         </div>
           <div className="show-details">
             <div className="song">{track.title}</div>
+            <div>
+              <Ionicon fontSize="15px" color="red" icon="ios-heart"/>
+              <span>{track.likes_count}</span>
+            </div>
+            <div>{msToSec(track.duration)}</div>
+            <div>Total plays (soon)</div>
             <div>{show.date}</div>
             <div>{show.venue.name}</div>
             <div>{show.venue.location}</div>
