@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { view } from 'react-easy-state'
+import Store from './../../Store';
 import './../../css/Shows.css';
 import { shows, showsForYear, showsForVenue, showsForTour, showsToday, show } from './../../api/phishin';
 import {yearFilters, tourFilters, venueFilters, sortByOptions} from './../../filters';
@@ -8,11 +10,9 @@ import Filter from './Filter';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import {history} from './../../History';
-import Controls from './../../Controls';
 import Spinner from 'react-spinkit';
-import isElectron from 'is-electron';
 
-export default class Shows extends Component {
+class Shows extends Component {
   constructor(props) {
     super(props);
     
@@ -33,13 +33,7 @@ export default class Shows extends Component {
     let id = this.props.match.params.id;
     this.loadRelevantData(type, id);
   }
-
-  componentWillUnmount = () => {
-    if (this.refs.shows) {
-      this.refs.shows.removeEventListener('scroll', this.handleScroll);
-    }
-  }
-
+  
   componentDidUpdate = () => {
     if (this.refs.shows) {
       this.refs.shows.addEventListener('scroll', this.handleScroll);
@@ -91,7 +85,6 @@ export default class Shows extends Component {
         <div key={show.id} onClick={() => {history.push('/show/' + show.id)}} className="image-container">
           <div className="show-information-control">
             <div className="show-tags">
-              {show.sbd && <div className="tag">Soundboard</div>}
               {show.remastered && <div className="tag">Remastered</div>}
               {isShowJamchart(show.id) && <div className="tag">Jamcharts</div>}
               {isShowSoundboard(show.id) && <div className="tag">Soundboard</div>}
@@ -101,23 +94,40 @@ export default class Shows extends Component {
               alt={show.id}
               id={show.id}
             />
-            <div className="show-information">
+            <div className={Store.isShowPlaying(show) ? "show-information-active" : "show-information"}>
               <div className="center-abs">
-                <div onClick={(e) => Controls.updateShowAndPosition(show.id)}>
+                {Store.isShowPlaying(show) ?
+                <div onClick={(e) => {
+                  Store.pause();
+                  e.stopPropagation();
+                }}>
+                  <Ionicon 
+                    icon="ios-pause" 
+                    fontSize="60px"
+                    color="white"
+                  />
+                </div>
+                :
+                <div onClick={(e) => {
+                  Store.playShow(show.id);
+                  e.stopPropagation();
+                }}>
                   <Ionicon 
                     icon="ios-play" 
                     fontSize="60px" 
                     color="white"
                   />
                 </div>
+                }
+
                 <div className="show-likes">
-                  <Ionicon 
+                  <Ionicon
                     icon="ios-thumbs-up"
                     fontSize="20px"
                     onClick={() => console.log('like clicked')}
                     color="white"
                   />
-                  <span className="likes-num"> 
+                  <span className="likes-num">
                     {show.likes_count} 
                   </span>
                 </div>
@@ -130,11 +140,11 @@ export default class Shows extends Component {
           <span className="show-venue">
             {show.venue ? 
               <span onClick={() => {history.push('/shows/venue/' + show.venue.id)}}>
-                {show.venue.name} {show.venue.location
-              }</span>
+                {show.venue.name} {show.venue.location}
+              </span>
               :
-              <span onClick={() => {history.push('/shows/venue/' + show.venue_id)}}> 
-                {show.venue_name} {show.location}  
+              <span onClick={() => {history.push('/shows/venue/' + show.venue_id)}}>
+                {show.venue_name} {show.location}
               </span>
             }
           </span>
@@ -360,3 +370,5 @@ export default class Shows extends Component {
     );
   }
 }
+
+export default view(Shows)

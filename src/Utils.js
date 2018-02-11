@@ -1,5 +1,9 @@
 //TODO move the soundboard, jamchart, datetime helpers into here and import them where used.
 import {trackJamcharts, trackSoundboards, showJamcharts, showSoundboards, tourFilters} from './filters';
+import isElectron from 'is-electron';
+import JSZipUtils from 'jszip-utils';
+import JSZip from 'jszip';
+import {saveAs} from 'file-saver'
 
 export const getLikesPercent = (tracks, likes) => {
   const max = Math.max.apply(Math, tracks.map(function(o) {
@@ -35,4 +39,44 @@ export const getTourName = id => {
   return tourFilters.find(tour => {
     return tour.value == id;
   }).label;
+}
+
+export const mapTracks = tracks => {
+  return tracks.map(track => {
+    return {id: track.id, name: track.title, src: track.mp3}
+  });
+}
+
+export const downloadShow = (show) => {
+  if (isElectron()) {
+    var {remote} = window.require('electron');
+    var remoteWindow = remote.getCurrentWindow();
+  }
+  let tracks = show.tracks;
+  var zip = new JSZip();
+  let count = 0;
+  let showName = show.date + "-" + show.venue.name + "-" + show.venue.location;
+  tracks.forEach(track => {
+    let title = track.title + ".mp3";
+    JSZipUtils.getBinaryContent(track.mp3, (err, data) => {
+      zip.file(title, data, {binary: true});
+      count++;
+      if (isElectron()) {
+        remoteWindow.setProgressBar(count / tracks.length);
+      }
+      if (count === tracks.length) {
+        zip.generateAsync({type:'blob'}, (metadata) => {
+          if (isElectron()) {
+            remoteWindow.setProgressBar(metadata.percent);
+          }
+        })
+        .then(content => {
+          saveAs(content, showName + ".zip");
+          if (isElectron()) {
+            remoteWindow.setProgressBar(-1);
+          }
+        });
+      }
+    });
+  });
 }

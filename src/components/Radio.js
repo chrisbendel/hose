@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Controls from './../Controls';
-import {emitter} from './../Emitter';
+import Store from './../Store';
+import { view } from 'react-easy-state'
 import Ionicon from 'react-ionicons';
 import {history} from './../History';
 import {msToSec} from './../Utils';
@@ -8,7 +8,7 @@ import {fetchRandomTrack, show, trackInfo} from './../api/phishin';
 import Spinner from 'react-spinkit';
 import './../css/Radio.css';
 
-export default class Radio extends Component {
+class Radio extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,35 +21,13 @@ export default class Radio extends Component {
   }
 
   componentWillMount() {
-    if (Controls.radioPlaying) {
-      this.setState({
-        currentShow: Controls.show,
-        currentTrack: Controls.track,
-        playing: Controls.playing,
-        radioPlaying: Controls.radioPlaying
-      });
-    }
 
-    emitter.addListener('songUpdate', (show, track, position, playing) => {
-      this.setState({
-        currentShow: show,
-        currentTrack: track,
-        playing: playing,
-        radioPlaying: Controls.radioPlaying
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    emitter.removeAllListeners('songUpdate');
   }
 
   fetchRandomTrack() {
     fetchRandomTrack().then(tracks => {
       trackInfo(tracks[Math.floor(Math.random() * tracks.length)].id).then(track => {
-        show(track.show_id).then(show => {
-          Controls.updateShowAndPosition(show.id, track.position, true);
-        });
+        Store.playTrack(track.show_id, track);
       });
     });
   }
@@ -58,7 +36,7 @@ export default class Radio extends Component {
     let track = this.state.currentTrack;
     let show = this.state.currentShow;
 
-    if (!Controls.radioPlaying) {
+    if (!Store.playing) {
       return (
         <div className="radio-container">
           <button onClick={() => {this.fetchRandomTrack()}} className="start">
@@ -123,3 +101,5 @@ export default class Radio extends Component {
     );
   }
 }
+
+export default view(Radio)

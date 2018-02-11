@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { tracksForSong } from './../../api/phishin';
+import { view } from 'react-easy-state'
+import Store from './../../Store';
+import { tracksForSong, show } from './../../api/phishin';
 import { songFilters } from './../../filters';
 import {isTrackJamchart, isTrackSoundboard, getLikesPercent, msToSec} from './../../Utils';
 import {NavLink} from 'react-router-dom';
@@ -9,11 +11,9 @@ import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css'
 import './../../css/Songs.css';
 import 'react-select/dist/react-select.css';
-import Controls from './../../Controls';
 import Spinner from 'react-spinkit';
-import {emitter} from './../../Emitter';
 
-export default class Songs extends Component {
+class Songs extends Component {
   constructor(props) {
     super(props);
     
@@ -27,19 +27,12 @@ export default class Songs extends Component {
       jamcharts: false,
       soundboard: false,
       loading: false,
-      currentTrack: null,
       playing: false
     }
   }
   
   componentDidMount = () => {
     let id = this.props.match.params.id;
-    emitter.addListener('songUpdate', (show, track, position, playing) => {
-      this.setState({
-        currentTrack: track,
-        playing: playing
-      });
-    });
     this.fetchTracks(id);
   }
 
@@ -173,9 +166,9 @@ export default class Songs extends Component {
             />
             <div className="show-information">
               <div className="center-abs">
-                {this.state.playing && track.id == this.state.currentTrack.id ? 
+                {Store.isTrackPlaying(track) ? 
                   <div className="play-button" onClick={(e) => {
-                    Controls.pause();
+                    Store.pause();
                   }}>
                     <Ionicon 
                       icon="ios-pause" 
@@ -185,7 +178,7 @@ export default class Songs extends Component {
                   </div>
                 :
                   <div className="play-button" onClick={(e) => {
-                    Controls.updateShowAndPosition(track.show_id, track.position);
+                    Store.playTrack(track.show_id, track);
                   }}>
                     <Ionicon 
                       icon="ios-play" 
@@ -194,22 +187,11 @@ export default class Songs extends Component {
                     />
                   </div>
                 }
-                <div className="show-likes">
-                  <Ionicon 
-                    icon="ios-thumbs-up"
-                    fontSize="10px"
-                    onClick={() => console.log('like clicked')}
-                    color="white"
-                  />
-                  <span className="likes-num"> 
-                    {track.likes_count} 
-                  </span>
-                </div>
               </div>
             </div>
           </div>
           <span className="playing-cell">
-            {this.state.playing && track.id == this.state.currentTrack.id ?
+            {Store.isTrackPlaying(track) ?
               <Spinner color='#4CAF50' name='line-scale-pulse-out-rapid' />
               : null
             }
@@ -327,3 +309,5 @@ export default class Songs extends Component {
     );
   }
 }
+
+export default view(Songs)

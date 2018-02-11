@@ -251,7 +251,7 @@
 }
 
 .play-button:hover {
-  transform: scale(1);
+  transform: scale(1.1);
   background-color: rgba(0, 0, 0, 0.6);
 }
 
@@ -260,21 +260,4 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
-}
-
-.show-likes {
-  color: #FFF;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  line-height: 1;
-  cursor: pointer;  
-  padding: .5rem;
-  align-items: center;
-  font-size: 18px;
-}
-
-.likes-num {
-  margin-left: 5px;
-  font-size: 12px;
 }

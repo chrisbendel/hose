@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { store, view } from 'react-easy-state'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import './../../css/Shows.css';
 import {history} from './../../History';
 
-export default class Filter extends Component {
+class Filter extends Component {
   constructor (props) {
     super(props);
 
@@ -38,3 +39,5 @@ export default class Filter extends Component {
     );
   }
 }
+
+export default view(Filter)

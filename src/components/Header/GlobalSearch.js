@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { store, view } from 'react-easy-state'
 import {search} from './../../api/phishin.js';
 import './../../css/Search.css';
 import Autosuggest from 'react-autosuggest';
@@ -18,7 +19,7 @@ String.prototype.fuzzy = function (s) {
   return true;
 };
 
-export default class GlobalSearch extends Component {
+class GlobalSearch extends Component {
   constructor(props) {
     super(props);
 
@@ -111,3 +112,5 @@ export default class GlobalSearch extends Component {
     )
   }
 }
+
+export default view(GlobalSearch)

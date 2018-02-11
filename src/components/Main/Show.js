@@ -1,25 +1,17 @@
 import React, { Component } from 'react';
-import './../../css/Show.css';
+import { view } from 'react-easy-state'
+import Store from './../../Store';
 import { show, randomShow } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
-import {getLikesPercent, msToSec, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName} from './../../Utils';
+import {getLikesPercent, msToSec, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName, downloadShow} from './../../Utils';
 import { Tooltip } from 'react-tippy';
-import 'react-tippy/dist/tippy.css';
 import {history} from './../../History';
-import Controls from './../../Controls';
-import {emitter} from './../../Emitter';
 import Spinner from 'react-spinkit';
-import JSZipUtils from 'jszip-utils';
-import JSZip from 'jszip';
-import {saveAs} from 'file-saver'
 import isElectron from 'is-electron';
+import './../../css/Show.css';
+import 'react-tippy/dist/tippy.css';
 
-if (isElectron()) {
-  var {remote} = window.require('electron');
-  var remoteWindow = remote.getCurrentWindow();
-}
-
-export default class Show extends Component {
+class Show extends Component {
   constructor(props) {
     super(props);
 
@@ -43,20 +35,7 @@ export default class Show extends Component {
     }
   }
 
-  componentWillUnmount() {
-    emitter.removeAllListeners('songUpdate');
-  }
-
   componentWillMount() {
-    emitter.addListener('songUpdate', (show, track, position, playing) => {
-      this.setState({
-        playingShow: show,
-        playingTrack: track,
-        playingPosition: position,
-        playing: playing
-      });
-    });
-    
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();
     } else {
@@ -84,7 +63,7 @@ export default class Show extends Component {
     }).map(track => {
       return (
         <li className={
-              this.state.playing && Controls.position == track.position && Controls.show.id == show.id
+              Store.isTrackPlaying(track)
               ? "show-container-item playing"
               : "show-container-item"
             }
@@ -97,8 +76,7 @@ export default class Show extends Component {
                 icon="ios-play"
                 font-size="40px"
                 onClick={(e) => {
-                  Controls.updateShowAndPosition(show.id, track.position);
-                  this.setState({playing: true});
+                  Store.playTrack(show.id, track);
                 }}
                 className="track-play"
               />
@@ -109,8 +87,7 @@ export default class Show extends Component {
                 icon="ios-pause"
                 font-size="40px"
                 onClick={() => {
-                  Controls.pause();
-                  this.setState({playing: true});
+                  Store.pause();
                 }}
                 className="track-pause"
               />
@@ -179,37 +156,6 @@ export default class Show extends Component {
     });
   }
 
-  downloadShow = () => {
-    let show = this.state.show;
-    let tracks = show.tracks;
-    var zip = new JSZip();
-    let count = 0;
-    let showName = show.date + "-" + show.venue.name + "-" + show.venue.location;
-    tracks.forEach(track => {
-      let title = track.title + ".mp3";
-      JSZipUtils.getBinaryContent(track.mp3, (err, data) => {
-        zip.file(title, data, {binary: true});
-        count++;
-        if (isElectron()) {
-          remoteWindow.setProgressBar(count / tracks.length);
-        }
-        if (count === tracks.length) {
-          zip.generateAsync({type:'blob'}, (metadata) => {
-            if (isElectron()) {
-              remoteWindow.setProgressBar(metadata.percent);
-            }
-          })
-          .then(content => {
-            saveAs(content, showName + ".zip");
-            if (isElectron()) {
-              remoteWindow.setProgressBar(-1);
-            }
-          });
-        }
-      });
-    });
-  }
-
   renderShowInfo = () => {
     let show = this.state.show;
     return (
@@ -254,12 +200,11 @@ export default class Show extends Component {
             <h4>{show.venue.location}</h4>
             <h4 className="clickable" onClick={() => {history.push('/shows/tour/' + show.tour_id)}}>{getTourName(show.tour_id)}</h4>
             <div className="btn-container">
-              {this.state.playing ?
+              {Store.isShowPlaying(show) ?
                 <button 
                   className="play-btn-lrg green clickable"
                   onClick={(e) => {
-                    Controls.pause();
-                    this.setState({playing: true});
+                    Store.player.pause();
                   }}
                   >
                   <span> Pause </span>
@@ -268,15 +213,14 @@ export default class Show extends Component {
                 <button 
                   className="play-btn-lrg green clickable"
                   onClick={(e) => {
-                    Controls.updateShowAndPosition(show.id);
-                    this.setState({playing: true});
+                    Store.playShow(show.id);
                   }}
                 >
                   Play
                 </button>
               }
               <button 
-                onClick={() => window.confirm("Download " + show.date + "?" ) ? this.downloadShow() : null}
+                onClick={() => window.confirm("Download " + show.date + "?" ) ? downloadShow(this.state.show) : null}
                 className="play-btn-lrg outline clickable"
               >
                 Download
@@ -298,11 +242,7 @@ export default class Show extends Component {
               </Tooltip>
             </div>
           </div>
-          {this.state.playing
-          ?
-            <Spinner color='#4CAF50' name='line-scale-pulse-out-rapid' />
-          : null
-          }
+          {Store.isShowPlaying(show) && <Spinner color='#4CAF50' name='line-scale-pulse-out-rapid' />}
         </div>
         <div className="show-tracks">
           {this.renderTrackContainer()}
@@ -311,3 +251,5 @@ export default class Show extends Component {
     );
   }
 }
+
+export default view(Show)

@@ -182,6 +182,7 @@
 }
 
 .title-cell {
+  cursor: none;
   width: 40%;
   min-width: 100px;
   white-space: nowrap;

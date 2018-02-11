@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { view } from 'react-easy-state'
 import { Router, Route } from 'react-router-dom';
 import SideNav from './components/SideNav/SideNav';
 import Player from './components/Footer/Player';
@@ -12,7 +13,7 @@ import GlobalSearch from './components/Header/GlobalSearch';
 import Spinner from 'react-spinkit';
 import './css/Main.css';
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
@@ -60,3 +61,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default view(App)

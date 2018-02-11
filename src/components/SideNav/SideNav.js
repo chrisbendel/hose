@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { store, view } from 'react-easy-state'
 import { NavLink } from 'react-router-dom';
 import './../../css/SideNav.css'
 import { history } from './../../History';
@@ -41,7 +42,7 @@ const items = [
   // }
 ]
 
-export default class SideNav extends Component {
+class SideNav extends Component {
   constructor(props) {
     super(props);
 
@@ -81,3 +82,5 @@ export default class SideNav extends Component {
     );
   }
 }
+
+export default SideNav
