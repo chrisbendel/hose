@@ -63,7 +63,7 @@ export const showsForTour = async(tour) => {
 }
 
 export const showsToday = async(day) => {
-  let data = await (await cachedFetch(base + 'shows-on-day-of-year/' + day)).json();
+  let data = await (await cachedFetch(base + 'shows-on-day-of-year/' + day + '?per_page=100')).json();
   return data.data;
 }
 
