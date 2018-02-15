@@ -20,11 +20,19 @@ export default store({
       });
     }
   },
-  playRadio(show, track) {
-    this.playing = true;
-    this.show = show;
-    this.track = track;
-    this.radio = true;
+  playRadio(showID, track) {
+    show(showID).then(show => {
+
+      this.playing = true;
+      this.show = show;
+      this.track = track;
+      this.radio = true;
+
+
+      this.player.setPlaylistPosition(track.position);
+      this.player.play();
+    });
+
   },
   playTrack(showID, track) {
     this.playing = true;

@@ -27,16 +27,13 @@ class Radio extends Component {
   fetchRandomTrack() {
     fetchRandomTrack().then(tracks => {
       trackInfo(tracks[Math.floor(Math.random() * tracks.length)].id).then(track => {
-        Store.playTrack(track.show_id, track);
+        Store.playRadio(track.show_id, track);
       });
     });
   }
 
   render() {
-    let track = this.state.currentTrack;
-    let show = this.state.currentShow;
-
-    if (!Store.playing) {
+    if (!Store.radio) {
       return (
         <div className="radio-container">
           <button onClick={() => {this.fetchRandomTrack()}} className="start">
@@ -46,7 +43,10 @@ class Radio extends Component {
       )
     }
 
-    console.log(track);
+    let track = Store.track;
+    let show = Store.show;
+
+    console.log(track, show);
 
     return (
       <div className="radio-container"> 
