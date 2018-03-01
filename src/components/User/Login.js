@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './../../css/Login.css';
-import {login} from './../../api/phishin';
 
 export default class Login extends Component {
   constructor(props) {
@@ -8,7 +7,11 @@ export default class Login extends Component {
     this.state = {};
   }
 
+  login() {
+
+  }
+
   render() {
-    return <div onClick={() => login()}> login </div>
+    return <div onClick={this.login()}> Login </div>
   }
 }

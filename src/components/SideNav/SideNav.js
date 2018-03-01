@@ -30,11 +30,11 @@ const items = [
     "name": "Radio",
     "path": "/radio"
   },
-  // {
-  //   "id": 4,
-  //   "name": "Login",
-  //   "path": "/login"
-  // },
+  {
+    "id": 5,
+    "name": "Login",
+    "path": "/login"
+  },
   // {
   //   "id": 6,
   //   "name": "Profile",

@@ -1,21 +1,21 @@
 import {email, password} from './../config';
 const base = 'https://phish.in/api/v1/'
 
-export const login = async() => {
-  fetch('http://phish.in/api/v1/users/sign_in', {
-    method: 'POST',
-    mode: 'no-cors',
-    origin: "https://google.com",
-    cache: 'default',
-    body: JSON.stringify({user: {email: email, password: password} })
-  }).then(function(response) {
-    return response.json()
-  }).then(function(json) {
-    console.log('parsed json', json)
-  }).catch(function(ex) {
-    console.log('parsing failed', ex)
-  })
-}
+// export const login = async() => {
+//   fetch('http://phish.in/api/v1/users/sign_in', {
+//     method: 'POST',
+//     mode: 'no-cors',
+//     origin: "https://google.com",
+//     cache: 'default',
+//     body: JSON.stringify({user: {email: email, password: password} })
+//   }).then(function(response) {
+//     return response.json()
+//   }).then(function(json) {
+//     console.log('parsed json', json)
+//   }).catch(function(ex) {
+//     console.log('parsing failed', ex)
+//   })
+// }
 
 export const fetchRandomTrack = async() => {
   let data = await (await fetch(base + 'tracks?per_page=100')).json();
