@@ -67,48 +67,48 @@ class Player extends Component {
     }
   }
 
-  play = (e) => {
+  play = e => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-play'));
       this.setControls();
     }
   }
 
-  pause = (e) => {
+  pause = e => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
       this.setControls();
     }
   }
   
-  skipToNext = (e) => {
+  skipToNext = e => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
       this.setControls();
     }
   }
 
-  skipToPrevious = (e) => {
+  skipToPrevious = e => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
       this.setControls();
     }
   }
 
-  setPlaylistPosition = (index) => {
+  setPlaylistPosition = index => {
     this.player.state.currentPlaylistPos = index - 1;
     
     this.skipToNext();
     this.skipToPrevious();
   }
 
-  stopScroll = (target) => {
+  stopScroll = target => {
     this.setState({
       [target]: false
     });
   }
 
-  renderPlaylistContent = (set) => {
+  renderPlaylistContent = set => {
     return Store.show.tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
@@ -128,13 +128,12 @@ class Player extends Component {
   }
 
   renderPlaylistContainer = () => {
-    let that = this;
     const sets = [...new Set(Store.show.tracks.map(track => track.set_name))];
     return sets.map(set => {
       return (
         <div key={set}>
           <p> {set} </p>
-          <ul className="playlist-section"> {that.renderPlaylistContent(set)} </ul>
+          <ul className="playlist-section"> {this.renderPlaylistContent(set)} </ul>
         </div>
       )
     });

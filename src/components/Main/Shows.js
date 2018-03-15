@@ -24,8 +24,6 @@ class Shows extends Component {
       loadingShows: false,
       currentFilter: 'All Shows'
     }
-
-    this.handleScroll = this.handleScroll.bind(this);
   }
   
   componentWillMount = () => {
@@ -46,9 +44,10 @@ class Shows extends Component {
     this.loadRelevantData(nextType, nextId);
   }
 
-  handleScroll = (e) => {
+  handleScroll = e => {
     let el = this.refs.shows;
-    if (el.scrollTop === (el.scrollHeight - el.offsetHeight)) {
+    
+    if (el.scrollTop > (el.scrollHeight - el.offsetHeight - 50)) {
       if (!this.state.loadingShows && this.state.loadMoreShows) {
         this.loadMoreShows();
       }
@@ -74,10 +73,11 @@ class Shows extends Component {
         this.fetchShowsForTour(id);
         break;
       default:
+        break;
     }
   }
 
-  renderShows = (shows) => {
+  renderShows = shows => {
     return shows.map(function (show, index) {
       let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       let date = new Date(show.date + ' 00:00');

@@ -46,8 +46,6 @@ class Radio extends Component {
     let track = Store.track;
     let show = Store.show;
 
-    console.log(track, show);
-
     return (
       <div className="radio-container"> 
         <div className="top">
@@ -64,7 +62,7 @@ class Radio extends Component {
               }
             }}
           />
-          <img 
+          <img
             className="art"
             alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}
             onClick={() => {

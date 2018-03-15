@@ -7,7 +7,6 @@ import {getLikesPercent, msToSec, isTrackJamchart, isShowJamchart, isShowSoundbo
 import { Tooltip } from 'react-tippy';
 import {history} from './../../History';
 import Spinner from 'react-spinkit';
-import isElectron from 'is-electron';
 import './../../css/Show.css';
 import 'react-tippy/dist/tippy.css';
 

@@ -34,12 +34,7 @@ const items = [
     "id": 5,
     "name": "Login",
     "path": "/login"
-  },
-  // {
-  //   "id": 6,
-  //   "name": "Profile",
-  //   "path": "/profile"
-  // }
+  }
 ]
 
 class SideNav extends Component {
@@ -76,11 +71,11 @@ class SideNav extends Component {
           </span>
         </div>
         {this.renderList}
-        <a href="https://paypal.me/chrissbendel" target="_blank" rel="noopener noreferrer">Donations</a>
+        <a href="https://paypal.me/chrissbendel" target="_blank" rel="noopener noreferrer">Donate</a>
         <a href="https://chrissbendel.github.io/hose/" target="_blank" rel="noopener noreferrer">Get the App</a>
       </div>
     );
   }
 }
 
-export default SideNav
+export default view(SideNav)

@@ -171,7 +171,7 @@
   flex-grow: 4;
   position: relative;
   display: grid;
-  grid-template-columns: repeat(4, .5fr);
+  grid-template-columns: repeat(6, .5fr);
   grid-gap: 20px;
   max-width: calc(100% - 10px);
   width: 100%;
