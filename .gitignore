@@ -11,6 +11,8 @@
 /package-lock.json
 /yarn.lock
 /build
+/src/config.js
+
 # misc
 .DS_Store
 .env.local
