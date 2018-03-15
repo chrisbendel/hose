@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import Store from './../../Store';
-import { show, randomShow } from './../../api/phishin';
+import { show, randomShow, playsCount } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
 import {getLikesPercent, msToSec, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName, downloadShow} from './../../Utils';
 import { Tooltip } from 'react-tippy';
@@ -166,8 +166,9 @@ class Show extends Component {
   }
 
   render() {
+    playsCount();
     let show = this.state.show;
-
+    
     if (!show) {
       return (
         <div style={{position:'fixed', top:'50%', left: '50%', transform: 'translate(-50%, 50%)'}} >
@@ -175,7 +176,7 @@ class Show extends Component {
         </div>
       );
     }
-
+    
     let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     let date = new Date(show.date + ' 00:00');
 

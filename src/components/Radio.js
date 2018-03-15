@@ -4,7 +4,7 @@ import { view } from 'react-easy-state'
 import Ionicon from 'react-ionicons';
 import {history} from './../History';
 import {msToSec} from './../Utils';
-import {fetchRandomTrack, show, trackInfo} from './../api/phishin';
+import {fetchRandomTrack, show, trackInfo, playsCount} from './../api/phishin';
 import Spinner from 'react-spinkit';
 import './../css/Radio.css';
 
@@ -90,7 +90,6 @@ class Radio extends Component {
               <span>{track.likes_count}</span>
             </div>
             <div>{msToSec(track.duration)}</div>
-            <div>Total plays (soon)</div>
             <div>{show.date}</div>
             <div>{show.venue.name}</div>
             <div>{show.venue.location}</div>
