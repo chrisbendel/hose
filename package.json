@@ -13,7 +13,6 @@
     "core-js": "^2.5.1",
     "electron-builder-lib": "^19.47.1",
     "electron-is-dev": "^0.3.0",
-    "electron-nucleus": "^0.2.1",
     "electron-platform": "^1.2.0",
     "electron-updater": "^2.16.3",
     "eslint-config-react-tools": "^1.0.10",

@@ -1,4 +1,3 @@
-//TODO move the soundboard, jamchart, datetime helpers into here and import them where used.
 import {trackJamcharts, trackSoundboards, showJamcharts, showSoundboards, tourFilters} from './filters';
 import isElectron from 'is-electron';
 import JSZipUtils from 'jszip-utils';
