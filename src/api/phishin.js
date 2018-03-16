@@ -98,7 +98,7 @@ export const search = async(query) => {
 
   let show = data.data.show;
   if (show) {
-    show.path = '/show/' + show.id;
+    show.path = '/shows/' + show.id;
     show.type = 'show';
     show.display = show.date + " " + show.venue_name + " " + show.location;    
     terms.push(show);
@@ -108,7 +108,7 @@ export const search = async(query) => {
   if (otherShows) {
     Object.keys(otherShows).forEach(function(show) {
       let values = otherShows[show];
-      values.path = '/show/' + values.id;
+      values.path = '/shows/' + values.id;
       values.type = 'show';
       values.display = values.date + " " + values.venue_name + " " + values.location;
       terms.push(values);

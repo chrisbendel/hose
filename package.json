@@ -25,6 +25,7 @@
     "react": "^15.6.2",
     "react-audioplayer": "^0.3.1",
     "react-autosuggest": "^9.3.2",
+    "react-dialog": "^1.0.2",
     "react-dom": "^15.6.2",
     "react-easy-state": "^4.1.2",
     "react-ionicons": "^2.0.3",

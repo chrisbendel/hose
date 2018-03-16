@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { store, view } from 'react-easy-state'
 import { NavLink } from 'react-router-dom';
-import './../../css/SideNav.css'
 import { history } from './../../History';
+import './../../css/SideNav.css'
+import Dialog from 'react-dialog';
+import 'react-dialog/css/index.css';
 
 const items = [
   {
@@ -29,11 +31,6 @@ const items = [
     "id": 4,
     "name": "Radio",
     "path": "/radio"
-  },
-  {
-    "id": 5,
-    "name": "Login",
-    "path": "/login"
   }
 ]
 
@@ -42,23 +39,34 @@ class SideNav extends Component {
     super(props);
 
     this.state = {
-      open: true
-    };
+      loginOpen: false,
+    }
+  }
+
+  componentWillUpdate() {
+    console.log(store.track);
   }
 
   renderList = items.map(function(item, index) {
     return (
       <NavLink 
-        exact
-        key={item.id} 
-        id={item.id} 
-        to={item.path} 
+        key={item.id}
+        id={item.id}
+        to={item.path}
         activeClassName="active"
       >
         <span>{item.name}</span>
       </NavLink>
     );
   });
+
+  openLogin = () => {
+    this.setState({loginOpen: true});
+  }
+
+  closeLogin = () => {
+    this.setState({loginOpen: false});
+  }
 
   render() {
     return (
@@ -71,6 +79,21 @@ class SideNav extends Component {
           </span>
         </div>
         {this.renderList}
+        <a className="clickable" onClick={this.openLogin}>Login</a>
+        {this.state.loginOpen &&
+          <Dialog
+            title="Login to hose"
+            modal
+            onClose={this.closeLogin}
+            buttons={[{
+              text: 'Close',
+              onClick: () => this.closeLogin()
+            }]}
+          >
+            <h1>Dialog Content</h1>
+            <p>More Content. Anything goes here</p>
+          </Dialog>
+        }
         <a href="https://paypal.me/chrissbendel" target="_blank" rel="noopener noreferrer">Donate</a>
         <a href="https://chrissbendel.github.io/hose/" target="_blank" rel="noopener noreferrer">Get the App</a>
       </div>
@@ -78,4 +101,4 @@ class SideNav extends Component {
   }
 }
 
-export default view(SideNav)
+export default SideNav

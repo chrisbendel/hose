@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { store, view } from 'react-easy-state'
+import { view } from 'react-easy-state'
 import {search} from './../../api/phishin.js';
 import './../../css/Search.css';
 import Autosuggest from 'react-autosuggest';
@@ -83,7 +83,7 @@ class GlobalSearch extends Component {
     const { value, suggestions } = this.state;
 
     const inputProps = {
-      placeholder: "Search for a song, date (Format: 1997-11-17), tour or venue.",
+      placeholder: "Search for a song, date (Format: 1997-11-17), tour or venue",
       value,
       onChange: this.onChange,
       autoFocus: true

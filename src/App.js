@@ -48,7 +48,7 @@ class App extends Component {
             </header>
             <main className="content">
               <Route exact path="/show/:id" component={Show}/>
-              <Route exact path="/shows/:type?/:id?" index component={Shows}/>
+              <Route exact path="/shows/:type?/:id?" component={Shows}/>
               <Route exact path="/song/:id?" component={Songs}/>
               <Route exact path="/radio" component={Radio}/>
               <Route exact path="/login" component={Login}/>
