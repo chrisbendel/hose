@@ -47,10 +47,20 @@ class Player extends Component {
     if (this.player) {
       let element = this.player.audioElement;
       
+      element.addEventListener('ended', this.trackEnded);
+      element.addEventListener('loadedmetadata', this.trackStarted);
       element.addEventListener('playing', this.setControls);
       element.addEventListener('play', this.setControls);
       element.addEventListener('pause', this.setControls);
     }
+  }
+
+  trackEnded = () => {
+    console.log('ended');
+  }
+
+  trackStarted = () => {
+    console.log('started');
   }
 
   setControls = () => {
