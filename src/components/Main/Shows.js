@@ -7,10 +7,10 @@ import {yearFilters, tourFilters, venueFilters, sortByOptions} from './../../fil
 import {isShowJamchart, isShowSoundboard} from './../../Utils';
 import Ionicon from 'react-ionicons';
 import Filter from './Filter';
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
 import {history} from './../../History';
 import Spinner from 'react-spinkit';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 class Shows extends Component {
   constructor(props) {
@@ -90,7 +90,7 @@ class Shows extends Component {
               {isShowSoundboard(show.id) && <div className="tag">Soundboard</div>}
             </div>
             <img
-              src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}
+              src={'/images/' + show.date + '.jpg'}
               alt={show.id}
               id={show.id}
             />

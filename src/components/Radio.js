@@ -65,7 +65,7 @@ class Radio extends Component {
           />
           <img
             className="art"
-            alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}
+            alt={show.date} src={'/images/' + show.date + '.jpg'}
             onClick={() => {
               history.push("/show/" + show.id)
             }}

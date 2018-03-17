@@ -75,7 +75,7 @@ class SideNav extends Component {
           history.push('/shows');
         }}>
           <span className="logo">
-            <img alt="logo" src="https://s3.amazonaws.com/hose/images/hose.svg"/>
+            <img alt="logo" src="/images/hose.svg"/>
           </span>
         </div>
         {this.renderList}

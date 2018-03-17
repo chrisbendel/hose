@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { view } from 'react-easy-state'
+import { store, view } from 'react-easy-state'
 import Store from './../../Store';
-import './../../css/Player.css';
 import Audio from 'react-audioplayer';
 import Ionicon from 'react-ionicons';
 import ReactDOM from 'react-dom';
-import { Tooltip } from 'react-tippy';
-import 'react-tippy/dist/tippy.css';
+import {getTrack, listen, completed, likeTrack, dislikeTrack} from './../../api/hose';
 import {downloadShow, mapTracks} from './../../Utils';
 import {history} from './../../History';
+import { Tooltip } from 'react-tippy';
+import 'react-tippy/dist/tippy.css';
+import './../../css/Player.css';
 
 class Player extends Component {
   constructor(props) {
@@ -56,11 +57,19 @@ class Player extends Component {
   }
 
   trackEnded = () => {
-    console.log('ended');
+    completed(Store.track.id).then(() => {
+      getTrack(Store.track.id).then(track => {
+        console.log(track);
+      });
+    });
   }
 
   trackStarted = () => {
-    console.log('started');
+    listen(Store.track.id).then(() => {
+      getTrack(Store.track.id).then(track => {
+        console.log(track);
+      });
+    });
   }
 
   setControls = () => {
@@ -163,7 +172,7 @@ class Player extends Component {
       <div className="controls-container">
         <div className="show-information-player">
           <div className="album-art-container clickable" onClick={() => {history.push('/show/' + show.id)}}>
-            <img alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}/>
+            <img alt={show.date} src={'/images/' + show.date + '.jpg'}/>
           </div>
           <div className="current-track-information">
             <div 
@@ -208,6 +217,9 @@ class Player extends Component {
             color="#000"
           />
         </div>
+        <Ionicon className="clickable" icon="ios-heart-outline" fontSize="60px" onClick={() => {
+          likeTrack(Store.track.id)
+        }}/>
         <div className="right-content">
           <Tooltip
             trigger="click"

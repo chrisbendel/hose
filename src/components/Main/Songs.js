@@ -159,7 +159,7 @@ class Songs extends Component {
         <li className="show-container-item" key={track.id}>
           <div className="show-information-control image-cell">
             <img
-              src={'https://s3.amazonaws.com/hose/images/' + track.show_date + '.jpg'}
+              src={'/images/' + track.show_date + '.jpg'}
               className="image-cell"
               alt={track.show_id}
               id={track.id}

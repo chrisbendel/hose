@@ -186,7 +186,7 @@ class Show extends Component {
           <div className="show-overview">
             <img 
               className="art"
-              alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}
+              alt={show.date} src={'/images/' + show.date + '.jpg'}
             />
           </div>
           <div className="right">
