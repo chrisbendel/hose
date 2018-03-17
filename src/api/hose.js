@@ -2,7 +2,6 @@ const base = "https://hose-api-dev.herokuapp.com/api/";
 
 export const getTrack = id => {
   return fetch(base + "song/" + id).then(res => {
-    console.log(res);
     return res.json();
   }).then(data => {
     return data;
@@ -19,6 +18,12 @@ export const likeTrack = id => {
     body: JSON.stringify({
       song_id: id
     })
+  })
+  .then(res => {
+    return res.json()
+  })
+  .then(data => {
+    return data;
   });
 }
 
@@ -32,6 +37,12 @@ export const dislikeTrack = id => {
     body: JSON.stringify({
       song_id: id
     })
+  })
+  .then(res => {
+    return res.json()
+  })
+  .then(data => {
+    return data;
   });
 }
 

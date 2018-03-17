@@ -8,6 +8,7 @@ import { Tooltip } from 'react-tippy';
 import {history} from './../../History';
 import Spinner from 'react-spinkit';
 import './../../css/Show.css';
+import './../../css/SongCell.css';
 import 'react-tippy/dist/tippy.css';
 
 class Show extends Component {
@@ -61,17 +62,16 @@ class Show extends Component {
       return track.set_name === set;
     }).map(track => {
       return (
-        <li className={
+        <li key={track.position} 
+            className={
               Store.isTrackPlaying(track)
               ? "show-container-item playing"
               : "show-container-item"
             }
-            key={track.position}
         >
-          <span className="play-cell">
+          <span className="position-cell">
             <span className="play-button-sm">
               <Ionicon
-                style={{cursor: 'pointer'}}
                 icon="ios-play"
                 font-size="40px"
                 onClick={(e) => {
@@ -82,7 +82,6 @@ class Show extends Component {
             </span>
             <span className="pause-button-sm">
               <Ionicon 
-                style={{cursor: 'pointer'}}
                 icon="ios-pause"
                 font-size="40px"
                 onClick={() => {
@@ -93,9 +92,9 @@ class Show extends Component {
             </span>
             <span className="track-number">{track.position}</span>
           </span>
+          <span className="length-cell">{msToSec(track.duration)}</span>
           <span className="title-cell">{track.title}</span>
           <span className="jamcharts-cell">{isTrackJamchart(track.id) ? "Jamcharts" : ""}</span>
-          <span className="length-cell">{msToSec(track.duration)}</span>
           <span className="likes-cell">
             <Tooltip
             trigger="mouseenter"
@@ -108,7 +107,7 @@ class Show extends Component {
             html={<span>{track.likes_count} {track.likes_count === 1 ? "Like" : "Likes"}</span>}
             >
               <div className="likes-bar">
-                <div 
+                <div
                   className="inside-bar"
                   style={{width: getLikesPercent(tracks, track.likes_count)}}
                 >
@@ -126,25 +125,22 @@ class Show extends Component {
     return sets.map(set => {
       return (
         <div key={set}>
-          <ul className="playlist-section"> 
+          <ul className="set-tracks"> 
             <h2 className="set-name"> {set} </h2>
-            <li className="show-container-item header-cell">
-              <span className="play-cell">
-                #
-              </span>
-              <span className="title-cell">Title</span>
-              <span className="jamcharts-cell"></span>
+            <li className="show-container-item">
+              <span className="position-cell">#</span>
               <span className="length-cell">
                 <Ionicon
-                  icon="md-time"
-                  color="black"
-                />
+                    icon="md-time"
+                    color="#BDBDBD"
+                  />
               </span>
+              <span className="title-cell">Song</span>
+              <span className="jamcharts-cell"></span>
               <span className="likes-cell">
                 <Ionicon 
                   icon="md-heart-outline"
-                  font-size="30px"
-                  color="black"
+                  color="#BDBDBD"
                 />
               </span>
             </li>
@@ -166,7 +162,6 @@ class Show extends Component {
   }
 
   render() {
-    playsCount();
     let show = this.state.show;
     
     if (!show) {
@@ -184,10 +179,7 @@ class Show extends Component {
       <div className="show-container">
         <div className="show-information-top">
           <div className="show-overview">
-            <img 
-              className="art"
-              alt={show.date} src={'/images/' + show.date + '.jpg'}
-            />
+            <img className="art" alt={show.date} src={'/images/' + show.date + '.jpg'}/>
           </div>
           <div className="right">
             <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
@@ -202,7 +194,7 @@ class Show extends Component {
             <div className="btn-container">
               {Store.isShowPlaying(show) ?
                 <button 
-                  className="play-btn-lrg green clickable"
+                  className="play-show-button"
                   onClick={(e) => {
                     Store.player.pause();
                   }}
@@ -211,7 +203,7 @@ class Show extends Component {
                 </button>
                 : 
                 <button 
-                  className="play-btn-lrg green clickable"
+                  className="play-show-button"
                   onClick={(e) => {
                     Store.playShow(show.id);
                   }}
@@ -221,7 +213,7 @@ class Show extends Component {
               }
               <button 
                 onClick={() => window.confirm("Download " + show.date + "?" ) ? downloadShow(this.state.show) : null}
-                className="play-btn-lrg outline clickable"
+                className="download-button"
               >
                 Download
               </button>
@@ -236,7 +228,7 @@ class Show extends Component {
                 duration={200}
                 html={this.renderShowInfo()}
               >
-              <button className="play-btn-lrg round">
+              <button className="more-show-info">
                 <Ionicon color="#000" className="more-options clickable" icon="ios-more" />
               </button>
               </Tooltip>

@@ -24,13 +24,13 @@
   box-sizing: border-box;
 }
 
-.playlist-section {
+/* .playlist-section {
   margin: 0;
   padding: 1rem;
   box-sizing: border-box;
-}
+} */
 
-.show-container-item {
+/* .show-container-item {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -42,9 +42,9 @@
   border: 1px solid #EEEEEE;
   transition: .1s ease box-shadow;
   flex-grow: 1;
-}
+} */
 
-.show-container-item.header-cell {
+/* .show-container-item.header-cell {
   border: 0; 
 }
 
@@ -58,7 +58,7 @@
 
 .show-container-item:hover {
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
-}
+} */
 
 .image-cell-header {
   width: 75px;
@@ -69,7 +69,7 @@
   width: 75px;
 }
 
-.title-cell {
+/* .title-cell {
   cursor: pointer;
   width: 10%;
   min-width: 100px;
@@ -78,15 +78,15 @@
   text-overflow: ellipsis;
   flex-grow: 1;
   text-decoration: none;
-}
+} */
 
-.playing-cell {
+/* .playing-cell {
   width: 5%;
   min-width: 20px;
   margin: auto;
-}
+} */
 
-.jamcharts-cell {
+/* .jamcharts-cell {
   cursor: pointer;
   width: 20%;
   font-weight: bold;
@@ -95,9 +95,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   flex-grow: 1;
-}
+} */
 
-.likes-cell {
+/* .likes-cell {
   cursor: pointer;
   margin-left: auto;
   text-align: center;
@@ -105,9 +105,9 @@
   box-sizing: border-box;
   flex: 1;
   position: relative;
-}
+} */
 
-.likes-bar:before {
+/* .likes-bar:before {
   content: '';
   height: 43px;
   width: 100%;
@@ -128,9 +128,9 @@
   height: 5px;
   border-radius: 2.5px;
   width: 5px;
-}
+} */
 
-.track-play {
+/* .track-play {
   transform: translate(calc(-50% + 1px),-50%);  
 }
 
@@ -140,9 +140,9 @@
 
 .show-container-item:hover .track-number {
   display: none;
-}
+} */
 
-.play-button-sm,
+/* .play-button-sm,
 .pause-button-sm {
   background-color: transparent;
   border: 1px solid #2196F3;
@@ -152,9 +152,9 @@
   position: relative;
   height: 30px;
   width: 30px;
-}
+} */
 
-.show-container-item:hover:not(.playing) .play-button-sm {
+/* .show-container-item:hover:not(.playing) .play-button-sm {
   display: inline-flex;
 }
 
@@ -185,7 +185,7 @@
 
 .track-play {
   margin-left: 1px;  
-}
+} */
 
 .scroll-top {
   position: fixed;

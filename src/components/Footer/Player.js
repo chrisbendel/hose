@@ -17,7 +17,9 @@ class Player extends Component {
 
     this.state = {
       hoverVenue: false,
-      hoverDate: false
+      hoverDate: false,
+      liked: false,
+      disliked: false
     }
 
     Store.player = this;
@@ -30,6 +32,14 @@ class Player extends Component {
     venue.removeEventListener('animationend', this.stopScroll);
     date.removeEventListener('animationend', this.stopScroll);
   }
+
+  // componentWillUpdate() {
+  //   if (Store.track) {
+  //     getTrack(Store.track.id).then(track => {
+
+  //     });
+  //   }
+  // }
   
   componentDidUpdate() {
     if (this.refs.hoverVenue && this.refs.hoverDate) {
@@ -59,7 +69,10 @@ class Player extends Component {
   trackEnded = () => {
     completed(Store.track.id).then(() => {
       getTrack(Store.track.id).then(track => {
-        console.log(track);
+        this.setState({
+          liked: track.liked,
+          disliked: track.disliked
+        });
       });
     });
   }
@@ -67,7 +80,10 @@ class Player extends Component {
   trackStarted = () => {
     listen(Store.track.id).then(() => {
       getTrack(Store.track.id).then(track => {
-        console.log(track);
+        this.setState({
+          liked: track.liked,
+          disliked: track.disliked
+        });
       });
     });
   }
@@ -208,6 +224,21 @@ class Player extends Component {
           </div>
         </div>
         <div className="center-container">
+        <Ionicon 
+          style={{marginRight: 10}} 
+          className="clickable" 
+          icon={this.state.disliked ? "ios-thumbs-down" : "ios-thumbs-down-outline"}
+          fontSize="40px" 
+          onClick={() => {
+            dislikeTrack(Store.track.id).then(track => {
+              console.log(track);
+              this.setState({
+                liked: track.liked,
+                disliked: track.disliked
+              });
+            });
+          }}
+        />
           <Audio
             ref={audioComponent => { this.player = audioComponent }}
             width={500}
@@ -216,10 +247,22 @@ class Player extends Component {
             playlist={mapTracks(show.tracks)}
             color="#000"
           />
+        <Ionicon 
+          style={{marginLeft: 10}} 
+          className="clickable" 
+          icon={this.state.liked ? "ios-thumbs-up" : "ios-thumbs-up-outline"}
+          fontSize="40px" 
+          onClick={() => {
+            likeTrack(Store.track.id).then(track => {
+              console.log(track);
+              this.setState({
+                liked: track.liked,
+                disliked: track.disliked
+              });
+            });
+          }}
+        />
         </div>
-        <Ionicon className="clickable" icon="ios-heart-outline" fontSize="60px" onClick={() => {
-          likeTrack(Store.track.id)
-        }}/>
         <div className="right-content">
           <Tooltip
             trigger="click"
