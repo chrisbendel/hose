@@ -4,7 +4,7 @@ import Store from './../../Store';
 import Audio from 'react-audioplayer';
 import Ionicon from 'react-ionicons';
 import ReactDOM from 'react-dom';
-import {getTrack, listen, completed, likeTrack, dislikeTrack} from './../../api/hose';
+import {getTrack, listen, completed, likeTrack, dislikeTrack, skipped} from './../../api/hose';
 import {downloadShow, mapTracks} from './../../Utils';
 import {history} from './../../History';
 import { Tooltip } from 'react-tippy';
@@ -23,6 +23,8 @@ class Player extends Component {
     }
 
     Store.player = this;
+    let progress = null;
+    let duration = null;
   }
 
   componentWillUnmount() {
@@ -33,14 +35,6 @@ class Player extends Component {
     date.removeEventListener('animationend', this.stopScroll);
   }
 
-  // componentWillUpdate() {
-  //   if (Store.track) {
-  //     getTrack(Store.track.id).then(track => {
-
-  //     });
-  //   }
-  // }
-  
   componentDidUpdate() {
     if (this.refs.hoverVenue && this.refs.hoverDate) {
       const venue = this.refs.hoverVenue;
@@ -57,8 +51,10 @@ class Player extends Component {
 
     if (this.player) {
       let element = this.player.audioElement;
-      
+
+      element.addEventListener('timeupdate', this.timeUpdate);
       element.addEventListener('ended', this.trackEnded);
+      element.addEventListener('emptied', this.checkSkipped);
       element.addEventListener('loadedmetadata', this.trackStarted);
       element.addEventListener('playing', this.setControls);
       element.addEventListener('play', this.setControls);
@@ -66,24 +62,35 @@ class Player extends Component {
     }
   }
 
+  checkSkipped = () => {
+    console.log(Store.track.id);
+    if (this.progress && this.duration) {
+      if (this.progress/this.duration < .25) {
+        skipped(Store.track.id);
+      }
+    }
+  }
+
+  timeUpdate = () => {
+    console.log(Store.track.id);
+    this.progress = this.player.state.progress;
+    this.duration = this.player.state.duration;
+  }
+
   trackEnded = () => {
-    completed(Store.track.id).then(() => {
-      getTrack(Store.track.id).then(track => {
-        this.setState({
-          liked: track.liked,
-          disliked: track.disliked
-        });
+    completed(Store.track.id).then(track => {
+      this.setState({
+        liked: track.like,
+        disliked: track.dislike
       });
     });
   }
 
   trackStarted = () => {
-    listen(Store.track.id).then(() => {
-      getTrack(Store.track.id).then(track => {
-        this.setState({
-          liked: track.liked,
-          disliked: track.disliked
-        });
+    listen(Store.track.id).then(track => {
+      this.setState({
+        liked: track.like,
+        disliked: track.dislike
       });
     });
   }
@@ -229,12 +236,12 @@ class Player extends Component {
           className="clickable" 
           icon={this.state.disliked ? "ios-thumbs-down" : "ios-thumbs-down-outline"}
           fontSize="40px" 
+          color="#4CAF50"
           onClick={() => {
             dislikeTrack(Store.track.id).then(track => {
-              console.log(track);
               this.setState({
-                liked: track.liked,
-                disliked: track.disliked
+                liked: track.like,
+                disliked: track.dislike
               });
             });
           }}
@@ -252,12 +259,12 @@ class Player extends Component {
           className="clickable" 
           icon={this.state.liked ? "ios-thumbs-up" : "ios-thumbs-up-outline"}
           fontSize="40px" 
+          color="#4CAF50"
           onClick={() => {
             likeTrack(Store.track.id).then(track => {
-              console.log(track);
               this.setState({
-                liked: track.liked,
-                disliked: track.disliked
+                liked: track.like,
+                disliked: track.dislike
               });
             });
           }}

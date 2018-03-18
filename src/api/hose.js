@@ -1,11 +1,9 @@
 const base = "https://hose-api-dev.herokuapp.com/api/";
 
 export const getTrack = id => {
-  return fetch(base + "song/" + id).then(res => {
-    return res.json();
-  }).then(data => {
-    return data;
-  });
+  return fetch(base + "song/" + id)
+  .then(res => res.json())
+  .then(data => data);
 }
 
 export const likeTrack = id => {
@@ -19,9 +17,7 @@ export const likeTrack = id => {
       song_id: id
     })
   })
-  .then(res => {
-    return res.json()
-  })
+  .then(res => res.json())
   .then(data => {
     return data;
   });
@@ -38,9 +34,7 @@ export const dislikeTrack = id => {
       song_id: id
     })
   })
-  .then(res => {
-    return res.json()
-  })
+  .then(res => res.json())
   .then(data => {
     return data;
   });
@@ -56,6 +50,10 @@ export const listen = id => {
     body: JSON.stringify({
       song_id: id
     })
+  })
+  .then(res => res.json())
+  .then(data => {
+    return data;
   });
 }
 
@@ -69,5 +67,26 @@ export const completed = id => {
     body: JSON.stringify({
       song_id: id
     })
-  });
+  })
+  .then(res => res.json())
+  .then(data => {
+    return data;
+  });;
+}
+
+export const skipped = id => {
+  return fetch(base + "song/skipped", {
+    method: "POST",
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      song_id: id
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    return data;
+  });;
 }
