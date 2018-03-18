@@ -11,7 +11,6 @@ import Radio from './components/Radio';
 import {history} from './History';
 import GlobalSearch from './components/Header/GlobalSearch';
 import Spinner from 'react-spinkit';
-import './css/Main.css';
 
 class App extends Component {
   constructor(props) {

@@ -5,6 +5,8 @@ import './../../css/Search.css';
 import Autosuggest from 'react-autosuggest';
 import Ionicon from 'react-ionicons';
 import {history} from './../../History';
+import Dialog from 'react-dialog';
+import 'react-dialog/css/index.css';
 
 let results = [];
 
@@ -25,7 +27,8 @@ class GlobalSearch extends Component {
 
     this.state = {
       value: '',
-      suggestions: []
+      suggestions: [],
+      loginOpen: false
     };
   }
 
@@ -79,6 +82,14 @@ class GlobalSearch extends Component {
     });
   };
 
+  openLogin = () => {
+    this.setState({loginOpen: true});
+  }
+
+  closeLogin = () => {
+    this.setState({loginOpen: false});
+  }
+
   render () {
     const { value, suggestions } = this.state;
 
@@ -108,6 +119,23 @@ class GlobalSearch extends Component {
           onSuggestionSelected={this.onSuggestionSelected}
           inputProps={inputProps}
         />
+        <div className="login">
+          <a className="login-button" onClick={this.openLogin}>Login</a>
+          {this.state.loginOpen &&
+            <Dialog
+              title="Login to hose"
+              modal
+              onClose={this.closeLogin}
+              buttons={[{
+                text: 'Close',
+                onClick: () => this.closeLogin()
+              }]}
+            >
+              <h1>Dialog Content</h1>
+              <p>More Content. Anything goes here</p>
+            </Dialog>
+          }
+        </div>
       </div>
     )
   }

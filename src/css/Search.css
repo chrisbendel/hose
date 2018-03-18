@@ -15,6 +15,7 @@
 }
 
 .nav {
+  width: 100%;
   z-index: 999;
   display: flex;
   align-items: center;
@@ -80,4 +81,20 @@
 
 .react-autosuggest__suggestion--highlighted {
   background-color: #ddd;
+}
+
+.login {
+  margin-left: auto;
+  margin-right: 50px;
+}
+
+.login-button {
+  text-decoration: none;
+  font-size: 20px;
+  color: #333;
+  font-weight: 500;
+  padding: .5rem 1rem;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 0 14px 0px rgba(0,0,0,0.15);
 }
