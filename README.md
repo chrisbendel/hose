@@ -20,6 +20,6 @@ Starts a local server to host the page at localhost:3000
 ## Updating the static web page
 ```yarn publishaws```
 
-##Future Features
+## Future Features
 - Chromecast integration
 - Phish radio - Endless stream of phish music, curated by our recommendation system
