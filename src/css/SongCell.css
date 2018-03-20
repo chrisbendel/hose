@@ -21,7 +21,6 @@
 
 .show-container-item > * {
   margin-right: 20px;
-  /* padding: 0 10px; */
   align-self: center;
   justify-content: left;
 }
@@ -37,13 +36,9 @@
 .play-button-sm,
 .pause-button-sm {
   background-color: transparent;
-  /* border: 1px solid #4CAF50; */
   box-sizing: border-box;
   display: none;
-  /* border-radius: 50%; */
   position: relative;
-  /* height: 30px;
-  width: 30px; */
 }
 
 .playing .play-buttom-sm {

@@ -6,7 +6,7 @@ import Player from './components/Footer/Player';
 import Show from './components/Main/Show';
 import Shows from './components/Main/Shows';
 import ShowsOnDay from './components/Main/ShowsOnDay';
-import Songs from './components/Main/Songs';
+import Tracks from './components/Main/Tracks';
 import Radio from './components/Radio';
 import {history} from './History';
 import GlobalSearch from './components/Header/GlobalSearch';
@@ -49,7 +49,7 @@ class App extends Component {
               <Route exact path="/show/:id" component={Show}/>
               <Route exact path="/showsOnDay/:date?" component={ShowsOnDay}/>
               <Route exact path="/shows/:type?/:id?" component={Shows}/>
-              <Route exact path="/song/:id?" component={Songs}/>
+              <Route exact path="/song/:id?" component={Tracks}/>
               <Route exact path="/radio" component={Radio}/>
             </main>
           </div>
