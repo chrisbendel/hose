@@ -33,6 +33,9 @@ class ShowsOnDay extends Component {
     let date = month + "-" + day;
 
     showsToday(date).then(shows => {
+      let ordered = shows.sort(function (a, b) {
+        return new Date(b.date) - new Date(a.date);
+      });
       this.setState({
         shows: shows,
         date: today.toLocaleString('en-us', {month: 'long', day: "numeric"})
@@ -43,7 +46,7 @@ class ShowsOnDay extends Component {
   render() {
     const {shows, date} = this.state;
     return (
-      <div>
+      <div style={{padding: "2rem"}}>
         <h2>Shows on {date}</h2>
         <ShowList shows={shows}/>
       </div>

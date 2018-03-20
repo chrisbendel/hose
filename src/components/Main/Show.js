@@ -171,7 +171,7 @@ class Show extends Component {
     let show = this.state.show;
     return (
       <div>
-        <h5 className="clickable" onClick={() => {history.push('/shows/today/' + show.date)}}> Shows this Day </h5>
+        <h5 className="clickable" onClick={() => {history.push('/showsOnDay/' + show.date)}}> Shows this Day </h5>
         <h5><a style={{textDecoration: 'none', color: '#BDBDBD'}} target="_blank" href={"https://phish.net/setlists/?d=" + show.date.replace(/\//g, "-")}>View on Phish.net</a></h5>
       </div>
     );

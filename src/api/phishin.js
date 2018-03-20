@@ -1,21 +1,21 @@
-import {pts} from './../config';
-import {Base64} from "js-base64"
+// import {pts} from './../config';
+// import {Base64} from "js-base64"
 const base = 'https://phish.in/api/v1/'
 
-export const playsCount = async(track) => {
-  let headers = new Headers();
-  headers.append('Authorization', 'Basic ' + Base64.encode(pts + ":" + ""));
+// export const playsCount = async(track) => {
+//   let headers = new Headers();
+//   headers.append('Authorization', 'Basic ' + Base64.encode(pts + ":" + ""));
 
-  let data = await (await fetch ("https://www.phishtrackstats.com/api/v2/hotbox.json?q=1997-07-24/the-wedge", {
-    headers: headers
-  })).json();
+//   let data = await (await fetch ("https://www.phishtrackstats.com/api/v2/hotbox.json?q=1997-07-24/the-wedge", {
+//     headers: headers
+//   })).json();
 
-  let playCount = data.stats.find(stat => {
-    return stat.name == "total_count"
-  }).value;
+//   let playCount = data.stats.find(stat => {
+//     return stat.name == "total_count"
+//   }).value;
 
-  return playCount;
-}
+//   return playCount;
+// }
 
 export const fetchRandomTrack = async() => {
   let data = await (await fetch(base + 'tracks?per_page=100', {cache: "force-cache"})).json();
