@@ -40,10 +40,6 @@
   padding: 6px;
 }
 
-.clickable {
-  cursor: pointer;
-}
-
 .tag {
   text-align: center;
   align-self: flex-start;
@@ -132,10 +128,6 @@
 
 .likes-num {
   margin-left: 5px;
-}
-
-.clickable {
-  cursor: pointer;
 }
 
 .shows-container {

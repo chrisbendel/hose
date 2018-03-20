@@ -17,10 +17,6 @@
   padding: .5rem 0;
 }
 
-.clickable {
-  cursor: pointer;
-}
-
 .hidden {
   display: none;
 }
