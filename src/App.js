@@ -5,6 +5,7 @@ import SideNav from './components/SideNav/SideNav';
 import Player from './components/Footer/Player';
 import Show from './components/Main/Show';
 import Shows from './components/Main/Shows';
+import ShowsOnDay from './components/Main/ShowsOnDay';
 import Songs from './components/Main/Songs';
 import Radio from './components/Radio';
 import {history} from './History';
@@ -46,6 +47,7 @@ class App extends Component {
             </header>
             <main className="content">
               <Route exact path="/show/:id" component={Show}/>
+              <Route exact path="/showsOnDay/:date?" component={ShowsOnDay}/>
               <Route exact path="/shows/:type?/:id?" component={Shows}/>
               <Route exact path="/song/:id?" component={Songs}/>
               <Route exact path="/radio" component={Radio}/>

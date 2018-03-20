@@ -46,6 +46,7 @@ html > * {
   height: calc(100% - 131px);
   bottom: calc(50px + 1rem);
   width: calc(100% - 175px);
+  padding: 1rem;
   right: 0;
   box-sizing: border-box;
   overflow-y: auto;

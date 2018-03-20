@@ -8,7 +8,7 @@ const items = [
   {
     "id": 0,
     "name": "On This Day",
-    "path": "/shows/today"
+    "path": "/showsOnDay"
   },
   {
     "id": 1,

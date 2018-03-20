@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import Store from './../../Store';
+import ShowList from './ShowList';
 import './../../css/Shows.css';
-import { shows, showsForYear, showsForVenue, showsForTour, showsToday, show } from './../../api/phishin';
+import { shows, showsForYear, showsForVenue, showsForTour, show } from './../../api/phishin';
 import {yearFilters, tourFilters, venueFilters, sortByOptions} from './../../filters';
 import {isShowJamchart, isShowSoundboard} from './../../Utils';
 import Ionicon from 'react-ionicons';
@@ -63,9 +64,6 @@ class Shows extends Component {
       case "year": 
         this.fetchShowsForYear(id);
         break;
-      case "today":
-        this.fetchShowsToday(id);
-        break;
       case "venue":
         this.fetchShowsForVenue(id);
         break;
@@ -75,106 +73,6 @@ class Shows extends Component {
       default:
         break;
     }
-  }
-
-  renderShows = shows => {
-    return shows.map(function (show, index) {
-      let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      let date = new Date(show.date + ' 00:00');
-      return (
-        <div key={show.id} onClick={() => {history.push('/show/' + show.id)}} className="image-container">
-          <div className="show-information-control">
-            <div className="show-tags">
-              {show.remastered && <div className="tag">Remastered</div>}
-              {isShowJamchart(show.id) && <div className="tag">Jamcharts</div>}
-              {isShowSoundboard(show.id) && <div className="tag">Soundboard</div>}
-            </div>
-            <img
-              src={'/images/' + show.date + '.jpg'}
-              alt={show.id}
-              id={show.id}
-            />
-            <div className={Store.isShowPlaying(show) ? "show-information-active" : "show-information"}>
-              <div className="center-abs">
-                {Store.isShowPlaying(show) ?
-                <div onClick={(e) => {
-                  Store.pause();
-                  e.stopPropagation();
-                }}>
-                  <Ionicon 
-                    icon="ios-pause" 
-                    fontSize="60px"
-                    color="white"
-                  />
-                </div>
-                :
-                <div onClick={(e) => {
-                  Store.playShow(show.id);
-                  e.stopPropagation();
-                }}>
-                  <Ionicon 
-                    icon="ios-play" 
-                    fontSize="60px" 
-                    color="white"
-                  />
-                </div>
-                }
-
-                <div className="show-likes">
-                  <Ionicon
-                    icon="ios-thumbs-up"
-                    fontSize="20px"
-                    onClick={() => console.log('like clicked')}
-                    color="white"
-                  />
-                  <span className="likes-num">
-                    {show.likes_count} 
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <span onClick={() => {history.push('/show/' + show.id)}} className="show-date">
-            {date.toLocaleDateString('en-US', dateOptions)}
-          </span>
-          <span className="show-venue">
-            {show.venue ? 
-              <span onClick={() => {history.push('/shows/venue/' + show.venue.id)}}>
-                {show.venue.name} {show.venue.location}
-              </span>
-              :
-              <span onClick={() => {history.push('/shows/venue/' + show.venue_id)}}>
-                {show.venue_name} {show.location}
-              </span>
-            }
-          </span>
-        </div>
-      );
-    }, this);
-  }
-
-  fetchShowsToday = (custom = null) => {
-    let date;
-    let today;
-
-    if (custom) {
-      today = new Date(custom + ' 00:00');
-    } else {
-      today = new Date();
-    }
-
-    let day = today.getDate().toString();
-    let month = (today.getMonth() + 1).toString();
-    date = month + "-" + day;
-
-    showsToday(date).then(data => {
-      let shows = this.sortShows('date', 'desc', data);
-      this.setState({
-        shows: shows,
-        loadMoreShows: false,
-        currentFilter: "Shows on " + today.toLocaleDateString()
-      });
-    });
   }
 
   fetchShowsForTour = (tour) => {
@@ -354,11 +252,7 @@ class Shows extends Component {
               }}
             />
           </div>
-          <div className="show-gallery">
-            {shows.length ? this.renderShows(shows) 
-            :
-            <div>No shows found</div>}
-          </div>
+          <ShowList shows={shows}/>
           {this.state.loadMoreShows &&
             <div>
               <Ionicon color="#66BB6A" className={this.state.loadingShows ? "" : "hidden"} icon="ios-refresh" fontSize="80px" rotate={true} />
