@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import Store from './../../Store';
 import { show, randomShow, playsCount } from './../../api/phishin';
+import { getUser } from './../../api/hose';
 import Ionicon from 'react-ionicons';
 import {getLikesPercent, msToSec, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName, downloadShow} from './../../Utils';
 import { Tooltip } from 'react-tippy';
@@ -36,6 +37,10 @@ class Show extends Component {
   }
 
   componentWillMount() {
+    getUser().then(user => {
+      console.log(user);
+    });
+    
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();
     } else {
@@ -73,7 +78,7 @@ class Show extends Component {
             <span className="play-button-sm">
               <Ionicon
                 icon="ios-play"
-                font-size="40px"
+                font-size="60px"
                 onClick={(e) => {
                   Store.playTrack(show.id, track);
                 }}
@@ -83,7 +88,7 @@ class Show extends Component {
             <span className="pause-button-sm">
               <Ionicon 
                 icon="ios-pause"
-                font-size="40px"
+                font-size="60px"
                 onClick={() => {
                   Store.pause();
                 }}
@@ -93,6 +98,16 @@ class Show extends Component {
             <span className="track-number">{track.position}</span>
           </span>
           <span className="length-cell">{msToSec(track.duration)}</span>
+          <span className="like-cell">
+            <Ionicon 
+              icon="ios-thumbs-up-outline"
+              font-size="30px"
+              onClick={() => {
+                console.log(track.id);
+                // Store.pause();
+              }}
+            />
+          </span>
           <span className="title-cell">{track.title}</span>
           <span className="jamcharts-cell">{isTrackJamchart(track.id) ? "Jamcharts" : ""}</span>
           <span className="likes-cell">
@@ -135,6 +150,7 @@ class Show extends Component {
                     color="#BDBDBD"
                   />
               </span>
+              <span className="like-cell"></span>
               <span className="title-cell">Song</span>
               <span className="jamcharts-cell"></span>
               <span className="likes-cell">

@@ -59,6 +59,14 @@
 .show-tracks {
   height: 100%;
   width: 100%;
+  /* flex-grow: 4;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, .5fr);
+  grid-gap: 20px;
+  width: 100%;
+  margin: 0 auto;
+  cursor: pointer; */
 }
 
 .show-details {

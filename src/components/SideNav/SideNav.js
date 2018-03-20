@@ -36,11 +36,7 @@ class SideNav extends Component {
   constructor(props) {
     super(props);
   }
-
-  componentWillUpdate() {
-    console.log(store.track);
-  }
-
+  
   renderList = items.map(function(item, index) {
     return (
       <NavLink 

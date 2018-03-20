@@ -63,7 +63,6 @@ class Player extends Component {
   }
 
   checkSkipped = () => {
-    console.log(Store.track.id);
     if (this.progress && this.duration) {
       if (this.progress/this.duration < .25) {
         skipped(Store.track.id);
@@ -72,7 +71,6 @@ class Player extends Component {
   }
 
   timeUpdate = () => {
-    console.log(Store.track.id);
     this.progress = this.player.state.progress;
     this.duration = this.player.state.duration;
   }

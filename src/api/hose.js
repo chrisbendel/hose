@@ -6,6 +6,12 @@ export const getTrack = id => {
   .then(data => data);
 }
 
+export const getUser = () => {
+  return fetch(base + "user")
+  .then(res => res.json())
+  .then(data => data);
+}
+
 export const likeTrack = id => {
   return fetch(base + "song/like", {
     method: "POST",
