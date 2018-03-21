@@ -127,7 +127,7 @@ class TrackList extends Component {
     }
 
     return (
-      <div className="show-gallery">
+      <div className="shows-gallery">
         {this.renderTrackContainer(tracks)}
       </div>
     );

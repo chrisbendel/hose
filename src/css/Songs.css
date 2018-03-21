@@ -14,7 +14,7 @@
 }
 
 .tracks-container {
-  height: calc(100% - 150px);
+  height: calc(100% - 102px);
   top: 100px;
   overflow: auto;
   width: 100%;
