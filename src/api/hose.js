@@ -112,3 +112,11 @@ export const createPlaylist = () => {
     return data;
   });
 }
+
+export const getPlaylist = () => {
+  return fetch(base + "user/playlist")
+  .then(res => res.json())
+  .then(data => {
+    return data;
+  });
+}
