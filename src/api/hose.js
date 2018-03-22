@@ -77,7 +77,7 @@ export const completed = id => {
   .then(res => res.json())
   .then(data => {
     return data;
-  });;
+  });
 }
 
 export const skipped = id => {
@@ -94,5 +94,21 @@ export const skipped = id => {
   .then(res => res.json())
   .then(data => {
     return data;
-  });;
+  });
+}
+
+export const createModel = () => {
+  return fetch(base + "user/make-profile")
+  .then(res => res.json())
+  .then(data => {
+    return data;
+  });
+}
+
+export const createPlaylist = () => {
+  return fetch(base + "user/make-playlist")
+  .then(res => res.json())
+  .then(data => {
+    return data;
+  });
 }

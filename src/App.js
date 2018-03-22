@@ -12,7 +12,7 @@ import {history} from './History';
 import GlobalSearch from './components/Header/GlobalSearch';
 import Spinner from 'react-spinkit';
 import Store from './Store';
-import { getUser } from './api/hose';
+import { getUser, createPlaylist, createModel } from './api/hose';
 
 class App extends Component {
   constructor(props) {
