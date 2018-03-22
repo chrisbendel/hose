@@ -9,7 +9,6 @@ import Spinner from 'react-spinkit';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css'
 
-
 class TrackList extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +28,7 @@ class TrackList extends Component {
             <div className="show-information">
               <div className="center-abs">
                 {Store.isTrackPlaying(track) ? 
-                  <div className="play-button" onClick={(e) => {
+                  <div onClick={(e) => {
                     Store.pause();
                   }}>
                     <Ionicon 
@@ -39,7 +38,7 @@ class TrackList extends Component {
                     />
                   </div>
                 :
-                  <div className="play-button" onClick={(e) => {
+                  <div onClick={(e) => {
                     Store.playTrack(track.show_id, track);
                   }}>
                     <Ionicon 
@@ -55,11 +54,20 @@ class TrackList extends Component {
           <span className="playing-cell">
             {Store.isTrackPlaying(track) && <Spinner color='#4CAF50' name='line-scale-pulse-out-rapid' />}
           </span>
+          <span className="like-cell">
+            <Ionicon 
+              icon="ios-thumbs-up-outline"
+              font-size="50px"
+              onClick={() => {
+                console.log(track.id);
+              }}
+            />
+          </span>
           <span className="title-cell">{track.title}</span>
+          <span className="length-cell">{msToSec(track.duration)}</span>
           <NavLink className="title-cell" to={'/show/' + track.show_id}><span>{track.show_date}</span></NavLink>
           <span className="jamcharts-cell">{isTrackJamchart(track.id) ? "Jamcharts" : ""}</span>
           <span className="jamcharts-cell">{isTrackSoundboard(track.id) ? "Soundboard" : ""}</span>
-          <span className="length-cell">{msToSec(track.duration)}</span>
           <span className="likes-cell">
             <Tooltip
               trigger="mouseenter"
@@ -92,10 +100,8 @@ class TrackList extends Component {
         <li className="show-container-item header-cell">
           <span className="image-cell-header"></span>
           <span className="playing-cell"></span>
+          <span className="like-cell"></span>
           <span className="title-cell">Song</span>
-          <span className="title-cell" onClick={() => {this.sortTracks('date')}}>Date</span>
-          <span className="jamcharts-cell" onClick={() => {this.sortTracks('jamcharts')}}>Jamcharts</span>
-          <span className="jamcharts-cell" onClick={() => {this.sortTracks('soundboard')}}>Soundboard</span>
           <span className="length-cell">
             <Ionicon
               style={{cursor: 'pointer'}}
@@ -104,6 +110,9 @@ class TrackList extends Component {
               onClick={() => {this.sortTracks('duration')}}
             />
           </span>
+          <span className="title-cell" onClick={() => {this.sortTracks('date')}}>Date</span>
+          <span className="jamcharts-cell" onClick={() => {this.sortTracks('jamcharts')}}>Jamcharts</span>
+          <span className="jamcharts-cell" onClick={() => {this.sortTracks('soundboard')}}>Soundboard</span>
           <span className="likes-cell">
             <Ionicon 
               style={{cursor: 'pointer'}}

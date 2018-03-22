@@ -3,7 +3,6 @@ import { view } from 'react-easy-state'
 import {history} from './../../History';
 import Ionicon from 'react-ionicons';
 import {isShowJamchart, isShowSoundboard} from './../../Utils';
-
 import Store from './../../Store';
 
 class ShowList extends Component {

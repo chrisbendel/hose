@@ -17,11 +17,11 @@
   transition: .1s ease box-shadow;
   flex-grow: 1;
   font-size: .88rem;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .show-container-item > * {
-  margin-right: 20px;
+  margin: 0 20px;
   align-self: center;
   justify-content: left;
 }
@@ -60,8 +60,6 @@
   padding: .25rem;
   cursor: pointer;
   position: absolute;
-  /* height: 15px;
-  width: 15px; */
   left: 50%;
   top: 50%; 
   transform: translate(-50%,-50%);
@@ -132,7 +130,7 @@
 
 .likes-cell {
   width: 100px;
-  margin-left: 20px;
+  margin-left: auto;
   max-width: 100px;
   justify-content: center;
   text-align: center;

@@ -1,5 +1,6 @@
 import { store } from 'react-easy-state'
 import { show } from './api/phishin';
+import { getUser } from './api/hose';
 
 export default store({
   player: null,
@@ -7,6 +8,18 @@ export default store({
   track: null,
   playing: false,
   radio: false,
+  userLikes: [],
+  updateUserLikes() {
+    getUser().then(songs => {
+      let filtered = songs.filter(song => {
+        return song.like
+      })
+      .map(song => {
+        return parseInt(song.song_id)
+      });
+      this.userLikes = filtered;
+    });
+  },
   playShow (showID) {
     if (this.show && showID == this.show.id) {
       this.player.play();
@@ -22,17 +35,14 @@ export default store({
   },
   playRadio(showID, track) {
     show(showID).then(show => {
-
       this.playing = true;
       this.show = show;
       this.track = track;
       this.radio = true;
 
-
       this.player.setPlaylistPosition(track.position);
       this.player.play();
     });
-
   },
   playTrack(showID, track) {
     this.playing = true;

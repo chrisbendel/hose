@@ -11,6 +11,8 @@ import Radio from './components/Radio';
 import {history} from './History';
 import GlobalSearch from './components/Header/GlobalSearch';
 import Spinner from 'react-spinkit';
+import Store from './Store';
+import { getUser } from './api/hose';
 
 class App extends Component {
   constructor(props) {
@@ -22,8 +24,18 @@ class App extends Component {
   }
 
   componentDidMount() {
-    history.push('/shows');
-    this.setState({loading: false});
+    getUser().then(songs => {
+      Store.userLikes = songs.filter(song => {
+        return song.like
+      })
+      .map(song => {
+        return parseInt(song.song_id)
+      });
+
+      history.push('/shows');
+      this.setState({loading: false});
+    });
+
   }
 
   render() {

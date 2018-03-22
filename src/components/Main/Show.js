@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import Store from './../../Store';
 import { show, randomShow, playsCount } from './../../api/phishin';
-import { getUser } from './../../api/hose';
+import { getUser, likeTrack, dislikeTrack } from './../../api/hose';
 import Ionicon from 'react-ionicons';
 import {getLikesPercent, msToSec, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName, downloadShow} from './../../Utils';
 import { Tooltip } from 'react-tippy';
@@ -21,7 +21,8 @@ class Show extends Component {
       playing: false,
       playingShow: null,
       playingTrack: null,
-      playingPosition: null
+      playingPosition: null,
+      // userLikes: []
     }
   }
 
@@ -37,16 +38,26 @@ class Show extends Component {
   }
 
   componentWillMount() {
-    getUser().then(user => {
-      console.log(user);
-    });
-    
+    console.log(Store.userLikes);
+    // this.getUserLikes();
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();
     } else {
       this.fetchShow(this.props.match.params.id);
     }
   }
+
+  // getUserLikes = () => {
+  //   getUser().then(songs => {
+  //     let likes = songs.filter(song => {
+  //       return song.like
+  //     })
+  //     .map(song => {
+  //       return parseInt(song.song_id)
+  //     });
+  //     this.setState({userLikes: likes});
+  //   });
+  // }
 
   fetchShow = (id) => {
     return show(id).then(show => {
@@ -99,14 +110,29 @@ class Show extends Component {
           </span>
           <span className="length-cell">{msToSec(track.duration)}</span>
           <span className="like-cell">
-            <Ionicon 
-              icon="ios-thumbs-up-outline"
-              font-size="30px"
-              onClick={() => {
-                console.log(track.id);
-                // Store.pause();
-              }}
-            />
+            {Store.userLikes.indexOf(track.id) > -1 ?
+              <Ionicon 
+                icon="ios-thumbs-up"
+                font-size="40px"
+                color="#4CAF50"
+                onClick={() => {
+                  dislikeTrack(track.id).then(() => {
+                    Store.updateUserLikes();
+                  });
+                }}
+              />
+            :
+              <Ionicon 
+                icon="ios-thumbs-up-outline"
+                font-size="40px"
+                color="#4CAF50"
+                onClick={() => {
+                  likeTrack(track.id).then(() => {
+                    Store.updateUserLikes();
+                  });
+                }}
+              />
+            }
           </span>
           <span className="title-cell">{track.title}</span>
           <span className="jamcharts-cell">{isTrackJamchart(track.id) ? "Jamcharts" : ""}</span>
