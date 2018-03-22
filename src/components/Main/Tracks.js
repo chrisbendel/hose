@@ -189,7 +189,7 @@ class Tracks extends Component {
             </div>
           }
 
-          {tracks && <TrackList tracks={tracks}/>}
+          {tracks && <TrackList sortTracks={this.sortTracks.bind(this)} tracks={tracks}/>}
         </div>
       </div>
     );

@@ -107,19 +107,19 @@ class TrackList extends Component {
               style={{cursor: 'pointer'}}
               icon="md-time"
               color="black"
-              onClick={() => {this.sortTracks('duration')}}
+              onClick={() => {this.props.sortTracks('duration')}}
             />
           </span>
-          <span className="title-cell" onClick={() => {this.sortTracks('date')}}>Date</span>
-          <span className="jamcharts-cell" onClick={() => {this.sortTracks('jamcharts')}}>Jamcharts</span>
-          <span className="jamcharts-cell" onClick={() => {this.sortTracks('soundboard')}}>Soundboard</span>
+          <span className="title-cell" onClick={() => {this.props.sortTracks('date')}}>Date</span>
+          <span className="jamcharts-cell" onClick={() => {this.props.sortTracks('jamcharts')}}>Jamcharts</span>
+          <span className="jamcharts-cell" onClick={() => {this.props.sortTracks('soundboard')}}>Soundboard</span>
           <span className="likes-cell">
             <Ionicon 
               style={{cursor: 'pointer'}}
               icon="md-heart-outline"
               font-size="30px"
               color="black"
-              onClick={() => {this.sortTracks('likes_count')}}
+              onClick={() => {this.props.sortTracks('likes_count')}}
             />
           </span>
         </li>

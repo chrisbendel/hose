@@ -98,7 +98,7 @@ export const search = async(query) => {
 
   let show = data.data.show;
   if (show) {
-    show.path = '/shows/' + show.id;
+    show.path = '/show/' + show.id;
     show.type = 'show';
     show.display = show.date + " " + show.venue_name + " " + show.location;    
     terms.push(show);

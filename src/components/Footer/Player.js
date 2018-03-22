@@ -10,6 +10,7 @@ import {history} from './../../History';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
 import './../../css/Player.css';
+import ReactAudioPlayer from 'react-audio-player';
 
 class Player extends Component {
   constructor(props) {
@@ -33,6 +34,10 @@ class Player extends Component {
 
     venue.removeEventListener('animationend', this.stopScroll);
     date.removeEventListener('animationend', this.stopScroll);
+  }
+
+  componentWillMount() {
+    Store.updateUserLikes();
   }
 
   componentDidUpdate() {
@@ -230,7 +235,7 @@ class Player extends Component {
         </div>
         <div className="center-container">
         <Ionicon 
-          style={{marginRight: 10}} 
+          style={{marginRight: 10}}
           className="clickable" 
           icon={this.state.disliked ? "ios-thumbs-down" : "ios-thumbs-down-outline"}
           fontSize="40px" 
@@ -245,14 +250,19 @@ class Player extends Component {
             });
           }}
         />
-          <Audio
-            ref={audioComponent => { this.player = audioComponent }}
-            width={500}
-            height={50}
-            autoPlay={true}
-            playlist={mapTracks(show.tracks)}
-            color="#000"
-          />
+        {/* <ReactAudioPlayer
+          src="my_audio_file.ogg"
+          autoPlay
+          controls
+        /> */}
+        <Audio
+          ref={audioComponent => { this.player = audioComponent }}
+          width={500}
+          height={50}
+          autoPlay={true}
+          playlist={mapTracks(show.tracks)}
+          color="#000"
+        />
         <Ionicon 
           style={{marginLeft: 10}} 
           className="clickable" 
