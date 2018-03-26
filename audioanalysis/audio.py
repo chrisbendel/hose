@@ -11,6 +11,7 @@ import csv
 import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import normalize
+from sklearn import preprocessing
 
 #Audio stuff
 from pyAudioAnalysis import audioBasicIO
@@ -41,16 +42,14 @@ def getMP3Urls(songs):
     return [song['mp3'] for song in songs]
 
 def extractAudioFeatures():
-    features, filename = dirWavFeatureExtraction(path, 10, 10, .5, .5, False)
+    features, files = dirWavFeatureExtraction(path, 10, 10, .5, .5, True)
 
     d = {}
     for i in range(len(features)):
-        print(filename[i])
-        print(features[i])
-        trackID = str(filename[i].split('/')[-1]).replace(".wav", "")
+        trackID = str(files[i].split('/')[-1]).replace(".wav", "")
         d[trackID] = features[i].tolist()
 
-    with open("round2.csv", "a") as f_output:
+    with open("temp.csv", "a") as f_output:
         csv_output = csv.writer(f_output)
 
         for key in sorted(d.keys()):
@@ -59,46 +58,52 @@ def extractAudioFeatures():
     deleteWAVs()
 
 # Pagination stuff for doing all songs
-res = requests.get("http://phish.in/api/v1/tracks").json()
-num_pages = res['total_pages']
-for page in range(1, num_pages + 1):
-   print(page)
-   res = requests.get("http://phish.in/api/v1/tracks", params={'page': page}).json()
-   urls = getMP3Urls(res['data'])
-   pool = Pool()
-   pool.map(downloadMP3s, urls)
-   pool.close()   
-   convertDirMP3ToWav(path, 16000, 1, False)
-   deleteMP3s()
-   extractAudioFeatures()
+# res = requests.get("http://phish.in/api/v1/tracks?per_page=100").json()
+# num_pages = res['total_pages']
+# for page in range(1, num_pages + 1):
+#   res = requests.get("http://phish.in/api/v1/tracks?per_page=100", params={'page': page}).json()
+#   urls = getMP3Urls(res['data'])
+#   pool = Pool()
+#   pool.map(downloadMP3s, urls)
+#   pool.close()   
+#   convertDirMP3ToWav(path, 16000, 1, False)
+#   deleteMP3s()
+#   extractAudioFeatures()
 
-# songs = pd.read_csv("output.csv", header=None).fillna(0)
+def normalize(df):
+    result = df.copy()
+    for feature_name in df.columns:
+        if feature_name != 0:
+          result[feature_name] = result[feature_name] / result[feature_name].max()
+          result[feature_name] = result[feature_name].fillna(result[feature_name].mean())
+    return result
+
+songs = pd.read_csv("temp.csv", header=None)
 numClusters = 10
+songs = normalize(songs)
+km = KMeans(n_clusters=numClusters, init='k-means++', n_jobs=-1, n_init=100, algorithm="elkan")
+data = songs.drop(songs.columns[0], axis=1)
 
-# remove the ids for clustering
-# data = songs.drop(songs.columns[0], axis=1)
+km.fit(data)
+centroids = km.cluster_centers_
 
-# data = (data - data.min()) / (data.max() - data.min())
+clusters = km.fit_predict(data)
+print(clusters)
+songs['Cluster'] = clusters
+print(songs)
 
-# km = KMeans(n_clusters=numClusters, init='k-means++', n_jobs=-1, n_init=50, algorithm="elkan")
-# km.fit(data)
-
-# labels = km.labels_
-#centroids = km.cluster_centers_
-
-# clusters = km.fit_predict(data)
-#data['Cluster'] = clusters
-
-# songs['Cluster'] = clusters
-# with open('songdates.csv', 'wb') as outcsv:
-#     writer = csv.writer(outcsv)
-#     writer.writerow(["id", "Song", "Year", "Set", "Duration", "Cluster"])
+with open('songdetails.csv', 'a') as outcsv:
+    print('writing row')
+    writer = csv.writer(outcsv)
+    writer.writerow(["id", "year", "set", "duration", "cluster"])
  
-#     for i in range(numClusters):
-#         for x in songs[songs['Cluster'] == i][0]:
-#             res = requests.get("http://phish.in/api/v1/tracks/" + str(x)).json()
-#             writer.writerow([res['data']['id']] + [res['data']['title'].encode('utf-8')] + [res['data']['show_date']] + [res['data']['set']] + [res['data']['duration']] + [i])
-#         print("<-------------->")
+    for i in range(numClusters):
+        for x in songs[songs['Cluster'] == i][0]:
+            print('fetching song id', x)
+            res = requests.get("http://phish.in/api/v1/tracks/" + str(x)).json()
+            d = res['data']
+            print(d)
+            writer.writerow([d['id']] + [d['show_date'][:4]] + [d['set']] + [d['duration']] + [i])
 
-#songs.to_csv("clusters.csv", index = False)
-
+# songs = songs.drop('Cluster', 1)
+songs.to_csv("songfeatures.csv", index = False)

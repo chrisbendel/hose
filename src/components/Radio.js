@@ -25,21 +25,21 @@ class Radio extends Component {
 
   }
 
-  fetchRandomTrack() {
-    fetchRandomTrack().then(tracks => {
-      trackInfo(tracks[Math.floor(Math.random() * tracks.length)].id).then(track => {
-        Store.playRadio(track.show_id, track);
-      });
-    });
-  }
+  // fetchRandomTrack() {
+  //   fetchRandomTrack().then(tracks => {
+  //     trackInfo(tracks[Math.floor(Math.random() * tracks.length)].id).then(track => {
+  //       Store.playRadio(track.show_id, track);
+  //     });
+  //   });
+  // }
 
   render() {
     if (!Store.radio) {
       return (
         <div className="radio-container">
-          <button onClick={() => {this.fetchRandomTrack()}} className="start">
+          {/* <button onClick={() => {this.fetchRandomTrack()}} className="start">
             Play Radio
-          </button>
+          </button> */}
         </div>
       )
     }

@@ -32,14 +32,14 @@ class TrackList extends Component {
                     Store.pause();
                   }}>
                     <Ionicon 
-                      icon="ios-pause" 
-                      fontSize="25px" 
+                      icon="ios-pause"
+                      fontSize="25px"
                       color="white"
                     />
                   </div>
                 :
                   <div onClick={(e) => {
-                    Store.playTrack(track.show_id, track);
+                    Store.playShow(track.show_id, track.position);
                   }}>
                     <Ionicon 
                       icon="ios-play" 
@@ -92,7 +92,6 @@ class TrackList extends Component {
       );
     });
   }
-
 
   renderTrackContainer = tracks => {
     return (

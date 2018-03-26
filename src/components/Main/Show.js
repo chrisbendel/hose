@@ -90,8 +90,9 @@ class Show extends Component {
               <Ionicon
                 icon="ios-play"
                 font-size="60px"
-                onClick={(e) => {
-                  Store.playTrack(show.id, track);
+                onClick={e => {
+                  Store.playShow(show.id, track.position);
+                  // Store.playTrack(show.id, track);
                 }}
                 className="track-play"
               />
@@ -229,7 +230,6 @@ class Show extends Component {
               <span style={{marginRight: 5}}>{isShowJamchart(show.id) && "Jamcharts"}</span>
               <span style={{marginRight: 5}}>{isShowSoundboard(show.id) && "Soundboard"}</span>
             </p>
-            
             <h3 className="clickable" onClick={() => {history.push('/shows/venue/' + show.venue.id)}}>{show.venue.name}</h3>
             <h4>{show.venue.location}</h4>
             <h4 className="clickable" onClick={() => {history.push('/shows/tour/' + show.tour_id)}}>{getTourName(show.tour_id)}</h4>
@@ -246,8 +246,9 @@ class Show extends Component {
                 : 
                 <button 
                   className="play-show-button"
-                  onClick={(e) => {
+                  onClick={e => {
                     Store.playShow(show.id);
+                    // Store.setPlaylist(show.tracks);
                   }}
                 >
                   Play

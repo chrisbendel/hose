@@ -1,5 +1,5 @@
 import { store } from 'react-easy-state'
-import { show } from './api/phishin';
+import { show, trackInfo } from './api/phishin';
 import { getUser } from './api/hose';
 
 export default store({
@@ -7,7 +7,8 @@ export default store({
   show: null,
   track: null,
   playing: false,
-  radio: false,
+  playlist: [],
+  position: 1,
   userLikes: [],
   updateUserLikes() {
     getUser().then(songs => {
@@ -20,55 +21,69 @@ export default store({
       this.userLikes = filtered;
     });
   },
-  playShow (showID) {
-    if (this.show && showID == this.show.id) {
+  next () {
+    if (this.position == this.playlist.length) {
+      console.log('last song');
+      this.position = 1;
+      let id = this.playlist[0];
+      this.setCurrentlyPlaying(id);
+    } else {
+      console.log(this.position);
+      this.position += 1;
+      console.log(this.position);
+      let id = this.playlist[this.position - 1];
+      this.setCurrentlyPlaying(id);
+    }
+  },
+  previous() {
+    if (this.position == 1) {
+      this.position = this.playlist.length;
+      let id = this.playlist[this.position - 1];
+      this.setCurrentlyPlaying(id);
+    } else {
+      this.position -= 1;
+      let id = this.playlist[this.position - 1];
+      this.setCurrentlyPlaying(id);
+    }
+  },
+  setPlaylist (trackIds, position = 1) {
+    this.position = position;
+    this.playlist = trackIds;
+
+    let current = trackIds.find((id, index) => {
+      if (index == position - 1) {
+        return id;
+      }
+    });
+
+    this.setCurrentlyPlaying(current);
+  },
+  playShow (id, position = 1) {
+    if (this.show && this.show.id == id && this.position == position ) {
       this.player.play();
     } else {
-      show(showID).then(show => {
-        this.track = show.tracks[0];
-        this.show = show;
-        this.radio = false;
-        this.player.setPlaylistPosition(this.track.position);
-        this.player.play();
+      show(id).then(show => {
+        let trackIds = show.tracks.map(track => {
+          return track.id;
+        });
+        
+        this.setPlaylist(trackIds, position);
       });
     }
   },
-  playRadio(showID, track) {
-    show(showID).then(show => {
-      this.playing = true;
-      this.show = show;
-      this.track = track;
-      this.radio = true;
-
-      this.player.setPlaylistPosition(track.position);
+  setCurrentlyPlaying (id) {
+    if (this.track && this.track.id == id) {
       this.player.play();
-    });
-  },
-  playTrack(showID, track) {
-    this.playing = true;
-    this.radio = false;
-    if (!this.track) {
-      show(showID).then(show => {
-        this.show = show;
-        this.track = track;
-        this.player.setPlaylistPosition(track.position);
-        this.player.play();
-      });
     } else {
-      if (track.id != this.track.id) {
-        show(showID).then(show => {
+      trackInfo(id).then(track => {
+        show(track.show_id).then(show => {
           this.show = show;
           this.track = track;
-          this.player.setPlaylistPosition(track.position);
-          this.player.play();
         });
-      } else {
-        this.player.play();
-      }
+      });
     }
   },
   pause() {
-    this.playing = false;
     this.player.pause();
   },
   isTrackPlaying(track) {

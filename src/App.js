@@ -3,6 +3,7 @@ import { view } from 'react-easy-state'
 import { Router, Route } from 'react-router-dom';
 import SideNav from './components/SideNav/SideNav';
 import Player from './components/Footer/Player';
+import Player1 from './components/Footer/Player1';
 import Show from './components/Main/Show';
 import Shows from './components/Main/Shows';
 import ShowsOnDay from './components/Main/ShowsOnDay';
@@ -32,7 +33,6 @@ class App extends Component {
         return parseInt(song.song_id)
       });
 
-      history.push('/shows');
       this.setState({loading: false});
     });
 
@@ -58,6 +58,7 @@ class App extends Component {
               <GlobalSearch/>
             </header>
             <main className="content">
+              <Route path="/" component={Shows}/>
               <Route exact path="/show/:id" component={Show}/>
               <Route exact path="/showsOnDay/:date?" component={ShowsOnDay}/>
               <Route exact path="/shows/:type?/:id?" component={Shows}/>
@@ -67,7 +68,8 @@ class App extends Component {
           </div>
         </Router>
         <footer className="footer">
-          <Player/>
+          {/* <Player/> */}
+          <Player1/>
         </footer>
       </div>
     );
