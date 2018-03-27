@@ -30,9 +30,12 @@ class Player1 extends Component {
         current_seconds_long = this.player.currentTime % 60,
         current_seconds = current_seconds_long.toFixed(),
         current_time = (current_minute < 10 ? "0" + current_minute : current_minute) + ":" + (current_seconds < 10 ? "0" + current_seconds : current_seconds);
-
+        
         this.currentTime.innerHTML = current_time
-        this.prog.value = (this.player.currentTime / this.player.duration);
+        console.log(this.player.currentTime , this.player.duration)
+        if(this.player.duration) {
+          this.prog.value = (this.player.currentTime / this.player.duration);
+        }
 
       });
 
