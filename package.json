@@ -22,7 +22,6 @@
     "jszip-utils": "0.0.2",
     "prop-types": "^15.6.0",
     "react": "^15.6.2",
-    "react-audio-player": "^0.9.0",
     "react-audioplayer": "^0.3.1",
     "react-autosuggest": "^9.3.2",
     "react-dialog": "^1.0.2",

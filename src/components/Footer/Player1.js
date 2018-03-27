@@ -7,37 +7,49 @@ import Ionicon from 'react-ionicons';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
 
+const timeFormat = time => {
+  // Hours, minutes and seconds
+  var hrs = ~~(time / 3600);
+  var mins = ~~((time % 3600) / 60);
+  var secs = time % 60;
+
+  // Output like "1:01" or "4:03:59" or "123:03:59"
+  var ret = "";
+
+  if (hrs > 0) {
+    ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+  }
+
+  ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+  ret += "" + secs;
+  return ret;
+}
+
 class Player1 extends Component {
   constructor(props) {
     super(props);
 
     Store.player = this;
+    let progress = null;
+    let duration = null;
   }
 
   componentDidUpdate() {
     if (this.player) {
       this.player.addEventListener('play', () => {Store.playing = true});
       this.player.addEventListener('pause', () => {Store.playing = false});
+      this.player.addEventListener('timeupdate', this.timeUpdate);
+      this.player.addEventListener('emptied', this.checkSkipped);
+      this.player.addEventListener('ended', this.trackEnded);
       this.prog.addEventListener('click', (e) => {
         var percent = e.offsetX / this.prog.offsetWidth;
         this.player.currentTime = percent * this.player.duration;
         this.prog.value = percent
       });
 
-      this.player.addEventListener('timeupdate', () => {
-        var current_hour = parseInt(this.player.currentTime / 3600) % 24,
-        current_minute = parseInt(this.player.currentTime / 60) % 60,
-        current_seconds_long = this.player.currentTime % 60,
-        current_seconds = current_seconds_long.toFixed(),
-        current_time = (current_minute < 10 ? "0" + current_minute : current_minute) + ":" + (current_seconds < 10 ? "0" + current_seconds : current_seconds);
+      // this.player.addEventListener('timeupdate', () => {
         
-        this.currentTime.innerHTML = current_time
-        console.log(this.player.currentTime , this.player.duration)
-        if(this.player.duration) {
-          this.prog.value = (this.player.currentTime / this.player.duration);
-        }
-
-      });
+      // });
 
       var minutes = Math.floor(this.player.duration / 60),
           seconds_int = this.player.duration - minutes * 60,
@@ -46,6 +58,37 @@ class Player1 extends Component {
           time = minutes + ':' + seconds
 
         this.totalTime.innerHTML = time;
+    }
+  }
+
+  trackEnded = () => {
+    completed(Store.track.id).then(() => {
+      Store.next();
+    });
+  }
+
+  checkSkipped = () => {
+    if (this.progress && this.duration) {
+      if (this.progress/this.duration < .25) {
+        skipped(Store.track.id);
+      }
+    }
+  }
+
+  timeUpdate = () => {
+    // this.progress = this.player.state.progress;
+    // this.duration = this.player.state.duration;
+    console.log(this.player.currentTime);
+    var current_hour = parseInt(this.player.currentTime / 3600) % 24,
+        current_minute = parseInt(this.player.currentTime / 60) % 60,
+        current_seconds_long = this.player.currentTime % 60,
+        current_seconds = current_seconds_long.toFixed(),
+        current_time = (current_minute < 10 ? "0" + current_minute : current_minute) + ":" + (current_seconds < 10 ? "0" + current_seconds : current_seconds);
+        
+    this.currentTime.innerHTML = current_time
+
+    if (this.player.duration) {
+      this.prog.value = (this.player.currentTime / this.player.duration);
     }
   }
 
@@ -67,8 +110,6 @@ class Player1 extends Component {
       );
     }
 
-    console.log(Store.track.mp3);
-
     return (
       <div className="player-container">
         <audio 
@@ -85,7 +126,7 @@ class Player1 extends Component {
             fontSize="60px"
             onClick={() => {Store.previous()}}
           />
-          <div className={Store.playing ? "hidden" : ""} class="play">
+          <div className={Store.playing ? "hidden play" : "play"}>
             <Ionicon 
               className="clickable svgBtnDefault play-pause play"
               color="#66BB6A" 

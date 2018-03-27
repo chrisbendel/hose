@@ -7,7 +7,6 @@ export default store({
   show: null,
   track: null,
   playing: false,
-  progress: 0,
   playlist: [],
   position: 1,
   userLikes: [],
@@ -24,14 +23,11 @@ export default store({
   },
   next () {
     if (this.position == this.playlist.length) {
-      console.log('last song');
       this.position = 1;
       let id = this.playlist[0];
       this.setCurrentlyPlaying(id);
     } else {
-      console.log(this.position);
       this.position += 1;
-      console.log(this.position);
       let id = this.playlist[this.position - 1];
       this.setCurrentlyPlaying(id);
     }

@@ -10,7 +10,6 @@ import {history} from './../../History';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
 import './../../css/Player.css';
-import ReactAudioPlayer from 'react-audio-player';
 
 class Player extends Component {
   constructor(props) {
@@ -57,9 +56,9 @@ class Player extends Component {
     if (this.player) {
       let element = this.player.audioElement;
 
-      element.addEventListener('timeupdate', this.timeUpdate);
-      element.addEventListener('ended', this.trackEnded);
-      element.addEventListener('emptied', this.checkSkipped);
+      // element.addEventListener('timeupdate', this.timeUpdate);
+      // element.addEventListener('ended', this.trackEnded);
+      // element.addEventListener('emptied', this.checkSkipped);
       element.addEventListener('loadedmetadata', this.trackStarted);
       element.addEventListener('playing', this.setControls);
       element.addEventListener('play', this.setControls);
@@ -67,27 +66,27 @@ class Player extends Component {
     }
   }
 
-  checkSkipped = () => {
-    if (this.progress && this.duration) {
-      if (this.progress/this.duration < .25) {
-        skipped(Store.track.id);
-      }
-    }
-  }
+  // checkSkipped = () => {
+  //   if (this.progress && this.duration) {
+  //     if (this.progress/this.duration < .25) {
+  //       skipped(Store.track.id);
+  //     }
+  //   }
+  // }
 
-  timeUpdate = () => {
-    this.progress = this.player.state.progress;
-    this.duration = this.player.state.duration;
-  }
+  // timeUpdate = () => {
+  //   this.progress = this.player.state.progress;
+  //   this.duration = this.player.state.duration;
+  // }
 
-  trackEnded = () => {
-    completed(Store.track.id).then(track => {
-      this.setState({
-        liked: track.like,
-        disliked: track.dislike
-      });
-    });
-  }
+  // trackEnded = () => {
+  //   completed(Store.track.id).then(track => {
+  //     this.setState({
+  //       liked: track.like,
+  //       disliked: track.dislike
+  //     });
+  //   });
+  // }
 
   trackStarted = () => {
     listen(Store.track.id).then(track => {
@@ -250,11 +249,6 @@ class Player extends Component {
             });
           }}
         />
-        {/* <ReactAudioPlayer
-          src="my_audio_file.ogg"
-          autoPlay
-          controls
-        /> */}
         <Audio
           ref={audioComponent => { this.player = audioComponent }}
           width={500}
