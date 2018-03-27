@@ -18,6 +18,31 @@ class Player1 extends Component {
     if (this.player) {
       this.player.addEventListener('play', () => {Store.playing = true});
       this.player.addEventListener('pause', () => {Store.playing = false});
+      this.prog.addEventListener('click', (e) => {
+        var percent = e.offsetX / this.prog.offsetWidth;
+        this.player.currentTime = percent * this.player.duration;
+        this.prog.value = percent
+      });
+
+      this.player.addEventListener('timeupdate', () => {
+        var current_hour = parseInt(this.player.currentTime / 3600) % 24,
+        current_minute = parseInt(this.player.currentTime / 60) % 60,
+        current_seconds_long = this.player.currentTime % 60,
+        current_seconds = current_seconds_long.toFixed(),
+        current_time = (current_minute < 10 ? "0" + current_minute : current_minute) + ":" + (current_seconds < 10 ? "0" + current_seconds : current_seconds);
+
+        this.currentTime.innerHTML = current_time
+        this.prog.value = (this.player.currentTime / this.player.duration);
+
+      });
+
+      var minutes = Math.floor(this.player.duration / 60),
+          seconds_int = this.player.duration - minutes * 60,
+          seconds_str = seconds_int.toString(),
+          seconds = seconds_str.substr(0, 2),
+          time = minutes + ':' + seconds
+
+        this.totalTime.innerHTML = time;
     }
   }
 
@@ -49,34 +74,51 @@ class Player1 extends Component {
           src={Store.track.mp3}
           autoPlay={true}
         />
-        <Ionicon 
-          className="clickable" 
-          color="#66BB6A" 
-          icon="ios-play" 
-          fontSize="60px" 
-          onClick={() => {this.play()}}
-        />
-        <Ionicon 
-          className="clickable" 
-          color="#66BB6A" 
-          icon="ios-pause" 
-          fontSize="60px" 
-          onClick={() => {this.pause()}}
-        />
-        <Ionicon 
-          className="clickable" 
-          color="#66BB6A" 
-          icon="ios-skip-backward" 
-          fontSize="60px"
-          onClick={() => {Store.previous()}}
-        />
-        <Ionicon 
-          className="clickable" 
-          color="#66BB6A" 
-          icon="ios-skip-forward" 
-          fontSize="60px"
-          onClick={() => {Store.next()}}
-        />
+        <div className="controls-container">
+          <Ionicon 
+            className="clickable svgBtnDefault" 
+            color="#66BB6A" 
+            icon="ios-skip-backward" 
+            fontSize="60px"
+            onClick={() => {Store.previous()}}
+          />
+          <div className={Store.playing ? "hidden" : ""} class="play">
+            <Ionicon 
+              className="clickable svgBtnDefault play-pause play"
+              color="#66BB6A" 
+              icon="ios-play" 
+              fontSize="60px" 
+              onClick={() => {this.play()}}
+            />
+          </div>
+          <div className={Store.playing ? "" : "hidden"}>
+            <Ionicon 
+              className="clickable svgBtnDefault play-pause" 
+              color="#66BB6A" 
+              icon="ios-pause" 
+              fontSize="60px" 
+              onClick={() => {this.pause()}}
+            />
+          </div>
+          <Ionicon 
+            className="clickable svgBtnDefault" 
+            color="#66BB6A" 
+            icon="ios-skip-forward" 
+            fontSize="60px"
+            onClick={() => {Store.next()}}
+          />
+        </div>
+        <div className="progress-container">
+          <span ref={elem => this.currentTime = elem}>0:00</span>
+          <progress 
+            value="0" 
+            max="1"
+            className="progress"
+            ref={elem => this.prog = elem}
+          >
+          </progress>
+          <span ref={elem => this.totalTime = elem}>0:00</span>
+        </div>
       </div>
     );
   }

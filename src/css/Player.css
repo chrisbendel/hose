@@ -113,11 +113,10 @@
 .controls-container {
   display: flex;
   flex-direction: row;
-  height: 75px;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
-  width: 100%;
+  width: 200px;
+  margin-top: .25rem;
 }
 
 .player-container {
@@ -127,15 +126,56 @@
   align-items: center;
   justify-content: space-between;
   height: 100%;
-  width: 100%;
+  width: 500px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-pause {
+  border: 1px solid #66BB6A;
+  border-radius: 50%;
 }
 
 .svgBtnDefault {
-  display: none;
+  height: 40px;
+  width: 40px;
+  padding: .5rem;
+  box-sizing: border-box;
 }
 
 .center-container {
   align-items: center;
   justify-content: center;
   display: flex;
+}
+
+.progress-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-container span {
+  font-size: .78rem;
+  margin-bottom: 4px;
+}
+
+.progress {
+  width: 400px;
+  height: 5px;
+  margin: 0;
+  background-color: #DDD;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress[value]::-webkit-progress-bar {
+  background-color: #DDD;
+}
+
+.progress::-webkit-progress-value {
+  color: #DDD;
+  background-color: #66BB6A;
 }

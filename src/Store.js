@@ -7,6 +7,7 @@ export default store({
   show: null,
   track: null,
   playing: false,
+  progress: 0,
   playlist: [],
   position: 1,
   userLikes: [],
