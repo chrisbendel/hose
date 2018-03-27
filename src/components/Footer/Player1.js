@@ -8,12 +8,10 @@ import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
 
 const timeFormat = time => {
-  // Hours, minutes and seconds
   var hrs = ~~(time / 3600);
   var mins = ~~((time % 3600) / 60);
-  var secs = time % 60;
+  var secs = (time % 60).toFixed(0);
 
-  // Output like "1:01" or "4:03:59" or "123:03:59"
   var ret = "";
 
   if (hrs > 0) {
@@ -28,6 +26,11 @@ const timeFormat = time => {
 class Player1 extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      currentTime: null,
+      totalTime: null
+    }
 
     Store.player = this;
     let progress = null;
@@ -47,17 +50,13 @@ class Player1 extends Component {
         this.prog.value = percent
       });
 
-      // this.player.addEventListener('timeupdate', () => {
-        
-      // });
+      // var minutes = Math.floor(this.player.duration / 60),
+      //     seconds_int = this.player.duration - minutes * 60,
+      //     seconds_str = seconds_int.toString(),
+      //     seconds = seconds_str.substr(0, 2),
+      //     time = minutes + ':' + seconds
 
-      var minutes = Math.floor(this.player.duration / 60),
-          seconds_int = this.player.duration - minutes * 60,
-          seconds_str = seconds_int.toString(),
-          seconds = seconds_str.substr(0, 2),
-          time = minutes + ':' + seconds
-
-        this.totalTime.innerHTML = time;
+      //   this.totalTime.innerHTML = time;
     }
   }
 
@@ -76,20 +75,24 @@ class Player1 extends Component {
   }
 
   timeUpdate = () => {
-    // this.progress = this.player.state.progress;
-    // this.duration = this.player.state.duration;
-    console.log(this.player.currentTime);
-    var current_hour = parseInt(this.player.currentTime / 3600) % 24,
-        current_minute = parseInt(this.player.currentTime / 60) % 60,
-        current_seconds_long = this.player.currentTime % 60,
-        current_seconds = current_seconds_long.toFixed(),
-        current_time = (current_minute < 10 ? "0" + current_minute : current_minute) + ":" + (current_seconds < 10 ? "0" + current_seconds : current_seconds);
+    this.progress = this.player.currentTime;
+    this.duration = this.player.duration;
+    // var current_hour = parseInt(this.player.currentTime / 3600) % 24,
+    //     current_minute = parseInt(this.player.currentTime / 60) % 60,
+    //     current_seconds_long = this.player.currentTime % 60,
+    //     current_seconds = current_seconds_long.toFixed(),
+    //     current_time = (current_minute < 10 ? "0" + current_minute : current_minute) + ":" + (current_seconds < 10 ? "0" + current_seconds : current_seconds);
         
-    this.currentTime.innerHTML = current_time
+    // this.currentTime.innerHTML = current_time
 
     if (this.player.duration) {
       this.prog.value = (this.player.currentTime / this.player.duration);
     }
+
+    this.setState({
+      currentTime: this.player.currentTime,
+      totalTime: this.player.duration
+    })
   }
 
   play = () => {
@@ -153,15 +156,15 @@ class Player1 extends Component {
           />
         </div>
         <progress 
-          value="0" 
+          value="0"
           max="1"
           className="progress"
           ref={elem => this.prog = elem}
         >
         </progress>
         <div className="progress-container">
-          <span ref={elem => this.currentTime = elem}>0:00</span>
-          <span ref={elem => this.totalTime = elem}>0:00</span>
+          <span ref={elem => this.currentTime = elem}>{timeFormat(this.state.currentTime)}</span>
+          <span ref={elem => this.totalTime = elem}>{timeFormat(this.state.totalTime)}</span>
         </div>
       </div>
     );
