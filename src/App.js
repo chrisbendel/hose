@@ -58,7 +58,7 @@ class App extends Component {
               <GlobalSearch/>
             </header>
             <main className="content">
-              <Route path="/" component={Shows}/>
+              <Route exact path="/" component={Shows}/>
               <Route exact path="/show/:id" component={Show}/>
               <Route exact path="/showsOnDay/:date?" component={ShowsOnDay}/>
               <Route exact path="/shows/:type?/:id?" component={Shows}/>

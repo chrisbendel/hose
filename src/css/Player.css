@@ -153,17 +153,19 @@
 .progress-container {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 }
 
 .progress-container span {
   font-size: .78rem;
   margin-bottom: 4px;
+  width: 50px;
+  text-align: center;
 }
 
 .progress {
-  width: 400px;
+  width: 380px;
   height: 5px;
   margin: 0;
   background-color: #DDD;
