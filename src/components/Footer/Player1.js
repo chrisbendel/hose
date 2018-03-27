@@ -152,15 +152,15 @@ class Player1 extends Component {
             onClick={() => {Store.next()}}
           />
         </div>
+        <progress 
+          value="0" 
+          max="1"
+          className="progress"
+          ref={elem => this.prog = elem}
+        >
+        </progress>
         <div className="progress-container">
           <span ref={elem => this.currentTime = elem}>0:00</span>
-          <progress 
-            value="0" 
-            max="1"
-            className="progress"
-            ref={elem => this.prog = elem}
-          >
-          </progress>
           <span ref={elem => this.totalTime = elem}>0:00</span>
         </div>
       </div>
