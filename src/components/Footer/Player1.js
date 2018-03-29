@@ -47,16 +47,10 @@ class Player1 extends Component {
       this.prog.addEventListener('click', (e) => {
         var percent = e.offsetX / this.prog.offsetWidth;
         this.player.currentTime = percent * this.player.duration;
-        this.prog.value = percent
+        this.setState({
+          currentProgress: percent
+        })
       });
-
-      // var minutes = Math.floor(this.player.duration / 60),
-      //     seconds_int = this.player.duration - minutes * 60,
-      //     seconds_str = seconds_int.toString(),
-      //     seconds = seconds_str.substr(0, 2),
-      //     time = minutes + ':' + seconds
-
-      //   this.totalTime.innerHTML = time;
     }
   }
 
@@ -77,21 +71,11 @@ class Player1 extends Component {
   timeUpdate = () => {
     this.progress = this.player.currentTime;
     this.duration = this.player.duration;
-    // var current_hour = parseInt(this.player.currentTime / 3600) % 24,
-    //     current_minute = parseInt(this.player.currentTime / 60) % 60,
-    //     current_seconds_long = this.player.currentTime % 60,
-    //     current_seconds = current_seconds_long.toFixed(),
-    //     current_time = (current_minute < 10 ? "0" + current_minute : current_minute) + ":" + (current_seconds < 10 ? "0" + current_seconds : current_seconds);
-        
-    // this.currentTime.innerHTML = current_time
-
-    if (this.player.duration) {
-      this.prog.value = (this.player.currentTime / this.player.duration);
-    }
 
     this.setState({
       currentTime: this.player.currentTime,
-      totalTime: this.player.duration
+      totalTime: this.player.duration,
+      currentProgress: this.player.currentTime / this.player.duration
     })
   }
 
@@ -156,7 +140,7 @@ class Player1 extends Component {
           />
         </div>
         <progress 
-          value="0"
+          value={this.state.currentProgress}
           max="1"
           className="progress"
           ref={elem => this.prog = elem}

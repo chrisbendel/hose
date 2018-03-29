@@ -38,7 +38,6 @@ class Show extends Component {
   }
 
   componentWillMount() {
-    console.log(Store.userLikes);
     // this.getUserLikes();
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();
@@ -247,8 +246,7 @@ class Show extends Component {
                 <button 
                   className="play-show-button"
                   onClick={e => {
-                    Store.playShow(show.id);
-                    // Store.setPlaylist(show.tracks);
+                    Store.playShow(show.id, Store.track.position);
                   }}
                 >
                   Play

@@ -25,16 +25,16 @@ class App extends Component {
   }
 
   componentDidMount() {
-    getUser().then(songs => {
-      Store.userLikes = songs.filter(song => {
-        return song.like
-      })
-      .map(song => {
-        return parseInt(song.song_id)
-      });
+    // getUser().then(songs => {
+    //   Store.userLikes = songs.filter(song => {
+    //     return song.like
+    //   })
+    //   .map(song => {
+    //     return parseInt(song.song_id)
+    //   });
 
       this.setState({loading: false});
-    });
+    // });
 
   }
 
