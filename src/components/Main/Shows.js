@@ -242,15 +242,17 @@ class Shows extends Component {
         </div>
         <div className="shows-container" ref="shows">
           <div className="filter-display">
-          <span>{this.state.currentFilter}  </span>
-            <Ionicon
+            <span>
+              {this.state.currentFilter}
+              <Ionicon
               className="clickable"
               icon="md-close-circle" 
               fontSize="15px"
               onClick={() => {
                 this.fetchAllShows()
               }}
-            />
+              />
+            </span>
           </div>
           <ShowList shows={shows}/>
           {this.state.loadMoreShows &&
