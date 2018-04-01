@@ -246,7 +246,11 @@ class Show extends Component {
                 <button 
                   className="play-show-button"
                   onClick={e => {
-                    Store.playShow(show.id, Store.track.position);
+                    if (Store.track) {
+                      Store.playShow(show.id, Store.track.position);
+                    } else {
+                      Store.playShow(show.id);
+                    }
                   }}
                 >
                   Play
