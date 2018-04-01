@@ -52,6 +52,19 @@ class Player1 extends Component {
         })
       });
     }
+
+    if (this.refs.hoverVenue && this.refs.hoverDate) {
+      const venue = this.refs.hoverVenue;
+      const date = this.refs.hoverDate;
+  
+      venue.addEventListener('animationend', () => {
+        this.stopScroll('hoverVenue');
+      });
+
+      date.addEventListener('animationend', () => {
+        this.stopScroll('hoverDate');
+      });
+    }
   }
 
   trackEnded = () => {
@@ -87,6 +100,20 @@ class Player1 extends Component {
     this.player.pause()
   }
 
+  stopScroll = (target) => {
+    this.setState({
+      [target]: false
+    });
+  }
+
+  componentWillUnmount() {
+    const venue = this.refs.hoverVenue;
+    const date = this.refs.hoverDate;
+
+    venue.removeEventListener('animationend', this.stopScroll);
+    date.removeEventListener('animationend', this.stopScroll);
+  }
+
   render() {
     if (!Store.track) {
       return (
@@ -96,6 +123,8 @@ class Player1 extends Component {
         </div>
       );
     }
+    let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    let date = new Date(Store.show.date + ' 00:00');
 
     return (
       <div className="player-container">
@@ -105,6 +134,43 @@ class Player1 extends Component {
           src={Store.track.mp3}
           autoPlay={true}
         />
+        <div className="show-information-player">
+          <div className="album-art-container clickable" onClick={() => {history.push('/show/' + Store.show.id)}}>
+            <img alt={Store.show.date} src={'https://s3.amazonaws.com/hose/images/' + Store.show.date + '.jpg'}/>
+          </div>
+          <div className="current-track-information">
+            <div 
+              ref='hoverDate'
+              className={this.state.hoverDate ? "inline-wrapper hovering" : "inline-wrapper"}
+              onMouseEnter = {() => {this.setState({hoverDate: true})}}
+            >
+              <span 
+                onClick={() => {history.push('/show/' + Store.show.id)}}
+                className="clickable"
+              > 
+                {date.toLocaleDateString('en-US', dateOptions)}  
+              </span>
+              <span 
+                onClick={() => {history.push('/show/' + Store.show.id)}}
+                className="clickable"
+              > 
+                {date.toLocaleDateString('en-US', dateOptions)}  
+              </span>
+            </div>
+            <div 
+              ref='hoverVenue'
+              className={this.state.hoverDate ? "inline-wrapper hovering" : "inline-wrapper"}
+              onMouseEnter = {() => {this.setState({hoverVenue: true})}}
+            >
+              <span className="clickable" 
+                onClick={() => {history.push('/shows/venue/' + Store.show.venue.id)}}> {Store.show.venue.name}, {Store.show.venue.location} 
+              </span>
+              <span className="clickable" 
+                onClick={() => {history.push('/shows/venue/' + Store.show.venue.id)}}> {Store.show.venue.name}, {Store.show.venue.location} 
+              </span>
+            </div>
+          </div>
+        </div>
         <div className="controls-container">
           <Ionicon 
             className="clickable svgBtnDefault" 
@@ -148,7 +214,7 @@ class Player1 extends Component {
         </progress>
         <div className="progress-container">
           <span ref={elem => this.currentTime = elem}>{timeFormat(this.state.currentTime)}</span>
-          <span ref={elem => this.totalTime = elem}>{timeFormat(this.state.totalTime)}</span>
+          <span ref={elem => this.totalTime = elem}>&nbsp; / {timeFormat(this.state.totalTime)}</span>
         </div>
       </div>
     );

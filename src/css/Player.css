@@ -30,6 +30,8 @@
   cursor: pointer;
   font-size: 0.88rem;
   flex-wrap: nowrap;
+  height: 70px;
+  align-self: flex-end
 }
 
 .current-track-information {
@@ -130,7 +132,7 @@
   width: 100%;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .play-pause {
@@ -153,9 +155,18 @@
 
 .progress-container {
   display: flex;
-  flex: 0 0 25%;
   justify-content: flex-start;
   align-items: center;
+}
+
+.progress-container span:first-of-type {
+  color: #333;
+  text-align: right;
+}
+
+.progress-container span:last-of-type {
+  color: #BBB;
+  text-align: left;
 }
 
 .progress-container span {
@@ -173,7 +184,7 @@
   overflow: hidden;
   position: absolute;
   width: 100%;
-  top: 0;
+  top: -1px;
 }
 
 .progress[value]::-webkit-progress-bar {
