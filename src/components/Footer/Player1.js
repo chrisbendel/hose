@@ -205,6 +205,9 @@ class Player1 extends Component {
             onClick={() => {Store.next()}}
           />
         </div>
+        <div>
+          {Store.track.title}
+        </div>
         <progress 
           value={this.state.currentProgress}
           max="1"
