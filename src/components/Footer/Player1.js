@@ -65,6 +65,10 @@ class Player1 extends Component {
         this.stopScroll('hoverDate');
       });
     }
+
+  setVol = (val) => {
+    var player = this.player;
+    player.volume = val / 100;
   }
 
   trackEnded = () => {
@@ -148,7 +152,7 @@ class Player1 extends Component {
                 onClick={() => {history.push('/show/' + Store.show.id)}}
                 className="clickable"
               > 
-                {date.toLocaleDateString('en-US', dateOptions)}  
+                {Store.track.title}&nbsp;&bull;&nbsp;{date.toLocaleDateString('en-US', dateOptions)}  
               </span>
               <span 
                 onClick={() => {history.push('/show/' + Store.show.id)}}
@@ -205,9 +209,6 @@ class Player1 extends Component {
             onClick={() => {Store.next()}}
           />
         </div>
-        <div>
-          {Store.track.title}
-        </div>
         <progress 
           value={this.state.currentProgress}
           max="1"
@@ -216,8 +217,50 @@ class Player1 extends Component {
         >
         </progress>
         <div className="progress-container">
+          <span className="volume-slider-container">
+            <div className="volume-slider">
+              <input type="range" min="0" max="100" step="1"></input>
+            </div>
+          </span>
           <span ref={elem => this.currentTime = elem}>{timeFormat(this.state.currentTime)}</span>
           <span ref={elem => this.totalTime = elem}>&nbsp; / {timeFormat(this.state.totalTime)}</span>
+          <span className="like-cell">
+            {Store.userLikes.indexOf(Store.track.id) > -1 ?
+              <Ionicon 
+                icon="ios-thumbs-up"
+                font-size="40px"
+                color="#4CAF50"
+                onClick={() => {
+                  dislikeTrack(Store.track.id).then(() => {
+                    Store.updateUserLikes();
+                  });
+                }}
+              />
+            :
+              <Ionicon 
+                icon="ios-thumbs-up-outline"
+                font-size="40px"
+                color="#4CAF50"
+                onClick={() => {
+                  likeTrack(Store.track.id).then(() => {
+                    Store.updateUserLikes();
+                  });
+                }}
+              />
+            }
+          </span>
+          <span>
+            <Ionicon 
+              icon="ios-share-outline"
+              font-size="40px"
+              color="#333"
+              onClick={() => {
+                dislikeTrack(Store.track.id).then(() => {
+                  Store.updateUserLikes();
+                });
+              }}
+            />
+          </span>
         </div>
       </div>
     );

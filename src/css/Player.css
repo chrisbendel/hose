@@ -27,11 +27,12 @@
 /* Player Styles */
 .show-information-player {
   display: flex;
+  flex: 0 0 33.33333%;
   cursor: pointer;
   font-size: 0.88rem;
   flex-wrap: nowrap;
   height: 70px;
-  align-self: flex-end
+  align-self: flex-end;
 }
 
 .current-track-information {
@@ -115,9 +116,10 @@
 
 .controls-container {
   display: flex;
+  flex: 0 0 33.33333%;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 200px;
   margin-top: .25rem;
 }
@@ -155,7 +157,8 @@
 
 .progress-container {
   display: flex;
-  justify-content: flex-start;
+  flex: 0 0 33.33333%;
+  justify-content: center;
   align-items: center;
 }
 
@@ -164,7 +167,7 @@
   text-align: right;
 }
 
-.progress-container span:last-of-type {
+.progress-container span:nth-of-type(2) {
   color: #BBB;
   text-align: left;
 }
@@ -195,4 +198,18 @@
   color: #DDD;
   background-color: #66BB6A;
   border: none;
+}
+
+.volume {
+ position: relative; 
+ z-index: 1;
+}
+
+.volume-slider-container {
+  height: 75px;
+  background-color: #FFF;
+}
+
+.volume-slider {
+  background-color: #4CAF50;
 }
