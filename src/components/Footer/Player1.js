@@ -65,6 +65,7 @@ class Player1 extends Component {
         this.stopScroll('hoverDate');
       });
     }
+  }
 
   setVol = (val) => {
     var player = this.player;
