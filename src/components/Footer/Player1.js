@@ -67,7 +67,7 @@ class Player1 extends Component {
     }
   }
 
-  setVol = (val) => {
+  setVol = val => {
     var player = this.player;
     player.volume = val / 100;
   }
@@ -220,7 +220,15 @@ class Player1 extends Component {
         <div className="progress-container">
           <span className="volume-slider-container">
             <div className="volume-slider">
-              <input type="range" min="0" max="100" step="1"></input>
+              <input 
+                type="range" 
+                min="0" 
+                max="100" 
+                step="1"
+                onChange={e => {
+                  this.setVol(e.currentTarget.value);
+                }}
+              />
             </div>
           </span>
           <span ref={elem => this.currentTime = elem}>{timeFormat(this.state.currentTime)}</span>
