@@ -238,8 +238,8 @@ class Player1 extends Component {
                 font-size="40px"
                 color="#4CAF50"
                 onClick={() => {
-                  dislikeTrack(Store.track.id).then(res => {
-                    if (res) {
+                  dislikeTrack(Store.track.id).then(track => {
+                    if (track) {
                       Store.updateUserLikes();
                     }
                   });
@@ -251,8 +251,8 @@ class Player1 extends Component {
                 font-size="40px"
                 color="#4CAF50"
                 onClick={() => {
-                  likeTrack(Store.track.id).then(res => {
-                    if (res) {
+                  likeTrack(Store.track.id).then(track => {
+                    if (track) {
                       Store.updateUserLikes();
                     }
                   });
@@ -266,8 +266,10 @@ class Player1 extends Component {
               font-size="40px"
               color="#333"
               onClick={() => {
-                dislikeTrack(Store.track.id).then(() => {
-                  Store.updateUserLikes();
+                dislikeTrack(Store.track.id).then(track => {
+                  if (track) {
+                    Store.updateUserLikes();
+                  }
                 });
               }}
             />

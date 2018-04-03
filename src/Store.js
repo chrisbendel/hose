@@ -12,13 +12,15 @@ export default store({
   userLikes: [],
   updateUserLikes() {
     getUser().then(songs => {
-      let filtered = songs.filter(song => {
-        return song.like
-      })
-      .map(song => {
-        return parseInt(song.song_id)
-      });
-      this.userLikes = filtered;
+      if (songs) {
+        let filtered = songs.filter(song => {
+          return song.like
+        })
+        .map(song => {
+          return parseInt(song.song_id)
+        });
+        this.userLikes = filtered;
+      }
     });
   },
   next () {

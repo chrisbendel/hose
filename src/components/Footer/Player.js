@@ -90,10 +90,12 @@ class Player extends Component {
 
   trackStarted = () => {
     listen(Store.track.id).then(track => {
-      this.setState({
-        liked: track.like,
-        disliked: track.dislike
-      });
+      if (track) {
+        this.setState({
+          liked: track.like,
+          disliked: track.dislike
+        });
+      }
     });
   }
 
@@ -241,11 +243,13 @@ class Player extends Component {
           color="#4CAF50"
           onClick={() => {
             dislikeTrack(Store.track.id).then(track => {
-              Store.updateUserLikes();
-              this.setState({
-                liked: track.like,
-                disliked: track.dislike
-              });
+              if (track) {
+                Store.updateUserLikes();
+                this.setState({
+                  liked: track.like,
+                  disliked: track.dislike
+                });
+              }
             });
           }}
         />
@@ -265,11 +269,13 @@ class Player extends Component {
           color="#4CAF50"
           onClick={() => {
             likeTrack(Store.track.id).then(track => {
-              Store.updateUserLikes();
-              this.setState({
-                liked: track.like,
-                disliked: track.dislike
-              });
+              if (track) {
+                Store.updateUserLikes();
+                this.setState({
+                  liked: track.like,
+                  disliked: track.dislike
+                });
+              }
             });
           }}
         />

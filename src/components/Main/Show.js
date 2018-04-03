@@ -116,8 +116,10 @@ class Show extends Component {
                 font-size="40px"
                 color="#4CAF50"
                 onClick={() => {
-                  dislikeTrack(track.id).then(() => {
-                    Store.updateUserLikes();
+                  dislikeTrack(track.id).then(track => {
+                    if (track) {
+                      Store.updateUserLikes();
+                    }
                   });
                 }}
               />
@@ -127,8 +129,10 @@ class Show extends Component {
                 font-size="40px"
                 color="#4CAF50"
                 onClick={() => {
-                  likeTrack(track.id).then(() => {
-                    Store.updateUserLikes();
+                  likeTrack(track.id).then(track => {
+                    if (track) {
+                      Store.updateUserLikes();
+                    }
                   });
                 }}
               />
