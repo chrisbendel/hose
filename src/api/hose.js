@@ -1,28 +1,57 @@
+import Store from './../Store';
+import jwt_decode from 'jwt-decode'; 
+
 const base = "https://hose-api-dev.herokuapp.com/api/";
 
+const userRequest = async (method, body = null) => {
+  // const token = localStorage.getItem('token').replace(/"/g, "");
+  const token = localStorage.getItem('token');
+  const decodedToken = jwt_decode(token);
+
+  if (decodedToken.exp < Math.round(Date.now() / 1000)) {
+    const newToken = await refreshToken(token);
+    localStorage.setItem('token', newToken);
+  }
+
+  return {
+    method: method,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    },
+    body: body || ""
+  }
+}
+
 export const getTrack = id => {
-  return fetch(base + "song/" + id)
+  let req = userRequest("GET");
+  return fetch(base + "song/" + id, req)
   .then(res => res.json())
   .then(data => data);
 }
 
 export const getUser = () => {
-  return fetch(base + "user")
+  let req = userRequest("GET");
+  return fetch(base + "user", req)
   .then(res => res.json())
   .then(data => data);
 }
 
 export const likeTrack = id => {
-  return fetch(base + "song/like", {
-    method: "POST",
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      song_id: id
-    })
-  })
+  // return fetch(base + "song/like", {
+  //   method: "POST",
+  //   headers: {
+  //     Accept: 'application/json',
+  //     'Content-Type': 'application/json',
+  //     Authorization: 'Bearer ' + Store.token
+  //   },
+  //   body: JSON.stringify({
+  //     song_id: id
+  //   })
+  // })
+  let req = userRequest("POST", JSON.stringify({song_id: id}));
+  return fetch (base + "song/like", req)
   .then(res => res.json())
   .then(data => {
     return data;
@@ -30,16 +59,18 @@ export const likeTrack = id => {
 }
 
 export const dislikeTrack = id => {
-  return fetch(base + "song/dislike", {
-    method: "POST",
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      song_id: id
-    })
-  })
+  // return fetch(base + "song/dislike", {
+  //   method: "POST",
+  //   headers: {
+  //     Accept: 'application/json',
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify({
+  //     song_id: id
+  //   })
+  // })
+  let req = userRequest("POST", JSON.stringify({song_id: id}));
+  return fetch (base + "song/dislike", req)
   .then(res => res.json())
   .then(data => {
     return data;
@@ -47,16 +78,18 @@ export const dislikeTrack = id => {
 }
 
 export const listen = id => {
-  return fetch(base + "song/listen", {
-    method: "POST",
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      song_id: id
-    })
-  })
+  // return fetch(base + "song/listen", {
+  //   method: "POST",
+  //   headers: {
+  //     Accept: 'application/json',
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify({
+  //     song_id: id
+  //   })
+  // })
+  let req = userRequest("POST", JSON.stringify({song_id: id}));
+  return fetch (base + "song/listen", req)
   .then(res => res.json())
   .then(data => {
     return data;
@@ -64,16 +97,18 @@ export const listen = id => {
 }
 
 export const completed = id => {
-  return fetch(base + "song/completed", {
-    method: "POST",
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      song_id: id
-    })
-  })
+  // return fetch(base + "song/completed", {
+  //   method: "POST",
+  //   headers: {
+  //     Accept: 'application/json',
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify({
+  //     song_id: id
+  //   })
+  // })
+  let req = userRequest("POST", JSON.stringify({song_id: id}));
+  return fetch (base + "song/completed", req)
   .then(res => res.json())
   .then(data => {
     return data;
@@ -81,16 +116,18 @@ export const completed = id => {
 }
 
 export const skipped = id => {
-  return fetch(base + "song/skipped", {
-    method: "POST",
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      song_id: id
-    })
-  })
+  // return fetch(base + "song/skipped", {
+  //   method: "POST",
+  //   headers: {
+  //     Accept: 'application/json',
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify({
+  //     song_id: id
+  //   })
+  // })
+  let req = userRequest("POST", JSON.stringify({song_id: id}));
+  return fetch (base + "song/skipped", req)
   .then(res => res.json())
   .then(data => {
     return data;
@@ -98,7 +135,8 @@ export const skipped = id => {
 }
 
 export const createModel = () => {
-  return fetch(base + "user/make-profile")
+  let req = userRequest("GET");
+  return fetch(base + "user/make-profile", req)
   .then(res => res.json())
   .then(data => {
     return data;
@@ -106,7 +144,8 @@ export const createModel = () => {
 }
 
 export const createPlaylist = () => {
-  return fetch(base + "user/make-playlist")
+  let req = userRequest("GET");
+  return fetch(base + "user/make-playlist", req)
   .then(res => res.json())
   .then(data => {
     return data;
@@ -114,24 +153,33 @@ export const createPlaylist = () => {
 }
 
 export const getPlaylist = () => {
-  return fetch(base + "user/playlist")
+  let req = userRequest("GET");
+  return fetch(base + "user/playlist", req)
   .then(res => res.json())
   .then(data => {
     return data;
   });
 }
 
-export const createToken = () => {
-  return fetch(base + "public/token/create")
+export const createToken = token => {
+  return fetch("https://hose-api-dev.herokuapp.com/public/token/create", {
+    method: "POST",
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      socialToken: token
+    })
+  })
   .then(res => res.json())
   .then(data => {
-    console.log(data);
     return data;
   })
 }
 
 export const refreshToken = () => {
-  return fetch(base + "public/token/refresh")
+  return fetch("https://hose-api-dev.herokuapp.com/public/token/refresh")
   .then(res => res.json())
   .then(data => {
     console.log(data);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import Store from './../../Store';
-import { show, randomShow, playsCount } from './../../api/phishin';
+import { show, randomShow } from './../../api/phishin';
 import { getUser, likeTrack, dislikeTrack } from './../../api/hose';
 import Ionicon from 'react-ionicons';
 import {getLikesPercent, msToSec, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName, downloadShow} from './../../Utils';

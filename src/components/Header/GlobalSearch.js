@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import {search} from './../../api/phishin.js';
-// import {search} from './../../api/hose.js';
+import {createToken} from './../../api/hose.js';
+import Store from './../../Store';
 import Hello from 'hellojs';
 import Autosuggest from 'react-autosuggest';
 import Ionicon from 'react-ionicons';
@@ -37,13 +38,17 @@ class GlobalSearch extends Component {
   componentDidMount() {
     Hello.init({
       facebook: '101222444042913'
-    })
+    });
   }
 
   handleLogin = () => {
-    Hello('facebook').login(
-      {}
-    )
+    Hello('facebook').login().then(() => {
+      const res = Hello('facebook').getAuthResponse();
+      createToken(res.access_token).then(res => {
+        localStorage.setItem('jwt', res.token);
+        // Store.token = res.token;
+      });
+    });
   }
 
   getSuggestions = (value) => {

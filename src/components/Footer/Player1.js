@@ -4,8 +4,6 @@ import Store from './../../Store';
 import {getTrack, listen, completed, likeTrack, dislikeTrack, skipped} from './../../api/hose';
 import {history} from './../../History';
 import Ionicon from 'react-ionicons';
-import { Tooltip } from 'react-tippy';
-import 'react-tippy/dist/tippy.css';
 
 const timeFormat = time => {
   var hrs = ~~(time / 3600);
