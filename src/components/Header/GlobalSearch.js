@@ -45,8 +45,9 @@ class GlobalSearch extends Component {
     Hello('facebook').login().then(() => {
       const res = Hello('facebook').getAuthResponse();
       createToken(res.access_token).then(res => {
-        localStorage.setItem('jwt', res.token);
-        // Store.token = res.token;
+        localStorage.setItem('jwt', res.token.replace(/"/g, ""));
+        this.closeLogin();
+        window.location.reload()
       });
     });
   }

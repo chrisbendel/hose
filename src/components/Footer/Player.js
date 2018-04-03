@@ -4,7 +4,7 @@ import Store from './../../Store';
 import Audio from 'react-audioplayer';
 import Ionicon from 'react-ionicons';
 import ReactDOM from 'react-dom';
-import {getTrack, listen, completed, likeTrack, dislikeTrack, skipped} from './../../api/hose';
+import {listen, completed, likeTrack, dislikeTrack, skipped} from './../../api/hose';
 import {downloadShow, mapTracks} from './../../Utils';
 import {history} from './../../History';
 import { Tooltip } from 'react-tippy';

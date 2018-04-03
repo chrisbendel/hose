@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { store, view } from 'react-easy-state';
 import Store from './../../Store';
-import {getTrack, listen, completed, likeTrack, dislikeTrack, skipped} from './../../api/hose';
+import {listen, completed, likeTrack, dislikeTrack, skipped} from './../../api/hose';
 import {history} from './../../History';
 import Ionicon from 'react-ionicons';
 
@@ -71,7 +71,7 @@ class Player1 extends Component {
   }
 
   trackEnded = () => {
-    completed(Store.track.id).then(() => {
+    completed(Store.track.id).then(res => {
       Store.next();
     });
   }
@@ -238,8 +238,10 @@ class Player1 extends Component {
                 font-size="40px"
                 color="#4CAF50"
                 onClick={() => {
-                  dislikeTrack(Store.track.id).then(() => {
-                    Store.updateUserLikes();
+                  dislikeTrack(Store.track.id).then(res => {
+                    if (res) {
+                      Store.updateUserLikes();
+                    }
                   });
                 }}
               />
@@ -249,8 +251,10 @@ class Player1 extends Component {
                 font-size="40px"
                 color="#4CAF50"
                 onClick={() => {
-                  likeTrack(Store.track.id).then(() => {
-                    Store.updateUserLikes();
+                  likeTrack(Store.track.id).then(res => {
+                    if (res) {
+                      Store.updateUserLikes();
+                    }
                   });
                 }}
               />

@@ -4,61 +4,75 @@ import jwt_decode from 'jwt-decode';
 const base = "https://hose-api-dev.herokuapp.com/api/";
 
 const userRequest = async (method, body = null) => {
-  // const token = localStorage.getItem('token').replace(/"/g, "");
-  const token = localStorage.getItem('token');
+  if (!localStorage.getItem('jwt')) {
+    return Promise.resolve();
+  }
+  
+  const token = localStorage.getItem('jwt').replace(/"/g, "");
   const decodedToken = jwt_decode(token);
-
   if (decodedToken.exp < Math.round(Date.now() / 1000)) {
     const newToken = await refreshToken(token);
-    localStorage.setItem('token', newToken);
+    localStorage.setItem('jwt', newToken);
   }
 
-  return {
+  let req = {
     method: method,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + localStorage.getItem('token')
-    },
-    body: body || ""
+      Authorization: 'Bearer ' + localStorage.getItem('jwt').replace(/"/g, "")
+    }
   }
+  
+  if (method == "POST") {
+    req.body = body
+  }
+
+  return req;
 }
 
-export const getTrack = id => {
-  let req = userRequest("GET");
-  return fetch(base + "song/" + id, req)
-  .then(res => res.json())
-  .then(data => data);
-}
-
-export const getUser = () => {
-  let req = userRequest("GET");
+export const getUser = async () => {
+  let req = await userRequest("GET");
   return fetch(base + "user", req)
-  .then(res => res.json())
-  .then(data => data);
+  // .then(res => {
+  //   if (res.status === 200) {
+  //     return res.json();
+  //   }
+  // })
+  // .then(res => res.json())
+  .then(res => {
+    if (!res.ok) {
+      return;
+    }
+    return res.json();
+  })
+  .then(data => data)
+  .catch(err => {
+    return Promise.reject(err);
+  });
 }
 
-export const likeTrack = id => {
-  // return fetch(base + "song/like", {
-  //   method: "POST",
-  //   headers: {
-  //     Accept: 'application/json',
-  //     'Content-Type': 'application/json',
-  //     Authorization: 'Bearer ' + Store.token
-  //   },
-  //   body: JSON.stringify({
-  //     song_id: id
-  //   })
-  // })
-  let req = userRequest("POST", JSON.stringify({song_id: id}));
+export const likeTrack = async id => {
+  let req = await userRequest("POST", JSON.stringify({song_id: id}));
   return fetch (base + "song/like", req)
-  .then(res => res.json())
+  // .then(res => {
+  //   if (res.status === 200) {
+  //     return res.json();
+  //   }
+  // })
+  .then(res => {
+    if (!res.ok) {
+      return;
+    }
+    return res.json();
+  })
+  // .then(res => res.json())
   .then(data => {
     return data;
   });
 }
 
-export const dislikeTrack = id => {
+export const dislikeTrack = async id => {
   // return fetch(base + "song/dislike", {
   //   method: "POST",
   //   headers: {
@@ -69,7 +83,7 @@ export const dislikeTrack = id => {
   //     song_id: id
   //   })
   // })
-  let req = userRequest("POST", JSON.stringify({song_id: id}));
+  let req = await userRequest("POST", JSON.stringify({song_id: id}));
   return fetch (base + "song/dislike", req)
   .then(res => res.json())
   .then(data => {
@@ -77,7 +91,7 @@ export const dislikeTrack = id => {
   });
 }
 
-export const listen = id => {
+export const listen = async id => {
   // return fetch(base + "song/listen", {
   //   method: "POST",
   //   headers: {
@@ -88,7 +102,7 @@ export const listen = id => {
   //     song_id: id
   //   })
   // })
-  let req = userRequest("POST", JSON.stringify({song_id: id}));
+  let req = await userRequest("POST", JSON.stringify({song_id: id}));
   return fetch (base + "song/listen", req)
   .then(res => res.json())
   .then(data => {
@@ -96,18 +110,8 @@ export const listen = id => {
   });
 }
 
-export const completed = id => {
-  // return fetch(base + "song/completed", {
-  //   method: "POST",
-  //   headers: {
-  //     Accept: 'application/json',
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify({
-  //     song_id: id
-  //   })
-  // })
-  let req = userRequest("POST", JSON.stringify({song_id: id}));
+export const completed = async id => {
+  let req = await userRequest("POST", JSON.stringify({song_id: id}));
   return fetch (base + "song/completed", req)
   .then(res => res.json())
   .then(data => {
@@ -115,7 +119,7 @@ export const completed = id => {
   });
 }
 
-export const skipped = id => {
+export const skipped = async id => {
   // return fetch(base + "song/skipped", {
   //   method: "POST",
   //   headers: {
@@ -126,7 +130,7 @@ export const skipped = id => {
   //     song_id: id
   //   })
   // })
-  let req = userRequest("POST", JSON.stringify({song_id: id}));
+  let req = await userRequest("POST", JSON.stringify({song_id: id}));
   return fetch (base + "song/skipped", req)
   .then(res => res.json())
   .then(data => {
@@ -134,8 +138,8 @@ export const skipped = id => {
   });
 }
 
-export const createModel = () => {
-  let req = userRequest("GET");
+export const createModel = async () => {
+  let req = await userRequest("GET");
   return fetch(base + "user/make-profile", req)
   .then(res => res.json())
   .then(data => {
@@ -143,8 +147,8 @@ export const createModel = () => {
   });
 }
 
-export const createPlaylist = () => {
-  let req = userRequest("GET");
+export const createPlaylist = async () => {
+  let req = await userRequest("GET");
   return fetch(base + "user/make-playlist", req)
   .then(res => res.json())
   .then(data => {
@@ -152,8 +156,8 @@ export const createPlaylist = () => {
   });
 }
 
-export const getPlaylist = () => {
-  let req = userRequest("GET");
+export const getPlaylist = async () => {
+  let req = await userRequest("GET");
   return fetch(base + "user/playlist", req)
   .then(res => res.json())
   .then(data => {
