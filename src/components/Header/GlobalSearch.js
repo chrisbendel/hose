@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import {search} from './../../api/phishin.js';
-import './../../css/Search.css';
+// import {search} from './../../api/hose.js';
+import Hello from 'hellojs';
 import Autosuggest from 'react-autosuggest';
 import Ionicon from 'react-ionicons';
 import {history} from './../../History';
 import Dialog from 'react-dialog';
 import 'react-dialog/css/index.css';
+import './../../css/Search.css';
 
 let results = [];
 
@@ -30,6 +32,18 @@ class GlobalSearch extends Component {
       suggestions: [],
       loginOpen: false
     };
+  }
+
+  componentDidMount() {
+    Hello.init({
+      facebook: '101222444042913'
+    })
+  }
+
+  handleLogin = () => {
+    Hello('facebook').login(
+      {}
+    )
   }
 
   getSuggestions = (value) => {
@@ -131,8 +145,16 @@ class GlobalSearch extends Component {
                 onClick: () => this.closeLogin()
               }]}
             >
-              <h1>Dialog Content</h1>
-              <p>More Content. Anything goes here</p>
+              <button onClick={() => {
+                this.handleLogin();
+              }}>
+                Facebook
+              </button>
+              <button onClick={() => {
+
+              }}>
+                Google
+              </button>
             </Dialog>
           }
         </div>

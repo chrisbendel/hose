@@ -120,3 +120,21 @@ export const getPlaylist = () => {
     return data;
   });
 }
+
+export const createToken = () => {
+  return fetch(base + "public/token/create")
+  .then(res => res.json())
+  .then(data => {
+    console.log(data);
+    return data;
+  })
+}
+
+export const refreshToken = () => {
+  return fetch(base + "public/token/refresh")
+  .then(res => res.json())
+  .then(data => {
+    console.log(data);
+    return data;
+  })
+}
