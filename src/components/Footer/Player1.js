@@ -109,6 +109,14 @@ class Player1 extends Component {
     });
   }
 
+  mute = () => {
+    this.volumeSlider.value = 0;
+  }
+
+  unMute = () => {
+    this.volumeSlider.value = 100;
+  }
+
   componentWillUnmount() {
     const venue = this.refs.hoverVenue;
     const date = this.refs.hoverDate;
@@ -217,6 +225,14 @@ class Player1 extends Component {
         </progress>
         <div className="progress-container">
           <span className="volume-slider-container">
+            <Ionicon 
+              icon="ios-volume-up"
+              font-size="50px"
+              color="#4CAF50"
+              onClick={e => {
+                this.mute();
+              }}
+            />
             <div className="volume-slider">
               <input 
                 type="range" 
@@ -226,6 +242,7 @@ class Player1 extends Component {
                 onChange={e => {
                   this.setVol(e.currentTarget.value);
                 }}
+                ref={elem => this.volumeSlider = elem}
               />
             </div>
           </span>
