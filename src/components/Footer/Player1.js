@@ -57,7 +57,7 @@ class Player1 extends Component {
       this.player.addEventListener('timeupdate', this.timeUpdate);
       this.player.addEventListener('emptied', this.checkSkipped);
       this.player.addEventListener('ended', this.trackEnded);
-      element.addEventListener('loadedmetadata', this.trackStarted);
+      this.player.addEventListener('loadedmetadata', this.trackStarted);
       this.prog.addEventListener('click', (e) => {
         var percent = e.offsetX / this.prog.offsetWidth;
         this.player.currentTime = percent * this.player.duration;
