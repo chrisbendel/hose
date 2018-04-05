@@ -44,6 +44,18 @@ export const getUser = async () => {
   .then(data => data);
 }
 
+export const getUserInfo = async () => {
+  let req = await userRequest("GET");
+  return fetch(base + "user/info", req)
+  .then(res => {
+    if (!res.ok) {
+      return Promise.resolve();
+    }
+    return res.json();
+  })
+  .then(data => data);
+}
+
 export const likeTrack = async id => {
   let req = await userRequest("POST", JSON.stringify({song_id: id}));
   return fetch (base + "song/like", req)
@@ -53,9 +65,7 @@ export const likeTrack = async id => {
     }
     return res.json();
   })
-  .then(data => {
-    return data;
-  });
+  .then(data => data);
 }
 
 export const dislikeTrack = async id => {
@@ -67,9 +77,7 @@ export const dislikeTrack = async id => {
     }
     return res.json();
   })
-  .then(data => {
-    return data;
-  });
+  .then(data => data);
 }
 
 export const listen = async id => {
@@ -83,9 +91,7 @@ export const listen = async id => {
       return res.json();
     }
   })
-  .then(data => {
-    return data;
-  });
+  .then(data => data);
 }
 
 export const completed = async id => {
@@ -97,9 +103,7 @@ export const completed = async id => {
     }
     return res.json();
   })
-  .then(data => {
-    return data;
-  });
+  .then(data => data);
 }
 
 export const skipped = async id => {
@@ -111,37 +115,23 @@ export const skipped = async id => {
     }
     return res.json();
   })
-  .then(data => {
-    return data;
-  });
+  .then(data => data);
 }
 
 export const createModel = async () => {
   let req = await userRequest("GET");
   return fetch(base + "user/make-profile", req)
   .then(res => {
-    if (!res.ok) {
-      return Promise.resolve();
-    }
-    return res.json();
+    return Promise.resolve()
   })
-  .then(data => {
-    return data;
-  });
 }
 
 export const createPlaylist = async () => {
   let req = await userRequest("GET");
   return fetch(base + "user/make-playlist", req)
   .then(res => {
-    if (!res.ok) {
-      return Promise.resolve();
-    }
-    return res.json();
+    return Promise.resolve();
   })
-  .then(data => {
-    return data;
-  });
 }
 
 export const getPlaylist = async () => {
@@ -155,9 +145,7 @@ export const getPlaylist = async () => {
       return res.json();
     }
   })
-  .then(data => {
-    return data;
-  });
+  .then(data => data);
 }
 
 export const createToken = token => {
@@ -172,9 +160,7 @@ export const createToken = token => {
     })
   })
   .then(res => res.json())
-  .then(data => {
-    return data;
-  })
+  .then(data => data);
 }
 
 export const refreshToken = () => {

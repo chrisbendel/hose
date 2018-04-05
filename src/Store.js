@@ -3,6 +3,7 @@ import { show, trackInfo } from './api/phishin';
 import { getUser } from './api/hose';
 
 export default store({
+  user: null,
   player: null,
   show: null,
   track: null,

@@ -202,6 +202,18 @@ class Player1 extends Component {
           </div>
         </div>
         <div className="controls-container">
+          <Ionicon
+            icon={this.state.disliked ? "ios-thumbs-down" : "ios-thumbs-down-outline"}
+            font-size="50px"
+            color="#4CAF50"
+            onClick={() => {
+              dislikeTrack(Store.track.id).then(track => {
+                if (track) {
+                  Store.updateUserLikes();
+                }
+              });
+            }}
+          />
           <Ionicon 
             className="clickable svgBtnDefault" 
             color="#66BB6A" 
@@ -227,12 +239,24 @@ class Player1 extends Component {
               onClick={() => {this.pause()}}
             />
           </div>
-          <Ionicon 
+          <Ionicon
             className="clickable svgBtnDefault" 
             color="#66BB6A" 
             icon="ios-skip-forward" 
             fontSize="60px"
             onClick={() => {Store.next()}}
+          />
+          <Ionicon 
+            icon={this.state.liked ? "ios-thumbs-up" : "ios-thumbs-up-outline"}
+            font-size="50px"
+            color="#4CAF50"
+            onClick={() => {
+              likeTrack(Store.track.id).then(track => {
+                if (track) {
+                  Store.updateUserLikes();
+                }
+              });
+            }}
           />
         </div>
         <progress 
@@ -247,7 +271,7 @@ class Player1 extends Component {
             {this.state.volume == 0 ? 
               <Ionicon 
                 icon="ios-volume-mute"
-                font-size="50px"
+                fontSize="40px"
                 color="#4CAF50"
                 onClick={() => {
                   this.setState({
@@ -258,7 +282,7 @@ class Player1 extends Component {
             :
               <Ionicon 
                 icon="ios-volume-up"
-                font-size="50px"
+                fontSize="40px"
                 color="#4CAF50"
                 onClick={() => {
                   this.setState({
@@ -283,51 +307,8 @@ class Player1 extends Component {
               />
             </div>
           </span>
-          <span ref={elem => this.currentTime = elem}>{timeFormat(this.state.currentTime)}</span>
-          <span ref={elem => this.totalTime = elem}>&nbsp; / {timeFormat(this.state.totalTime)}</span>
-          <span className="like-cell">
-            {Store.userLikes.indexOf(Store.track.id) > -1 ?
-              <Ionicon 
-                icon="ios-thumbs-up"
-                font-size="40px"
-                color="#4CAF50"
-                onClick={() => {
-                  dislikeTrack(Store.track.id).then(track => {
-                    if (track) {
-                      Store.updateUserLikes();
-                    }
-                  });
-                }}
-              />
-            :
-              <Ionicon 
-                icon="ios-thumbs-up-outline"
-                font-size="40px"
-                color="#4CAF50"
-                onClick={() => {
-                  likeTrack(Store.track.id).then(track => {
-                    if (track) {
-                      Store.updateUserLikes();
-                    }
-                  });
-                }}
-              />
-            }
-          </span>
-          <span>
-            <Ionicon 
-              icon="ios-share-outline"
-              font-size="40px"
-              color="#333"
-              onClick={() => {
-                dislikeTrack(Store.track.id).then(track => {
-                  if (track) {
-                    Store.updateUserLikes();
-                  }
-                });
-              }}
-            />
-          </span>
+          <span>{timeFormat(this.state.currentTime)}</span>
+          <span>&nbsp; / {timeFormat(this.state.totalTime)}</span>
         </div>
       </div>
     );

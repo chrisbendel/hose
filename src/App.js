@@ -10,10 +10,10 @@ import ShowsOnDay from './components/Main/ShowsOnDay';
 import Tracks from './components/Main/Tracks';
 import Radio from './components/Radio';
 import {history} from './History';
-import GlobalSearch from './components/Header/GlobalSearch';
+import Header from './components/Header/Header';
 import Spinner from 'react-spinkit';
 import Store from './Store';
-import { getUser, createPlaylist, createModel } from './api/hose';
+import { getUser, createPlaylist, createModel, getUserInfo } from './api/hose';
 
 class App extends Component {
   constructor(props) {
@@ -25,17 +25,22 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // getUser().then(songs => {
-    //   Store.userLikes = songs.filter(song => {
-    //     return song.like
-    //   })
-    //   .map(song => {
-    //     return parseInt(song.song_id)
-    //   });
-
+    getUserInfo().then(user => {
+      console.log(user);
+      Store.user = user;
+    });
+    getUser().then(songs => {
+      createModel();
+      if (songs) {
+        Store.userLikes = songs.filter(song => {
+          return song.like
+        })
+        .map(song => {
+          return parseInt(song.song_id)
+        });
+      }
       this.setState({loading: false});
-    // });
-
+    });
   }
 
   render() {
@@ -55,7 +60,7 @@ class App extends Component {
               <SideNav />
             </nav>
             <header className="header">
-              <GlobalSearch/>
+              <Header/>
             </header>
             <main className="content">
               <Route exact path="/" component={Shows}/>

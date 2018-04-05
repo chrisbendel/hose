@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import {search} from './../../api/phishin.js';
-import {createToken, getPlaylist} from './../../api/hose.js';
+import {createToken, getPlaylist, getUserInfo} from './../../api/hose.js';
 import Store from './../../Store';
 import Hello from 'hellojs';
 import Autosuggest from 'react-autosuggest';
@@ -24,7 +24,7 @@ String.prototype.fuzzy = function (s) {
   return true;
 };
 
-class GlobalSearch extends Component {
+class Header extends Component {
   constructor(props) {
     super(props);
 
@@ -48,8 +48,8 @@ class GlobalSearch extends Component {
       createToken(res.access_token).then(res => {
         localStorage.setItem('jwt', res.token.replace(/"/g, ""));
         this.closeLogin();
-        window.location.reload()
-      });
+        window.location.reload();
+      })
     });
   }
 
@@ -105,7 +105,9 @@ class GlobalSearch extends Component {
 
   startRadio = async () => {
     const playlist = await getPlaylist();
-    Store.setPlaylist(playlist.songs)
+    if (playlist && playlist.songs) {
+      Store.setPlaylist(playlist.songs)
+    }
   }
 
   openLogin = () => {
@@ -134,6 +136,8 @@ class GlobalSearch extends Component {
       autoFocus: true
     };
 
+    console.log(Store.user);
+
     return (
       <div className="nav">
         <a onClick={() => {history.goBack()}} className="prev">
@@ -153,58 +157,61 @@ class GlobalSearch extends Component {
           onSuggestionSelected={this.onSuggestionSelected}
           inputProps={inputProps}
         />
-        <div className="login">
-          <a className="login-button" onClick={this.openLogin}>Login</a>
-          {this.state.loginOpen &&
-            <Dialog
-              title="Login to Hose"
-              modal
-              onClose={this.closeLogin}
-              buttons={[{
-                text: 'Close',
-                onClick: () => this.closeLogin()
-              }]}
-            >
-              <button 
-                className="facebook login"
-                onClick={() => {
-                this.handleLogin();
-              }}>
-                Login with Facebook
-              </button>
-              {/* <button onClick={() => {
-
-              }}>
-                Google
-              </button> */}
-            </Dialog>
-          }
-        </div>
-        <div className="login">
-          <a className="login-button" onClick={this.openRadio}>Radio</a>
-          {this.state.radioOpen &&
-            <Dialog
-              title="Start Radio"
-              modal
-              onClose={this.closeRadio}
-              buttons={[{
-                text: 'Close',
-                onClick: () => this.closeRadio()
-              }]}
-            >
-              <div class="login-modal">
-                <button onClick={() => {
-                  this.startRadio();
+        <p>{Store.user && Store.user.name}</p>
+        <div className="header-buttons">
+          <div className="header-button">
+            <a className="login-button" onClick={this.openRadio}>Phish Radio</a>
+            {this.state.radioOpen &&
+              <Dialog
+                title="Start Radio"
+                modal
+                onClose={this.closeRadio}
+                buttons={[{
+                  text: 'Close',
+                  onClick: () => this.closeRadio()
+                }]}
+              >
+                <div class="login-modal">
+                  <button onClick={() => {
+                    this.startRadio();
+                  }}>
+                    Start Radio
+                  </button>
+                </div>
+              </Dialog>
+            }
+          </div>
+          <div className="header-button">
+            <a className="login-button" onClick={this.openLogin}>Login</a>
+            {this.state.loginOpen &&
+              <Dialog
+                title="Login to Hose"
+                modal
+                onClose={this.closeLogin}
+                buttons={[{
+                  text: 'Close',
+                  onClick: () => this.closeLogin()
+                }]}
+              >
+                <button 
+                  className="facebook login"
+                  onClick={() => {
+                  this.handleLogin();
                 }}>
-                  Start Radio
+                  Login with Facebook
                 </button>
-              </div>
-            </Dialog>
-          }
+                {/* <button onClick={() => {
+
+                }}>
+                  Google
+                </button> */}
+              </Dialog>
+            }
+          </div>
         </div>
       </div>
     )
   }
 }
 
-export default view(GlobalSearch)
+export default view(Header)
