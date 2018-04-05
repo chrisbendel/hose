@@ -57,6 +57,7 @@ class Player1 extends Component {
       this.player.addEventListener('timeupdate', this.timeUpdate);
       this.player.addEventListener('emptied', this.checkSkipped);
       this.player.addEventListener('ended', this.trackEnded);
+      element.addEventListener('loadedmetadata', this.trackStarted);
       this.prog.addEventListener('click', (e) => {
         var percent = e.offsetX / this.prog.offsetWidth;
         this.player.currentTime = percent * this.player.duration;
@@ -97,6 +98,17 @@ class Player1 extends Component {
         skipped(Store.track.id);
       }
     }
+  }
+
+  trackStarted = () => {
+    listen(Store.track.id).then(track => {
+      if (track) {
+        this.setState({
+          liked: track.like,
+          disliked: track.dislike
+        });
+      }
+    });
   }
 
   timeUpdate = () => {
