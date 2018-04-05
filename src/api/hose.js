@@ -10,6 +10,7 @@ const userRequest = async (method, body = null) => {
   
   const token = localStorage.getItem('jwt').replace(/"/g, "");
   const decodedToken = jwt_decode(token);
+
   if (decodedToken.exp < Math.round(Date.now() / 1000)) {
     const newToken = await refreshToken(token);
     localStorage.setItem('jwt', newToken);
@@ -173,7 +174,26 @@ export const createToken = token => {
 }
 
 export const refreshToken = () => {
-  return fetch("https://hose-api-dev.herokuapp.com/public/token/refresh")
+  if (!localStorage.getItem('jwt')) {
+    return Promise.resolve();
+  }
+  
+  const token = localStorage.getItem('jwt').replace(/"/g, "");
+  const decodedToken = jwt_decode(token);
+
+  let req = {
+    method: method,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('jwt').replace(/"/g, "")
+    },
+    body: JSON.stringify({
+      access_token: decodedToken
+    })
+  }
+
+  return fetch("https://hose-api-dev.herokuapp.com/public/token/refresh", req)
   .then(res => res.json())
   .then(data => {
     return data;

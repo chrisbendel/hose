@@ -27,12 +27,27 @@ class Player1 extends Component {
 
     this.state = {
       currentTime: null,
-      totalTime: null
+      totalTime: null,
+      volume: 50
     }
 
     Store.player = this;
     let progress = null;
     let duration = null;
+  }
+
+  componentWillMount() {
+    let volume = localStorage.getItem('volume');
+    if (volume) {
+      this.setState({volume: volume});
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (this.player) {
+      localStorage.setItem('volume', nextState.volume);
+      this.player.volume = nextState.volume / 100;
+    }
   }
 
   componentDidUpdate() {
@@ -107,14 +122,6 @@ class Player1 extends Component {
     this.setState({
       [target]: false
     });
-  }
-
-  mute = () => {
-    this.volumeSlider.value = 0;
-  }
-
-  unMute = () => {
-    this.volumeSlider.value = 100;
   }
 
   componentWillUnmount() {
@@ -225,24 +232,42 @@ class Player1 extends Component {
         </progress>
         <div className="progress-container">
           <span className="volume-slider-container">
-            <Ionicon 
-              icon="ios-volume-up"
-              font-size="50px"
-              color="#4CAF50"
-              onClick={e => {
-                this.mute();
-              }}
-            />
-            <div className="volume-slider">
-              <input 
-                type="range" 
-                min="0" 
-                max="100" 
-                step="1"
-                onChange={e => {
-                  this.setVol(e.currentTarget.value);
+            {this.state.volume == 0 ? 
+              <Ionicon 
+                icon="ios-volume-mute"
+                font-size="50px"
+                color="#4CAF50"
+                onClick={() => {
+                  this.setState({
+                    volume: this.state.prevVolume || 50
+                  });
                 }}
-                ref={elem => this.volumeSlider = elem}
+              />
+            :
+              <Ionicon 
+                icon="ios-volume-up"
+                font-size="50px"
+                color="#4CAF50"
+                onClick={() => {
+                  this.setState({
+                    prevVolume: this.state.volume,
+                    volume: 0
+                  });
+                }}
+              />
+            }
+            <div className="volume-slider">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="1"
+                value={this.state.volume}
+                onChange={e => {
+                  this.setState({
+                    volume: e.currentTarget.value
+                  });
+                }}
               />
             </div>
           </span>
