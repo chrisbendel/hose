@@ -79,7 +79,9 @@ export const listen = async id => {
     if (!res.ok) {
       return Promise.resolve();
     }
-    return res.json();
+    if(res.status !== 204) {
+      return res.json();
+    }
   })
   .then(data => {
     return data;
@@ -189,13 +191,13 @@ export const refreshToken = () => {
       Authorization: 'Bearer ' + localStorage.getItem('jwt').replace(/"/g, "")
     },
     body: JSON.stringify({
-      access_token: decodedToken
+      access_token: token
     })
   }
 
   return fetch("https://hose-api-dev.herokuapp.com/public/token/refresh", req)
   .then(res => res.json())
   .then(data => {
-    return data;
+    return data.token.replace(/"/g, "");
   })
 }

@@ -25,11 +25,11 @@ const items = [
     "name": "Songs",
     "path": "/song"
   },
-  {
-    "id": 4,
-    "name": "Radio",
-    "path": "/radio"
-  }
+  // {
+  //   "id": 4,
+  //   "name": "Radio",
+  //   "path": "/radio"
+  // }
 ]
 
 class SideNav extends Component {

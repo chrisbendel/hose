@@ -31,7 +31,8 @@ class GlobalSearch extends Component {
     this.state = {
       value: '',
       suggestions: [],
-      loginOpen: false
+      loginOpen: false,
+      radioOpen: false
     };
   }
 
@@ -106,8 +107,16 @@ class GlobalSearch extends Component {
     this.setState({loginOpen: true});
   }
 
+  openRadio = () => {
+    this.setState({radioOpen: true});
+  }
+
   closeLogin = () => {
     this.setState({loginOpen: false});
+  }
+
+  closeRadio = () => {
+    this.setState({radioOpen: false});
   }
 
   render () {
@@ -160,6 +169,26 @@ class GlobalSearch extends Component {
 
               }}>
                 Google
+              </button>
+            </Dialog>
+          }
+        </div>
+        <div className="login">
+          <a className="login-button" onClick={this.openRadio}>Radio</a>
+          {this.state.radioOpen &&
+            <Dialog
+              title="Start Radio"
+              modal
+              onClose={this.closeRadio}
+              buttons={[{
+                text: 'Close',
+                onClick: () => this.closeRadio()
+              }]}
+            >
+              <button onClick={() => {
+                this.startRadio();
+              }}>
+                Start Radio
               </button>
             </Dialog>
           }
