@@ -182,7 +182,7 @@ export const refreshToken = () => {
   const decodedToken = jwt_decode(token);
 
   let req = {
-    method: method,
+    method: "POST",
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
