@@ -151,7 +151,9 @@ export const getPlaylist = async () => {
     if (!res.ok) {
       return Promise.resolve();
     }
-    return res.json();
+    if(res.status !== 204) {
+      return res.json();
+    }
   })
   .then(data => {
     return data;

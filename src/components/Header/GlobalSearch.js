@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import {search} from './../../api/phishin.js';
-import {createToken} from './../../api/hose.js';
+import {createToken, getPlaylist} from './../../api/hose.js';
 import Store from './../../Store';
 import Hello from 'hellojs';
 import Autosuggest from 'react-autosuggest';
@@ -103,6 +103,11 @@ class GlobalSearch extends Component {
     });
   };
 
+  startRadio = async () => {
+    const playlist = await getPlaylist();
+    Store.setPlaylist(playlist.songs)
+  }
+
   openLogin = () => {
     this.setState({loginOpen: true});
   }
@@ -152,7 +157,7 @@ class GlobalSearch extends Component {
           <a className="login-button" onClick={this.openLogin}>Login</a>
           {this.state.loginOpen &&
             <Dialog
-              title="Login to hose"
+              title="Login to Hose"
               modal
               onClose={this.closeLogin}
               buttons={[{
@@ -160,16 +165,18 @@ class GlobalSearch extends Component {
                 onClick: () => this.closeLogin()
               }]}
             >
-              <button onClick={() => {
+              <button 
+                className="facebook login"
+                onClick={() => {
                 this.handleLogin();
               }}>
-                Facebook
+                Login with Facebook
               </button>
-              <button onClick={() => {
+              {/* <button onClick={() => {
 
               }}>
                 Google
-              </button>
+              </button> */}
             </Dialog>
           }
         </div>
@@ -185,11 +192,13 @@ class GlobalSearch extends Component {
                 onClick: () => this.closeRadio()
               }]}
             >
-              <button onClick={() => {
-                this.startRadio();
-              }}>
-                Start Radio
-              </button>
+              <div class="login-modal">
+                <button onClick={() => {
+                  this.startRadio();
+                }}>
+                  Start Radio
+                </button>
+              </div>
             </Dialog>
           }
         </div>
