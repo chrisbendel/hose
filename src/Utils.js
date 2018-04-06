@@ -4,6 +4,21 @@ import JSZipUtils from 'jszip-utils';
 import JSZip from 'jszip';
 import {saveAs} from 'file-saver'
 
+export const shuffle = array => {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  while (0 !== currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+
 export const getLikesPercent = (tracks, likes) => {
   const max = Math.max.apply(Math, tracks.map(function(o) {
     return o.likes_count;

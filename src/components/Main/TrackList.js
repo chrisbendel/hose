@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import { history } from './../../History';
 import Ionicon from 'react-ionicons';
+import {likeTrack} from './../../api/hose';
 import {isTrackJamchart, isTrackSoundboard, getLikesPercent, msToSec} from './../../Utils';
 import Store from './../../Store';
 import { NavLink } from 'react-router-dom';
@@ -56,10 +57,13 @@ class TrackList extends Component {
           </span>
           <span className="like-cell">
             <Ionicon 
-              icon="ios-thumbs-up-outline"
-              font-size="50px"
+              icon={Store.userLikes.indexOf(track.id) > -1 ? "ios-thumbs-up" : "ios-thumbs-up-outline"}
+              font-size="40px"
+              color="#4CAF50"
               onClick={() => {
-                console.log(track.id);
+                likeTrack(track.id).then(track => {
+                  Store.updateUserLikes();
+                });
               }}
             />
           </span>

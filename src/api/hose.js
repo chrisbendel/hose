@@ -33,6 +33,10 @@ const userRequest = async (method, body = null) => {
 }
 
 export const getUser = async () => {
+  if (!Store.user) {
+    return;
+  }
+
   let req = await userRequest("GET");
   return fetch(base + "user", req)
   .then(res => {
@@ -57,6 +61,9 @@ export const getUserInfo = async () => {
 }
 
 export const likeTrack = async id => {
+  if (!Store.user) {
+    return;
+  }
   let req = await userRequest("POST", JSON.stringify({song_id: id}));
   return fetch (base + "song/like", req)
   .then(res => {
@@ -69,6 +76,9 @@ export const likeTrack = async id => {
 }
 
 export const dislikeTrack = async id => {
+  if (!Store.user) {
+    return;
+  }
   let req = await userRequest("POST", JSON.stringify({song_id: id}));
   return fetch (base + "song/dislike", req)
   .then(res => {
@@ -81,6 +91,9 @@ export const dislikeTrack = async id => {
 }
 
 export const listen = async id => {
+  if (!Store.user) {
+    return;
+  }
   let req = await userRequest("POST", JSON.stringify({song_id: id}));
   return fetch (base + "song/listen", req)
   .then(res => {
@@ -95,6 +108,9 @@ export const listen = async id => {
 }
 
 export const completed = async id => {
+  if (!Store.user) {
+    return;
+  }
   let req = await userRequest("POST", JSON.stringify({song_id: id}));
   return fetch (base + "song/completed", req)
   .then(res => {
@@ -107,18 +123,20 @@ export const completed = async id => {
 }
 
 export const skipped = async id => {
+  if (!Store.user) {
+    return;
+  }
   let req = await userRequest("POST", JSON.stringify({song_id: id}));
   return fetch (base + "song/skipped", req)
   .then(res => {
-    if (!res.ok) {
-      return Promise.resolve();
-    }
-    return res.json();
-  })
-  .then(data => data);
+    return Promise.resolve();
+  });
 }
 
 export const createModel = async () => {
+  if (!Store.user) {
+    return;
+  }
   let req = await userRequest("GET");
   return fetch(base + "user/make-profile", req)
   .then(res => {
@@ -127,6 +145,9 @@ export const createModel = async () => {
 }
 
 export const createPlaylist = async () => {
+  if (!Store.user) {
+    return;
+  }
   let req = await userRequest("GET");
   return fetch(base + "user/make-playlist", req)
   .then(res => {

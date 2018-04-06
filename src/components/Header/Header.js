@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import {search} from './../../api/phishin.js';
 import {createToken, getPlaylist, getUserInfo} from './../../api/hose.js';
+import {trackJamcharts} from './../../filters';
+import {shuffle} from './../../Utils';
 import Store from './../../Store';
 import Hello from 'hellojs';
 import Autosuggest from 'react-autosuggest';
@@ -31,8 +33,7 @@ class Header extends Component {
     this.state = {
       value: '',
       suggestions: [],
-      loginOpen: false,
-      radioOpen: false
+      loginOpen: false
     };
   }
 
@@ -47,13 +48,26 @@ class Header extends Component {
       const res = Hello('facebook').getAuthResponse();
       createToken(res.access_token).then(res => {
         localStorage.setItem('jwt', res.token.replace(/"/g, ""));
-        this.closeLogin();
-        window.location.reload();
+        getUserInfo().then(user => {
+          console.log(user);
+          Store.user = user;
+          this.closeLogin();
+          window.location.reload();
+        });
       })
     });
   }
 
-  getSuggestions = (value) => {
+  logout = () => {
+    let logout = window.confirm("Logout?");
+    if (logout) {
+      localStorage.removeItem('jwt');
+      Store.user = null;
+      window.location.reload();
+    }
+  }
+
+  getSuggestions = value => {
     return results.filter(function (res) {
       return res.display.fuzzy(value);
     });
@@ -104,9 +118,19 @@ class Header extends Component {
   };
 
   startRadio = async () => {
+    let radio = window.confirm("Start Phish Radio?");
+    
+    if (!radio) {
+      return;
+    }
+
     const playlist = await getPlaylist();
     if (playlist && playlist.songs) {
       Store.setPlaylist(playlist.songs)
+    } else {
+      let randomTracks = shuffle(trackJamcharts);
+      let songIds = trackJamcharts.slice(0, 100);
+      Store.setPlaylist(songIds);
     }
   }
 
@@ -114,16 +138,8 @@ class Header extends Component {
     this.setState({loginOpen: true});
   }
 
-  openRadio = () => {
-    this.setState({radioOpen: true});
-  }
-
   closeLogin = () => {
     this.setState({loginOpen: false});
-  }
-
-  closeRadio = () => {
-    this.setState({radioOpen: false});
   }
 
   render () {
@@ -135,8 +151,6 @@ class Header extends Component {
       onChange: this.onChange,
       autoFocus: true
     };
-
-    console.log(Store.user);
 
     return (
       <div className="nav">
@@ -160,53 +174,39 @@ class Header extends Component {
         <p>{Store.user && Store.user.name}</p>
         <div className="header-buttons">
           <div className="header-button">
-            <a className="login-button" onClick={this.openRadio}>Phish Radio</a>
-            {this.state.radioOpen &&
-              <Dialog
-                title="Start Radio"
-                modal
-                onClose={this.closeRadio}
-                buttons={[{
-                  text: 'Close',
-                  onClick: () => this.closeRadio()
-                }]}
-              >
-                <div class="login-modal">
-                  <button onClick={() => {
-                    this.startRadio();
-                  }}>
-                    Start Radio
-                  </button>
-                </div>
-              </Dialog>
-            }
+            <a className="login-button" onClick={() => this.startRadio()}>Phish Radio</a>
           </div>
           <div className="header-button">
-            <a className="login-button" onClick={this.openLogin}>Login</a>
-            {this.state.loginOpen &&
-              <Dialog
-                title="Login to Hose"
-                modal
-                onClose={this.closeLogin}
-                buttons={[{
-                  text: 'Close',
-                  onClick: () => this.closeLogin()
-                }]}
-              >
-                <button 
-                  className="facebook login"
-                  onClick={() => {
-                  this.handleLogin();
-                }}>
-                  Login with Facebook
-                </button>
-                {/* <button onClick={() => {
+            {Store.user ? 
+              <a className="login-button" onClick={() => this.logout()}>Logout</a>
+            :
+              <div>
+                <a className="login-button" onClick={() => this.openLogin()}>Login</a>
+                {this.state.loginOpen &&
+                  <Dialog
+                    title="Login to Hose"
+                    modal
+                    onClose={this.closeLogin}
+                    buttons={[{
+                      text: 'Close',
+                      onClick: () => this.closeLogin()
+                    }]}
+                  >
+                    <button 
+                      className="facebook login"
+                      onClick={() => this.handleLogin()}>
+                      Login with Facebook
+                    </button>
+                    {/* <button onClick={() => {
 
-                }}>
-                  Google
-                </button> */}
-              </Dialog>
+                    }}>
+                      Google
+                    </button> */}
+                  </Dialog>
+                }
+              </div>
             }
+
           </div>
         </div>
       </div>

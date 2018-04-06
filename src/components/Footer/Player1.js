@@ -210,6 +210,10 @@ class Player1 extends Component {
               dislikeTrack(Store.track.id).then(track => {
                 if (track) {
                   Store.updateUserLikes();
+                  this.setState({
+                    liked: track.like,
+                    disliked: track.dislike
+                  });
                 }
               });
             }}
@@ -254,6 +258,10 @@ class Player1 extends Component {
               likeTrack(Store.track.id).then(track => {
                 if (track) {
                   Store.updateUserLikes();
+                  this.setState({
+                    liked: track.like,
+                    disliked: track.dislike
+                  });
                 }
               });
             }}

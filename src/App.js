@@ -25,8 +25,8 @@ class App extends Component {
   }
 
   componentDidMount() {
+    Store.updateUserLikes();
     getUserInfo().then(user => {
-      console.log(user);
       Store.user = user;
     });
     getUser().then(songs => {

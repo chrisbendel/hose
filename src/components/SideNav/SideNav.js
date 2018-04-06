@@ -62,7 +62,7 @@ class SideNav extends Component {
         </div>
         {this.renderList}
         <a href="https://paypal.me/chrissbendel" target="_blank" rel="noopener noreferrer">Donate</a>
-        <a href="https://chrissbendel.github.io/hose/" target="_blank" rel="noopener noreferrer">Get the App</a>
+        <a href="https://chrisbendel.github.io/hose/" target="_blank" rel="noopener noreferrer">Get the App</a>
       </div>
     );
   }

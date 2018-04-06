@@ -110,33 +110,16 @@ class Show extends Component {
           </span>
           <span className="length-cell">{msToSec(track.duration)}</span>
           <span className="like-cell">
-            {Store.userLikes.indexOf(track.id) > -1 ?
-              <Ionicon 
-                icon="ios-thumbs-up"
-                font-size="40px"
-                color="#4CAF50"
-                onClick={() => {
-                  dislikeTrack(track.id).then(track => {
-                    if (track) {
-                      Store.updateUserLikes();
-                    }
-                  });
-                }}
-              />
-            :
-              <Ionicon 
-                icon="ios-thumbs-up-outline"
-                font-size="40px"
-                color="#4CAF50"
-                onClick={() => {
-                  likeTrack(track.id).then(track => {
-                    if (track) {
-                      Store.updateUserLikes();
-                    }
-                  });
-                }}
-              />
-            }
+            <Ionicon 
+              icon={Store.userLikes.indexOf(track.id) > -1 ? "ios-thumbs-up" : "ios-thumbs-up-outline"}
+              font-size="40px"
+              color="#4CAF50"
+              onClick={() => {
+                likeTrack(track.id).then(track => {
+                  Store.updateUserLikes();
+                });
+              }}
+            />
           </span>
           <span className="title-cell">{track.title}</span>
           <span className="jamcharts-cell">{isTrackJamchart(track.id) ? "Jamcharts" : ""}</span>
