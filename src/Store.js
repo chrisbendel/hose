@@ -11,6 +11,7 @@ export default store({
   playlist: [],
   position: 1,
   userLikes: [],
+  userDislikes: [],
   updateUserLikes() {
     getUser().then(songs => {
       if (songs) {
@@ -21,6 +22,10 @@ export default store({
           return parseInt(song.song_id)
         });
         this.userLikes = filtered;
+
+        let dislikes = songs.filter(song => song.dislike)
+        .map(song => parseInt(song.song_id));
+        this.userDislikes = dislikes;
       }
     });
   },

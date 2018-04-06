@@ -203,18 +203,12 @@ class Player1 extends Component {
         </div>
         <div className="controls-container">
           <Ionicon
-            icon={this.state.disliked ? "ios-thumbs-down" : "ios-thumbs-down-outline"}
+            icon={Store.userDislikes.indexOf(Store.track.id) > -1 ? "ios-thumbs-down" : "ios-thumbs-down-outline"}
             font-size="50px"
             color="#4CAF50"
             onClick={() => {
               dislikeTrack(Store.track.id).then(track => {
-                if (track) {
-                  Store.updateUserLikes();
-                  this.setState({
-                    liked: track.like,
-                    disliked: track.dislike
-                  });
-                }
+                Store.updateUserLikes();
               });
             }}
           />
@@ -251,17 +245,13 @@ class Player1 extends Component {
             onClick={() => {Store.next()}}
           />
           <Ionicon 
-            icon={this.state.liked ? "ios-thumbs-up" : "ios-thumbs-up-outline"}
+            icon={Store.userLikes.indexOf(Store.track.id) > -1 ? "ios-thumbs-up" : "ios-thumbs-up-outline"}
             font-size="50px"
             color="#4CAF50"
             onClick={() => {
               likeTrack(Store.track.id).then(track => {
                 if (track) {
                   Store.updateUserLikes();
-                  this.setState({
-                    liked: track.like,
-                    disliked: track.dislike
-                  });
                 }
               });
             }}

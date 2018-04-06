@@ -5,7 +5,7 @@
   "private": true,
   "main": "public/electron.js",
   "author": "Christopher Bendel",
-  "homepage": "https://hose.live",
+  "homepage": ".",
   "description": "Stream Live Phish Music",
   "dependencies": {
     "browserify-css": "0.12.0",

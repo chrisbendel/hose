@@ -54,7 +54,7 @@ class App extends Component {
 
     return (
       <div>
-        <Router history={history}>
+        <Router history={history} basename="/">
           <div>
             <nav className="left">
               <SideNav />

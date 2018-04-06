@@ -38,26 +38,13 @@ class Show extends Component {
   }
 
   componentWillMount() {
-    // this.getUserLikes();
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();
     } else {
       this.fetchShow(this.props.match.params.id);
     }
   }
-
-  // getUserLikes = () => {
-  //   getUser().then(songs => {
-  //     let likes = songs.filter(song => {
-  //       return song.like
-  //     })
-  //     .map(song => {
-  //       return parseInt(song.song_id)
-  //     });
-  //     this.setState({userLikes: likes});
-  //   });
-  // }
-
+  
   fetchShow = (id) => {
     return show(id).then(show => {
       this.setState({show: show});
