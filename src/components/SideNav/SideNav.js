@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import { store, view } from 'react-easy-state'
 import { NavLink } from 'react-router-dom';
-import './../../css/SideNav.css'
 import { history } from './../../History';
+import './../../css/SideNav.css'
 
 const items = [
   {
     "id": 0,
     "name": "On This Day",
-    "path": "/shows/today"
+    "path": "/showsOnDay"
   },
   {
     "id": 1,
@@ -28,35 +29,20 @@ const items = [
   //   "id": 4,
   //   "name": "Radio",
   //   "path": "/radio"
-  // },
-  // {
-  //   "id": 4,
-  //   "name": "Login",
-  //   "path": "/login"
-  // },
-  // {
-  //   "id": 6,
-  //   "name": "Profile",
-  //   "path": "/profile"
   // }
 ]
 
-export default class SideNav extends Component {
+class SideNav extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      open: true
-    };
   }
-
+  
   renderList = items.map(function(item, index) {
     return (
       <NavLink 
-        exact
-        key={item.id} 
-        id={item.id} 
-        to={item.path} 
+        key={item.id}
+        id={item.id}
+        to={item.path}
         activeClassName="active"
       >
         <span>{item.name}</span>
@@ -71,13 +57,15 @@ export default class SideNav extends Component {
           history.push('/shows');
         }}>
           <span className="logo">
-            <img alt="logo" src="https://s3.amazonaws.com/hose/images/hose.svg"/>
+            <img alt="logo" src="/images/hose.svg"/>
           </span>
         </div>
         {this.renderList}
-        <a href="https://paypal.me/chrissbendel" target="_blank" rel="noopener noreferrer">Donations</a>
-        <a href="https://chrissbendel.github.io/hose/" target="_blank" rel="noopener noreferrer">Get the App</a>
+        <a href="https://paypal.me/chrissbendel" target="_blank" rel="noopener noreferrer">Donate</a>
+        <a href="https://chrisbendel.github.io/hose/" target="_blank" rel="noopener noreferrer">Get the App</a>
       </div>
     );
   }
 }
+
+export default SideNav

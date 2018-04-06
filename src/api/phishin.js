@@ -1,89 +1,94 @@
-import {email, password} from './../config';
+// import {pts} from './../config';
+// import {Base64} from "js-base64"
 const base = 'https://phish.in/api/v1/'
 
-export const login = async() => {
-  fetch('http://phish.in/api/v1/users/sign_in', {
-    method: 'POST',
-    mode: 'no-cors',
-    origin: "https://google.com",
-    cache: 'default',
-    body: JSON.stringify({user: {email: email, password: password} })
-  }).then(function(response) {
-    return response.json()
-  }).then(function(json) {
-    console.log('parsed json', json)
-  }).catch(function(ex) {
-    console.log('parsing failed', ex)
-  })
+// export const playsCount = async(track) => {
+//   let headers = new Headers();
+//   headers.append('Authorization', 'Basic ' + Base64.encode(pts + ":" + ""));
+
+//   let data = await (await fetch ("https://www.phishtrackstats.com/api/v2/hotbox.json?q=1997-07-24/the-wedge", {
+//     headers: headers
+//   })).json();
+
+//   let playCount = data.stats.find(stat => {
+//     return stat.name == "total_count"
+//   }).value;
+
+//   return playCount;
+// }
+
+export const fetchRandomTrack = async() => {
+  let data = await (await fetch(base + 'tracks?per_page=100', {cache: "force-cache"})).json();
+  return data.data;
+}
+
+export const trackInfo = async(id) => {
+  let data = await (await fetch(base + 'tracks/' + id, {cache: "force-cache"})).json();
+  return data.data;
 }
 
 export const randomShow = async() => {
-  let data = await (await fetch(base + 'random-show')).json();
+  let data = await (await fetch(base + 'random-show', {cache: "force-cache"})).json();
   return data.data;
 }
 
 export const show = async(id) => {
-  let data = await (await cachedFetch(base + 'shows/' + id)).json();
-  return data.data;
-}
-
-export const testFunc = async() => {
-  let data = await (await cachedFetch(base + 'songs?per_page=1000&sort_attr=title')).json();
+  let data = await (await fetch(base + 'shows/' + id, {cache: "force-cache"})).json();
   return data.data;
 }
 
 export const shows = async(page = 1) => {
-  let data = await (await cachedFetch(base + 'shows?sort_attr=date&sort_dir=desc&per_page=50&page=' + page)).json();
+  let data = await (await fetch(base + 'shows?sort_attr=date&sort_dir=desc&per_page=50&page=' + page, {cache: "force-cache"})).json();
   return data.data;
 }
 
 export const tracksForSong = async(track) => {
-  let data = await (await cachedFetch(base + 'songs/' + track)).json();
+  let data = await (await fetch(base + 'songs/' + track, {cache: "force-cache"})).json();
   return data.data.tracks;
 }
 
 export const showsForVenue = async(venue) => {
-  let data = await (await cachedFetch(base + 'venues/' + venue)).json();
+  let data = await (await fetch(base + 'venues/' + venue, {cache: "force-cache"})).json();
   return data.data.show_ids;
 }
 
 export const showsForYear = async(year) => {
-  let data = await (await cachedFetch(base + 'years/' + year)).json();
+  let data = await (await fetch(base + 'years/' + year, {cache: "force-cache"})).json();
   return data.data;
 }
 
 export const showsForTour = async(tour) => {
-  let data = await (await cachedFetch(base + 'tours/' + tour)).json();
+  let data = await (await fetch(base + 'tours/' + tour, {cache: "force-cache"})).json();
   return data.data;
 }
 
 export const showsToday = async(day) => {
-  let data = await (await cachedFetch(base + 'shows-on-day-of-year/' + day)).json();
+  let data = await (await fetch(base + 'shows-on-day-of-year/' + day + '?per_page=100', {cache: "force-cache"})).json();
   return data.data;
 }
 
 export const years = async() => {
-  let data = await (await cachedFetch(base + 'years')).json();
+  let data = await (await fetch(base + 'years', {cache: "force-cache"})).json();
   return data.data;
 }
 
 export const tours = async() => {
-  let data = await (await cachedFetch(base + 'tours?sort_attr=starts_on&per_page=1000')).json();
+  let data = await (await fetch(base + 'tours?sort_attr=starts_on&per_page=1000', {cache: "force-cache"})).json();
   return data.data;
 }
 
 export const venues = async() => {
-  let data = await (await cachedFetch(base + 'venues?per_page=1000&sort_attr=shows_count&sort_dir=desc')).json();
+  let data = await (await fetch(base + 'venues?per_page=1000&sort_attr=shows_count&sort_dir=desc', {cache: "force-cache"})).json();
   return data.data;
 }
 
 export const tracks = async() => {
-  let data = await (await cachedFetch(base + 'tracks')).json();
+  let data = await (await fetch(base + 'tracks', {cache: "force-cache"})).json();
   return data.data;
 }
 
 export const search = async(query) => {
-  let data = await (await cachedFetch(base + 'search/' + query)).json();
+  let data = await (await fetch(base + 'search/' + query, {cache: "force-cache"})).json();
 
   let terms = [];
 
@@ -103,7 +108,7 @@ export const search = async(query) => {
   if (otherShows) {
     Object.keys(otherShows).forEach(function(show) {
       let values = otherShows[show];
-      values.path = '/show/' + values.id;
+      values.path = '/shows/' + values.id;
       values.type = 'show';
       values.display = values.date + " " + values.venue_name + " " + values.location;
       terms.push(values);

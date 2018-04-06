@@ -1,76 +1,30 @@
 import React, { Component } from 'react';
-import './../../css/Player.css';
+import { store, view } from 'react-easy-state'
+import Store from './../../Store';
 import Audio from 'react-audioplayer';
-import { show } from './../../api/phishin';
 import Ionicon from 'react-ionicons';
 import ReactDOM from 'react-dom';
+import {listen, completed, likeTrack, dislikeTrack, skipped} from './../../api/hose';
+import {downloadShow, mapTracks} from './../../Utils';
+import {history} from './../../History';
 import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css';
-import {emitter} from './../../Emitter';
-import {history} from './../../History';
-import Controls from './../../Controls';
-import isElectron from 'is-electron';
-import JSZipUtils from 'jszip-utils';
-import JSZip from 'jszip';
-import {saveAs} from 'file-saver'
+import './../../css/Player.css';
 
-if (isElectron()) {
-  var {remote} = window.require('electron');
-  var remoteWindow = remote.getCurrentWindow();
-}
-
-export default class Player extends Component {
+class Player extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      tracks: null,
-      show: null,
-      downloading: false,
       hoverVenue: false,
-      hoverDate: false
+      hoverDate: false,
+      liked: false,
+      disliked: false
     }
 
-    emitter.addListener('pause', () => {
-      this.pause();
-    });
-
-    emitter.addListener('play', () => {
-      this.play();
-    });
-
-    emitter.addListener('next', () => {
-      this.skipToNext();
-    });
-
-    emitter.addListener('prev', () => {
-      this.skipToPrevious();
-    });
-
-    emitter.addListener('playlistUpdate', (showId, position) => {
-      if (this.state.show != null) {
-        if (this.state.show.id === showId && this.player.state.currentPlaylistPos === position) {
-          this.play();
-          return;
-        }
-      }
-      
-      this.setShow(showId, position);
-    });
-  }
-
-  setControls = () => {
-    if (this.player) {
-      let show = this.state.show;
-      let playerState = this.player.state;
-
-      let currentPosition = playerState.currentPlaylistPos + 1;
-      let currentTrack = show.tracks.find(track => {
-        return track.position === currentPosition;
-      });
-
-      emitter.emit('songUpdate', show, currentTrack, currentPosition, playerState.playing);
-    }
+    Store.player = this;
+    let progress = null;
+    let duration = null;
   }
 
   componentWillUnmount() {
@@ -80,7 +34,11 @@ export default class Player extends Component {
     venue.removeEventListener('animationend', this.stopScroll);
     date.removeEventListener('animationend', this.stopScroll);
   }
-  
+
+  componentWillMount() {
+    Store.updateUserLikes();
+  }
+
   componentDidUpdate() {
     if (this.refs.hoverVenue && this.refs.hoverDate) {
       const venue = this.refs.hoverVenue;
@@ -97,107 +55,107 @@ export default class Player extends Component {
 
     if (this.player) {
       let element = this.player.audioElement;
-      
+
+      // element.addEventListener('timeupdate', this.timeUpdate);
+      // element.addEventListener('ended', this.trackEnded);
+      // element.addEventListener('emptied', this.checkSkipped);
+      element.addEventListener('loadedmetadata', this.trackStarted);
       element.addEventListener('playing', this.setControls);
       element.addEventListener('play', this.setControls);
       element.addEventListener('pause', this.setControls);
     }
   }
 
-  play = (e) => {
+  // checkSkipped = () => {
+  //   if (this.progress && this.duration) {
+  //     if (this.progress/this.duration < .25) {
+  //       skipped(Store.track.id);
+  //     }
+  //   }
+  // }
+
+  // timeUpdate = () => {
+  //   this.progress = this.player.state.progress;
+  //   this.duration = this.player.state.duration;
+  // }
+
+  // trackEnded = () => {
+  //   completed(Store.track.id).then(track => {
+  //     this.setState({
+  //       liked: track.like,
+  //       disliked: track.dislike
+  //     });
+  //   });
+  // }
+
+  trackStarted = () => {
+    listen(Store.track.id).then(track => {
+      if (track) {
+        this.setState({
+          liked: track.like,
+          disliked: track.dislike
+        });
+      }
+    });
+  }
+
+  setControls = () => {
+    if (this.player) {
+      let playerState = this.player.state;
+
+      let currentPosition = playerState.currentPlaylistPos + 1;
+      let currentTrack = Store.show.tracks.find(track => {
+        return track.position === currentPosition;
+      });
+      
+      Store.track = currentTrack;
+      Store.playing = playerState.playing;
+    }
+  }
+
+  play = e => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-play'));
       this.setControls();
     }
   }
 
-  pause = (e) => {
+  pause = e => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-pause'));
       this.setControls();
     }
   }
   
-  skipToNext = (e) => {
+  skipToNext = e => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-next'));
       this.setControls();
     }
   }
 
-  skipToPrevious = (e) => {
+  skipToPrevious = e => {
     if (this.player) {
       ReactDOM.findDOMNode(this.player).dispatchEvent(new Event('audio-skip-to-previous'));
       this.setControls();
     }
   }
 
-  setShow = (showId, position = 0) => {
-    show(showId).then(show => {
-      let tracks = show.tracks.map(track => {
-        return {id: track.id, name: track.title, src: track.mp3}
-      });
-      
-      this.setState({
-        tracks: tracks, 
-        show: show
-      }, () => {
-        this.setPlaylistPosition(position);
-      });
-    }).then(() => {
-      this.setControls();
+  setPlaylistPosition = index => {
+    this.player.state.currentPlaylistPos = index - 1;
+    
+    this.skipToNext();
+    this.skipToPrevious();
+  }
+
+  stopScroll = target => {
+    this.setState({
+      [target]: false
     });
   }
 
-  setPlaylistPosition = (index) => {
-    this.player.state.currentPlaylistPos = index;
-    this.pause();
-
-    if (this.player.state.playing) {
-      this.skipToNext();
-      this.skipToPrevious();
-    } else {
-      this.skipToNext();
-      this.skipToPrevious();
-      this.play();
-    }
-  }
-
-  downloadShow = () => {
-    this.setState({downloading: true})
-    let show = this.state.show;
-    let tracks = show.tracks;
-    var zip = new JSZip();
-    let count = 0;
-    let showName = show.date + "-" + show.venue.name + "-" + show.venue.location;
-    tracks.forEach(track => {
-      let title = track.title + ".mp3";
-      JSZipUtils.getBinaryContent(track.mp3, (err, data) => {
-        zip.file(title, data, {binary: true});
-        count++;
-        if (isElectron()) {
-          remoteWindow.setProgressBar(count / tracks.length);
-        }
-        if (count === tracks.length) {
-          zip.generateAsync({type:'blob'}, (metadata) => {
-            if (isElectron()) {
-              remoteWindow.setProgressBar(metadata.percent);
-            }
-          })
-          .then(content => {
-            saveAs(content, showName + ".zip");
-            if (isElectron()) {
-              remoteWindow.setProgressBar(-1);
-            }
-            this.setState({downloading: false});
-          });
-        }
-      });
-    });
-  }
-
-  renderPlaylistContent = (set) => {
-    return this.state.show.tracks.filter(track => {
+  renderPlaylistContent = set => {
+    return Store.show.tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
       return (
@@ -205,7 +163,7 @@ export default class Player extends Component {
           className="playlist-container-item" 
           key={track.position}
           onClick={() => {
-            this.setPlaylistPosition(track.position - 1);
+            this.setPlaylistPosition(track.position);
           }}
         >
           <span> {track.position} - </span>
@@ -216,27 +174,19 @@ export default class Player extends Component {
   }
 
   renderPlaylistContainer = () => {
-    let that = this;
-    const sets = [...new Set(this.state.show.tracks.map(track => track.set_name))];
+    const sets = [...new Set(Store.show.tracks.map(track => track.set_name))];
     return sets.map(set => {
       return (
         <div key={set}>
           <p> {set} </p>
-          <ul className="playlist-section"> {that.renderPlaylistContent(set)} </ul>
+          <ul className="playlist-section"> {this.renderPlaylistContent(set)} </ul>
         </div>
       )
     });
   }
-
-  stopScroll = (target) => {
-    this.setState({
-      [target]: false
-    });
-  }
   
   render() {
-    let show = this.state.show;
-    let tracks = this.state.tracks;
+    let show = Store.show;
     
     if (!show) {
       return (<div> Pick a show or song to start listening </div>);
@@ -249,7 +199,7 @@ export default class Player extends Component {
       <div className="controls-container">
         <div className="show-information-player">
           <div className="album-art-container clickable" onClick={() => {history.push('/show/' + show.id)}}>
-            <img alt={show.date} src={'https://s3.amazonaws.com/hose/images/' + show.date + '.jpg'}/>
+            <img alt={show.date} src={'/images/' + show.date + '.jpg'}/>
           </div>
           <div className="current-track-information">
             <div 
@@ -267,7 +217,7 @@ export default class Player extends Component {
                 onClick={() => {history.push('/show/' + show.id)}}
                 className="clickable"
               > 
-                {date.toLocaleDateString('en-US', dateOptions)}  
+                {date.toLocaleDateString('en-US', dateOptions)}
               </span>
             </div>
             <div 
@@ -285,14 +235,50 @@ export default class Player extends Component {
           </div>
         </div>
         <div className="center-container">
-          <Audio
-            ref={audioComponent => { this.player = audioComponent; }}
-            width={500}
-            height={50}
-            autoPlay={true}
-            playlist={tracks}
-            color="#000"
-          />
+        <Ionicon 
+          style={{marginRight: 10}}
+          className="clickable" 
+          icon={this.state.disliked ? "ios-thumbs-down" : "ios-thumbs-down-outline"}
+          fontSize="40px" 
+          color="#4CAF50"
+          onClick={() => {
+            dislikeTrack(Store.track.id).then(track => {
+              if (track) {
+                Store.updateUserLikes();
+                this.setState({
+                  liked: track.like,
+                  disliked: track.dislike
+                });
+              }
+            });
+          }}
+        />
+        <Audio
+          ref={audioComponent => { this.player = audioComponent }}
+          width={500}
+          height={50}
+          autoPlay={true}
+          playlist={mapTracks(show.tracks)}
+          color="#000"
+        />
+        <Ionicon 
+          style={{marginLeft: 10}} 
+          className="clickable" 
+          icon={this.state.liked ? "ios-thumbs-up" : "ios-thumbs-up-outline"}
+          fontSize="40px" 
+          color="#4CAF50"
+          onClick={() => {
+            likeTrack(Store.track.id).then(track => {
+              if (track) {
+                Store.updateUserLikes();
+                this.setState({
+                  liked: track.like,
+                  disliked: track.dislike
+                });
+              }
+            });
+          }}
+        />
         </div>
         <div className="right-content">
           <Tooltip
@@ -308,10 +294,11 @@ export default class Player extends Component {
           >
             <Ionicon className="clickable right-icon" icon="ios-list-box" fontSize="60px"/>
           </Tooltip>
-          <Ionicon className={this.state.downloading ? "right-icon" : "hidden"} icon="ios-refresh" fontSize="60px" rotate={true} />
-          <Ionicon className={this.state.downloading ? "hidden" : "clickable right-icon"} icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download " + show.date + "?" ) ? this.downloadShow() : null}/>
+          <Ionicon className="clickable right-icon" icon="ios-cloud-download" fontSize="60px" onClick={() => window.confirm("Download " + show.date + "?" ) ? downloadShow(Store.show) : null}/>
         </div>
       </div>
     );
   }
 }
+
+export default view(Player)

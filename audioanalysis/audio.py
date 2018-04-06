@@ -2,7 +2,6 @@
 import requests
 import urllib2
 from multiprocessing import Pool
-import time
 import os
 import json
 from sklearn.cluster import KMeans
@@ -12,19 +11,24 @@ import csv
 import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import normalize
+from sklearn import preprocessing
 
 #Audio stuff
 from pyAudioAnalysis import audioBasicIO
 from pyAudioAnalysis import audioFeatureExtraction
 from pyAudioAnalysis.audioBasicIO import convertDirMP3ToWav
 from pyAudioAnalysis.audioFeatureExtraction import dirWavFeatureExtraction
-import matplotlib.pyplot as plt
 
 path = os.getcwd() + "/songs/"
 
 def deleteMP3s():
     for filename in os.listdir(path):
         if filename.endswith(".mp3"):
+            os.remove(path + filename)
+
+def deleteWAVs():
+    for filename in os.listdir(path):
+        if filename.endswith(".wav"):
             os.remove(path + filename)
 
 def downloadMP3s(url):
@@ -38,87 +42,68 @@ def getMP3Urls(songs):
     return [song['mp3'] for song in songs]
 
 def extractAudioFeatures():
-    features, filename = dirWavFeatureExtraction(path, 10, 5, .5, .25, True)
-    
+    features, files = dirWavFeatureExtraction(path, 10, 10, .5, .5, True)
+
     d = {}
     for i in range(len(features)):
-        trackID = str(filename[i].split('/')[-1]).replace(".wav", "")
+        trackID = str(files[i].split('/')[-1]).replace(".wav", "")
         d[trackID] = features[i].tolist()
 
-    with open("output.csv", "wb") as f_output:
+    with open("temp.csv", "a") as f_output:
         csv_output = csv.writer(f_output)
 
         for key in sorted(d.keys()):
             csv_output.writerow([key] + d[key])
 
-# start_time = time.time()
-
-# res = requests.get("http://phish.in/api/v1/tracks?tag=Jamcharts&per_page=200&sort_attr=likes_count&sort_dir=desc").json()
-# urls = getMP3Urls(res['data'])
-# res = requests.get("http://phish.in/api/v1/songs/black-eyed-katy").json()
-# urls = getMP3Urls(res['data']['tracks'])
-# res = requests.get("http://phish.in/api/v1/songs/nellie-kane").json()
-# urls = urls + getMP3Urls(res['data']['tracks'])
-# res = requests.get("http://phish.in/api/v1/songs/the-moma-dance").json()
-# urls = getMP3Urls(res['data']['tracks'])
-# pool = Pool()
-# pool.map(downloadMP3s, urls)
-
-# convertDirMP3ToWav(path, 16000, 1, False)
-# deleteMP3s()
-# extractAudioFeatures()
+    deleteWAVs()
 
 # Pagination stuff for doing all songs
+# res = requests.get("http://phish.in/api/v1/tracks?per_page=100").json()
 # num_pages = res['total_pages']
 # for page in range(1, num_pages + 1):
-#     res = requests.get("http://phish.in/api/v1/tracks?per_page=30", params={'page': page}).json()
-#     print res['page']
+#   res = requests.get("http://phish.in/api/v1/tracks?per_page=100", params={'page': page}).json()
+#   urls = getMP3Urls(res['data'])
+#   pool = Pool()
+#   pool.map(downloadMP3s, urls)
+#   pool.close()   
+#   convertDirMP3ToWav(path, 16000, 1, False)
+#   deleteMP3s()
+#   extractAudioFeatures()
 
-# print("--- %s seconds ---" % (time.time() - start_time))
+def normalize(df):
+    result = df.copy()
+    for feature_name in df.columns:
+        if feature_name != 0:
+          result[feature_name] = result[feature_name] / result[feature_name].max()
+          result[feature_name] = result[feature_name].fillna(result[feature_name].mean())
+    return result
 
-songs = pd.read_csv("output.csv", header=None)
-numClusters = 15
-
-# ==== This section is for setting our initial centroids, if we choose to === #
-# =========================================================================== #
-
-# c1 = songs.loc[songs[0] == 18050] #Moma
-# c2 = songs.loc[songs[0] == 5559] #Nellie
-# c3 = songs.loc[songs[0] == 12937] #mars
-
-# # #convert to matrix for init
-# c1 = c1.drop(c1.columns[0], axis=1).as_matrix()
-# c2 = c2.drop(c2.columns[0], axis=1).as_matrix()
-# c3 = c3.drop(c3.columns[0], axis=1).as_matrix()
-
-# c1 = (c1 - c1.mean()) / (c1.max() - c1.min())
-# c2 = (c2 - c2.mean()) / (c2.max() - c2.min())
-# c3 = (c3 - c3.mean()) / (c3.max() - c3.min())
-
-# init = np.array([c1[0], c2[0], c3[0]], np.float64)
-
-# km = KMeans(n_clusters=numClusters, n_jobs=-1, init=init, n_init=1)
-
-# =========================================================================== #
-
-# remove the ids for clustering
+songs = pd.read_csv("temp.csv", header=None)
+numClusters = 10
+songs = normalize(songs)
+km = KMeans(n_clusters=numClusters, init='k-means++', n_jobs=-1, n_init=100, algorithm="elkan")
 data = songs.drop(songs.columns[0], axis=1)
-data = (data - data.mean()) / (data.max() - data.min())
-km = KMeans(n_clusters=numClusters, init='k-means++', n_jobs=-1, n_init=50)
+
 km.fit(data)
-x = km.fit_predict(data)
-songs['Cluster'] = x
+centroids = km.cluster_centers_
 
-with open('songs.csv', 'wb') as outcsv:
+clusters = km.fit_predict(data)
+print(clusters)
+songs['Cluster'] = clusters
+print(songs)
+
+with open('songdetails.csv', 'a') as outcsv:
+    print('writing row')
     writer = csv.writer(outcsv)
-    writer.writerow(["Song", "Date", "Set", "Cluster"])
-    
+    writer.writerow(["id", "year", "set", "duration", "cluster"])
+ 
     for i in range(numClusters):
-        # print ("Cluster: " + str(i))
         for x in songs[songs['Cluster'] == i][0]:
+            print('fetching song id', x)
             res = requests.get("http://phish.in/api/v1/tracks/" + str(x)).json()
-            writer.writerow([res['data']['title']] + [res['data']['show_date']] + [res['data']['set']] + [i])
-            # print(res['data']['title'], res['data']['show_date'], res['data']['id'])
-        # print("<-------------->")
+            d = res['data']
+            print(d)
+            writer.writerow([d['id']] + [d['show_date'][:4]] + [d['set']] + [d['duration']] + [i])
 
-# songs.to_csv("clusters.csv", index = False)
+# songs = songs.drop('Cluster', 1)
+songs.to_csv("songfeatures.csv", index = False)

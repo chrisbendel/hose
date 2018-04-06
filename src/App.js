@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
+import { view } from 'react-easy-state'
 import { Router, Route } from 'react-router-dom';
 import SideNav from './components/SideNav/SideNav';
 import Player from './components/Footer/Player';
+import Player1 from './components/Footer/Player1';
 import Show from './components/Main/Show';
 import Shows from './components/Main/Shows';
-import Songs from './components/Main/Songs';
-import Login from './components/User/Login';
+import ShowsOnDay from './components/Main/ShowsOnDay';
+import Tracks from './components/Main/Tracks';
 import Radio from './components/Radio';
 import {history} from './History';
-import GlobalSearch from './components/Header/GlobalSearch';
-import {loadFilters} from './filterOptions';
+import Header from './components/Header/Header';
 import Spinner from 'react-spinkit';
-import './css/Main.css';
+import Store from './Store';
+import { getUser, createPlaylist, createModel, getUserInfo } from './api/hose';
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
@@ -23,8 +25,20 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    loadFilters().then(() => {
-      history.push('/shows');
+    Store.updateUserLikes();
+    getUserInfo().then(user => {
+      Store.user = user;
+    });
+    getUser().then(songs => {
+      createModel();
+      if (songs) {
+        Store.userLikes = songs.filter(song => {
+          return song.like
+        })
+        .map(song => {
+          return parseInt(song.song_id)
+        });
+      }
       this.setState({loading: false});
     });
   }
@@ -46,20 +60,25 @@ export default class App extends Component {
               <SideNav />
             </nav>
             <header className="header">
-              <GlobalSearch/>
+              <Header/>
             </header>
             <main className="content">
+              <Route exact path="/" component={Shows}/>
               <Route exact path="/show/:id" component={Show}/>
-              <Route exact path="/shows/:type?/:id?" index component={Shows}/>
-              <Route exact path="/song/:id?" component={Songs}/>
+              <Route exact path="/showsOnDay/:date?" component={ShowsOnDay}/>
+              <Route exact path="/shows/:type?/:id?" component={Shows}/>
+              <Route exact path="/song/:id?" component={Tracks}/>
               <Route exact path="/radio" component={Radio}/>
             </main>
           </div>
         </Router>
         <footer className="footer">
-          <Player/>
+          {/* <Player/> */}
+          <Player1/>
         </footer>
       </div>
     );
   }
 }
+
+export default view(App)
