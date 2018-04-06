@@ -146,18 +146,14 @@ class Player1 extends Component {
 
   render() {
     if (!Store.track) {
-      return (
-        <div> Help text to show the user what to do. 
-          Possibly: Start playing a random show(button), start playing radio(button),
-          or just tell them to play something themselves 
-        </div>
-      );
+      return <div> Play a show, song, or start Phish Radio to get started!</div>
     }
     let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     let date = new Date(Store.show.date + ' 00:00');
 
     return (
       <div className="player-container">
+        <link rel="prefetch" href={Store.nextTrack}/>
         <audio 
           style={{display: 'none'}}
           ref={player => {this.player = player}}

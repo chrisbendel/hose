@@ -126,11 +126,11 @@ class Header extends Component {
 
     const playlist = await getPlaylist();
     if (playlist && playlist.songs) {
-      Store.setPlaylist(playlist.songs)
+      Store.setPlaylist(playlist.songs, true);
     } else {
       let randomTracks = shuffle(trackJamcharts);
-      let songIds = trackJamcharts.slice(0, 100);
-      Store.setPlaylist(songIds);
+      let songIds = randomTracks.slice(0, 100);
+      Store.setPlaylist(songIds, true);
     }
   }
 

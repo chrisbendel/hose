@@ -17,6 +17,11 @@ const base = 'https://phish.in/api/v1/'
 //   return playCount;
 // }
 
+export const cacheTrack = async id => {
+  let track = await trackInfo(id);
+  return fetch(track.mp3);
+}
+
 export const fetchRandomTrack = async() => {
   let data = await (await fetch(base + 'tracks?per_page=100', {cache: "force-cache"})).json();
   return data.data;

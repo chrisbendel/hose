@@ -65,7 +65,7 @@ export const likeTrack = async id => {
     return;
   }
   let req = await userRequest("POST", JSON.stringify({song_id: id}));
-  return fetch (base + "song/like", req)
+  return fetch(base + "song/like", req)
   .then(res => {
     if (!res.ok) {
       return Promise.resolve();
@@ -80,7 +80,7 @@ export const dislikeTrack = async id => {
     return;
   }
   let req = await userRequest("POST", JSON.stringify({song_id: id}));
-  return fetch (base + "song/dislike", req)
+  return fetch(base + "song/dislike", req)
   .then(res => {
     if (!res.ok) {
       return Promise.resolve();
@@ -95,7 +95,7 @@ export const listen = async id => {
     return;
   }
   let req = await userRequest("POST", JSON.stringify({song_id: id}));
-  return fetch (base + "song/listen", req)
+  return fetch(base + "song/listen", req)
   .then(res => {
     if (!res.ok) {
       return Promise.resolve();
@@ -112,7 +112,7 @@ export const completed = async id => {
     return;
   }
   let req = await userRequest("POST", JSON.stringify({song_id: id}));
-  return fetch (base + "song/completed", req)
+  return fetch(base + "song/completed", req)
   .then(res => {
     if (!res.ok) {
       return Promise.resolve();
@@ -127,7 +127,7 @@ export const skipped = async id => {
     return;
   }
   let req = await userRequest("POST", JSON.stringify({song_id: id}));
-  return fetch (base + "song/skipped", req)
+  return fetch(base + "song/skipped", req)
   .then(res => {
     return Promise.resolve();
   });
@@ -156,6 +156,9 @@ export const createPlaylist = async () => {
 }
 
 export const getPlaylist = async () => {
+  if (!Store.user) {
+    return null;
+  }
   let req = await userRequest("GET");
   return fetch(base + "user/playlist", req)
   .then(res => {

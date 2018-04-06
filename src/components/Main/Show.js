@@ -21,8 +21,7 @@ class Show extends Component {
       playing: false,
       playingShow: null,
       playingTrack: null,
-      playingPosition: null,
-      // userLikes: []
+      playingPosition: null
     }
   }
 
@@ -44,7 +43,7 @@ class Show extends Component {
       this.fetchShow(this.props.match.params.id);
     }
   }
-  
+
   fetchShow = (id) => {
     return show(id).then(show => {
       this.setState({show: show});
@@ -78,7 +77,6 @@ class Show extends Component {
                 font-size="60px"
                 onClick={e => {
                   Store.playShow(show.id, track.position);
-                  // Store.playTrack(show.id, track);
                 }}
                 className="track-play"
               />
