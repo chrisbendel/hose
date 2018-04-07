@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import Store from './../../Store';
 import { show, randomShow } from './../../api/phishin';
-import { getUser, likeTrack, dislikeTrack } from './../../api/hose';
+import { likeTrack } from './../../api/hose';
 import Ionicon from 'react-ionicons';
 import {getLikesPercent, msToSec, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName, downloadShow} from './../../Utils';
 import { Tooltip } from 'react-tippy';
 import {history} from './../../History';
 import Spinner from 'react-spinkit';
+import moment from 'moment';
 import './../../css/Show.css';
 import './../../css/SongCell.css';
 import 'react-tippy/dist/tippy.css';
@@ -56,7 +57,7 @@ class Show extends Component {
     });
   }
 
-  renderTracks = (set) => {
+  renderTracks = set => {
     let show = this.state.show;
     let tracks = show.tracks;
     return tracks.filter(track => {
@@ -185,9 +186,6 @@ class Show extends Component {
         </div>
       );
     }
-    
-    let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    let date = new Date(show.date + ' 00:00');
 
     return (
       <div className="show-container">
@@ -196,7 +194,7 @@ class Show extends Component {
             <img className="art" alt={show.date} src={'/images/' + show.date + '.jpg'}/>
           </div>
           <div className="right">
-            <h2>{date.toLocaleDateString('en-US', dateOptions)}</h2>
+            <h2>{moment(show.date).format('LL')}</h2>
             <p>
               <span style={{marginRight: 5}}>{isShowJamchart(show.id) && "Jamcharts"}</span>
               <span style={{marginRight: 5}}>{isShowSoundboard(show.id) && "Soundboard"}</span>

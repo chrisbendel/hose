@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { store, view } from 'react-easy-state'
 import { NavLink } from 'react-router-dom';
 import { history } from './../../History';
 import './../../css/SideNav.css'
@@ -23,20 +22,11 @@ const items = [
   {
     "id": 3,
     "name": "Songs",
-    "path": "/song"
-  },
-  // {
-  //   "id": 4,
-  //   "name": "Radio",
-  //   "path": "/radio"
-  // }
+    "path": "/songs"
+  }
 ]
 
-class SideNav extends Component {
-  constructor(props) {
-    super(props);
-  }
-  
+class SideNav extends Component {  
   renderList = items.map(function(item, index) {
     return (
       <NavLink 

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { store, view } from 'react-easy-state';
+import { view } from 'react-easy-state';
 import Store from './../../Store';
 import {listen, completed, likeTrack, dislikeTrack, skipped} from './../../api/hose';
 import {history} from './../../History';
 import Ionicon from 'react-ionicons';
+import moment from 'moment';
 
 const timeFormat = time => {
   var hrs = ~~(time / 3600);
@@ -32,8 +33,8 @@ class Player1 extends Component {
     }
 
     Store.player = this;
-    let progress = null;
-    let duration = null;
+    this.progress = null;
+    this.duration = null;
   }
 
   componentWillMount() {
@@ -64,19 +65,6 @@ class Player1 extends Component {
         this.setState({
           currentProgress: percent
         })
-      });
-    }
-
-    if (this.refs.hoverVenue && this.refs.hoverDate) {
-      const venue = this.refs.hoverVenue;
-      const date = this.refs.hoverDate;
-  
-      venue.addEventListener('animationend', () => {
-        this.stopScroll('hoverVenue');
-      });
-
-      date.addEventListener('animationend', () => {
-        this.stopScroll('hoverDate');
       });
     }
   }
@@ -148,8 +136,6 @@ class Player1 extends Component {
     if (!Store.track) {
       return <div> Play a show, song, or start Phish Radio to get started!</div>
     }
-    let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    let date = new Date(Store.show.date + ' 00:00');
 
     return (
       <div className="player-container">
@@ -165,32 +151,18 @@ class Player1 extends Component {
             <img alt={Store.show.date} src={'https://s3.amazonaws.com/hose/images/' + Store.show.date + '.jpg'}/>
           </div>
           <div className="current-track-information">
-            <div 
-              ref='hoverDate'
-              className={this.state.hoverDate ? "inline-wrapper hovering" : "inline-wrapper"}
-              onMouseEnter = {() => {this.setState({hoverDate: true})}}
-            >
+            <div className="inline-wrapper">
+              <span> {Store.track.title} </span>
+            </div>
+            <div className="inline-wrapper">
               <span 
                 onClick={() => {history.push('/show/' + Store.show.id)}}
                 className="clickable"
               > 
-                {Store.track.title}&nbsp;&bull;&nbsp;{date.toLocaleDateString('en-US', dateOptions)}  
-              </span>
-              <span 
-                onClick={() => {history.push('/show/' + Store.show.id)}}
-                className="clickable"
-              > 
-                {date.toLocaleDateString('en-US', dateOptions)}  
+                 {moment(Store.show.date).format('LL')}
               </span>
             </div>
-            <div 
-              ref='hoverVenue'
-              className={this.state.hoverDate ? "inline-wrapper hovering" : "inline-wrapper"}
-              onMouseEnter = {() => {this.setState({hoverVenue: true})}}
-            >
-              <span className="clickable" 
-                onClick={() => {history.push('/shows/venue/' + Store.show.venue.id)}}> {Store.show.venue.name}, {Store.show.venue.location} 
-              </span>
+            <div className="inline-wrapper">
               <span className="clickable" 
                 onClick={() => {history.push('/shows/venue/' + Store.show.venue.id)}}> {Store.show.venue.name}, {Store.show.venue.location} 
               </span>
@@ -262,7 +234,7 @@ class Player1 extends Component {
         </progress>
         <div className="progress-container">
           <span className="volume-slider-container">
-            {this.state.volume == 0 ? 
+            {this.state.volume === 0 ? 
               <Ionicon 
                 icon="ios-volume-mute"
                 fontSize="40px"

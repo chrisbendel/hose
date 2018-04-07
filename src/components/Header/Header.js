@@ -49,7 +49,6 @@ class Header extends Component {
       createToken(res.access_token).then(res => {
         localStorage.setItem('jwt', res.token.replace(/"/g, ""));
         getUserInfo().then(user => {
-          console.log(user);
           Store.user = user;
           this.closeLogin();
           window.location.reload();

@@ -2,18 +2,32 @@ import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import {history} from './../../History';
 import Ionicon from 'react-ionicons';
+import {tourFilters} from './../../filters';
 import {isShowJamchart, isShowSoundboard} from './../../Utils';
 import Store from './../../Store';
+import moment from 'moment';
 
 class ShowList extends Component {
-  constructor(props) {
-    super(props);
-  }
+  renderShowTourSection = shows => {
+    const tours = [...new Set(shows.map(show => show.tour_id))];
 
-  renderShows = shows => {
-    return shows.map(function (show, index) {
-      let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      let date = new Date(show.date + ' 00:00');
+    return tours.map(tour => {
+      let foundTour = tourFilters.find(searchTour => searchTour.value === tour);
+      return (
+        <div key={tour}>
+          <h1>{foundTour.label}</h1>
+          <hr/>
+          <div className="show-gallery">
+            {this.renderShows(shows, tour)}
+          </div>
+        </div>
+      )
+    });
+  }
+  renderShows = (shows, tour) => {
+    return shows.filter(show => {
+      return show.tour_id === tour;
+    }).map((show, index) => {
       return (
         <div key={show.id} onClick={() => {history.push('/show/' + show.id)}} className="image-container">
           <div className="show-information-control">
@@ -67,18 +81,20 @@ class ShowList extends Component {
               </div>
             </div>
           </div>
-          <span onClick={() => {history.push('/show/' + show.id)}} className="show-date">
-            {date.toLocaleDateString('en-US', dateOptions)}
-          </span>
+          <h3 onClick={() => {history.push('/show/' + show.id)}} className="show-date">
+            {moment(show.date).format('LL')}
+          </h3>
           <span className="show-venue">
             {show.venue ? 
-              <span onClick={() => {history.push('/shows/venue/' + show.venue.id)}}>
-                {show.venue.name} {show.venue.location}
-              </span>
+              <div onClick={() => {history.push('/shows/venue/' + show.venue.id)}}>
+                <p className="show-location">{show.venue.name}</p>
+                <p className="show-location">{show.venue.location}</p>
+              </div>
               :
-              <span onClick={() => {history.push('/shows/venue/' + show.venue_id)}}>
-                {show.venue_name} {show.location}
-              </span>
+              <div onClick={() => {history.push('/shows/venue/' + show.venue_id)}}>
+                <p className="show-location">{show.venue_name}</p>
+                <p className="show-location">{show.location}</p>
+              </div>
             }
           </span>
         </div>
@@ -94,8 +110,10 @@ class ShowList extends Component {
     }
 
     return (
-      <div className="show-gallery">
-        {this.renderShows(shows)}
+      // <div className="show-gallery">
+      <div>
+        {this.renderShowTourSection(shows)}
+        {/* {this.renderShows(shows)} */}
       </div>
     );
   }

@@ -9,6 +9,11 @@
   display: none;
 }
 
+.show-location {
+  padding: 0;
+  margin: 0;
+}
+
 .show-information {
   position: absolute;
   top: 0;
@@ -178,10 +183,10 @@
 }
 
 .show-gallery {
-  flex-grow: 4;
+  flex-grow: 6;
   position: relative;
   display: grid;
-  grid-template-columns: repeat(5, .25fr);
+  grid-template-columns: repeat(6, .25fr);
   grid-gap: 20px;
   max-width: calc(100% - 10px);
   width: 100%;
@@ -252,6 +257,7 @@
   bottom: 100px;
   right: 30px;
   height: 40px;
+  z-index: 9999;
   width: 40px;
   display: flex;
   justify-content: center;

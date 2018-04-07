@@ -6,7 +6,6 @@
 }
 
 .show-container-item {
-  cursor: pointer;
   display: flex;
   padding: .5rem;
   border-radius: 5px;

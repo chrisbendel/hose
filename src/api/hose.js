@@ -25,7 +25,7 @@ const userRequest = async (method, body = null) => {
     }
   }
   
-  if (method == "POST") {
+  if (method === "POST") {
     req.body = body
   }
 
@@ -193,7 +193,6 @@ export const refreshToken = () => {
   }
   
   const token = localStorage.getItem('jwt').replace(/"/g, "");
-  const decodedToken = jwt_decode(token);
 
   let req = {
     method: "POST",

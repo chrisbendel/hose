@@ -51,7 +51,7 @@ export const msToSec = time => {
 
 export const getTourName = id => {
   return tourFilters.find(tour => {
-    return tour.value == id;
+    return tour.value === id;
   }).label;
 }
 

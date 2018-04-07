@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { view } from 'react-easy-state'
-import Store from './../../Store';
 import ShowList from './ShowList';
 import './../../css/Shows.css';
 import { shows, showsForYear, showsForVenue, showsForTour, show } from './../../api/phishin';
@@ -8,7 +7,6 @@ import {yearFilters, tourFilters, venueFilters, sortByOptions} from './../../fil
 import {isShowJamchart, isShowSoundboard} from './../../Utils';
 import Ionicon from 'react-ionicons';
 import Filter from './Filter';
-import {history} from './../../History';
 import Spinner from 'react-spinkit';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -55,7 +53,7 @@ class Shows extends Component {
     }
   }
 
-  loadRelevantData = (type = null, id = null) => {
+  loadRelevantData = async (type = null, id = null) => {
     if (!type) {
       this.fetchAllShows();
     }
@@ -187,6 +185,7 @@ class Shows extends Component {
 
   setCurrentFilter = (title) => {
     this.setState({currentFilter: title});
+    this.refs.shows.scrollTop = 0;
   }
 
   render() {

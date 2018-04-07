@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { view } from 'react-easy-state'
-import { history } from './../../History';
 import Ionicon from 'react-ionicons';
 import {likeTrack} from './../../api/hose';
 import {isTrackJamchart, isTrackSoundboard, getLikesPercent, msToSec} from './../../Utils';
@@ -11,10 +10,6 @@ import { Tooltip } from 'react-tippy';
 import 'react-tippy/dist/tippy.css'
 
 class TrackList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   renderTracks = tracks => {
     return tracks.map(track => {
       return (
@@ -59,6 +54,7 @@ class TrackList extends Component {
             <Ionicon 
               icon={Store.userLikes.indexOf(track.id) > -1 ? "ios-thumbs-up" : "ios-thumbs-up-outline"}
               font-size="40px"
+              className="clickable"
               color="#4CAF50"
               onClick={() => {
                 likeTrack(track.id).then(track => {
@@ -97,52 +93,60 @@ class TrackList extends Component {
     });
   }
 
+  renderTracksForYear = tracks => {
+    const years = [...new Set(tracks.map(track => {
+      let year = parseInt(track.show_date.substring(0, 4), 10);
+      return year;
+    }))];
+
+    return years.map(year => {
+      let tracksForYear = tracks.filter(track => {
+        return parseInt(track.show_date.substring(0, 4), 10) === year;
+      })
+      return (
+        <div key={year}>
+          <h2>{year}</h2>
+          <hr/>
+          {this.renderTracks(tracksForYear)}
+        </div>
+      );
+    });
+  }
+
   renderTrackContainer = tracks => {
     return (
-      <ul className="playlist-section">
-        <li className="show-container-item header-cell">
-          <span className="image-cell-header"></span>
-          <span className="playing-cell"></span>
-          <span className="like-cell"></span>
-          <span className="title-cell">Song</span>
-          <span className="length-cell">
-            <Ionicon
-              style={{cursor: 'pointer'}}
-              icon="md-time"
-              color="black"
-              onClick={() => {this.props.sortTracks('duration')}}
-            />
-          </span>
-          <span className="title-cell" onClick={() => {this.props.sortTracks('date')}}>Date</span>
-          <span className="jamcharts-cell" onClick={() => {this.props.sortTracks('jamcharts')}}>Jamcharts</span>
-          <span className="jamcharts-cell" onClick={() => {this.props.sortTracks('soundboard')}}>Soundboard</span>
-          <span className="likes-cell">
-            <Ionicon 
-              style={{cursor: 'pointer'}}
-              icon="md-heart-outline"
-              font-size="30px"
-              color="black"
-              onClick={() => {this.props.sortTracks('likes_count')}}
-            />
-          </span>
-        </li>
-        {this.renderTracks(tracks)} 
-      </ul>
+      <div>
+        <h2>{this.props.songName}</h2>
+        <button className={this.props.currentFilter === "jamcharts" ? "track-filter active" : "track-filter"} onClick={() => {
+          this.props.sortTracks('jamcharts');
+        }}>
+          Jamcharts
+        </button>
+        <button className={this.props.currentFilter === "soundboard" ? "track-filter active" : "track-filter"} onClick={() => {
+          this.props.sortTracks('soundboard');
+        }}>
+          Soundboards
+        </button>
+        <button className={this.props.currentFilter === "likes_count" ? "track-filter active" : "track-filter"} onClick={() => {
+          this.props.sortTracks('likes_count');
+        }}>
+          Popular
+        </button>
+        <button className={this.props.currentFilter === "duration" ? "track-filter active" : "track-filter"} onClick={() => {
+          this.props.sortTracks('duration');
+        }}>
+          Longest
+        </button>
+        <ul className="playlist-section">
+          {this.renderTracksForYear(tracks)}
+        </ul>
+      </div>
     )
   }
 
   render() {
     const {tracks} = this.props;
-
-    if (!tracks.length) {
-      return <div> Search for a song to find all of it's performances </div>
-    }
-
-    return (
-      <div className="shows-gallery">
-        {this.renderTrackContainer(tracks)}
-      </div>
-    );
+    return this.renderTrackContainer(tracks);
   }
 }
 

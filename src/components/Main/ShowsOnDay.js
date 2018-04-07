@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { view } from 'react-easy-state'
-import Store from './../../Store';
 import ShowList from './../Main/ShowList';
 import { showsToday } from './../../api/phishin';
 
@@ -36,8 +35,9 @@ class ShowsOnDay extends Component {
       let ordered = shows.sort(function (a, b) {
         return new Date(b.date) - new Date(a.date);
       });
+
       this.setState({
-        shows: shows,
+        shows: ordered,
         date: today.toLocaleString('en-us', {month: 'long', day: "numeric"})
       });
     });

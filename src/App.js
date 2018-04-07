@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import { Router, Route } from 'react-router-dom';
 import SideNav from './components/SideNav/SideNav';
-import Player from './components/Footer/Player';
 import Player1 from './components/Footer/Player1';
 import Show from './components/Main/Show';
 import Shows from './components/Main/Shows';
 import ShowsOnDay from './components/Main/ShowsOnDay';
 import Tracks from './components/Main/Tracks';
+import Songs from './components/Main/Songs';
 import Radio from './components/Radio';
 import {history} from './History';
 import Header from './components/Header/Header';
 import Spinner from 'react-spinkit';
 import Store from './Store';
-import { getUser, createPlaylist, createModel, getUserInfo } from './api/hose';
+import { getUser, createModel, getUserInfo } from './api/hose';
 
 class App extends Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class App extends Component {
           return song.like
         })
         .map(song => {
-          return parseInt(song.song_id)
+          return parseInt(song.song_id, 10)
         });
       }
       this.setState({loading: false});
@@ -54,7 +54,7 @@ class App extends Component {
 
     return (
       <div>
-        <Router history={history} basename="/">
+        <Router history={history}>
           <div>
             <nav className="left">
               <SideNav />
@@ -67,6 +67,7 @@ class App extends Component {
               <Route exact path="/show/:id" component={Show}/>
               <Route exact path="/showsOnDay/:date?" component={ShowsOnDay}/>
               <Route exact path="/shows/:type?/:id?" component={Shows}/>
+              <Route exact path="/songs" component={Songs}/>
               <Route exact path="/song/:id?" component={Tracks}/>
               <Route exact path="/radio" component={Radio}/>
             </main>

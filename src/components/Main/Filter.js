@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { store, view } from 'react-easy-state'
+import { view } from 'react-easy-state'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import './../../css/Shows.css';

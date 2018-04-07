@@ -31,7 +31,8 @@ const songs = async() => {
   return data.data.map(song => {
     return {
       label: song.title,
-      value: song.alias_for ? song.alias_for : song.id
+      value: song.alias_for ? song.alias_for : song.id,
+      count: song.tracks_count
     };
   });
 }
