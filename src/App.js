@@ -13,7 +13,7 @@ import {history} from './History';
 import Header from './components/Header/Header';
 import Spinner from 'react-spinkit';
 import Store from './Store';
-import { getUser, createModel, getUserInfo } from './api/hose';
+import { getUser, createModel, getUserInfo, createPlaylist } from './api/hose';
 
 class App extends Component {
   constructor(props) {
@@ -28,6 +28,7 @@ class App extends Component {
     Store.updateUserLikes();
     getUserInfo().then(user => {
       Store.user = user;
+      createPlaylist();
     });
     getUser().then(songs => {
       createModel();

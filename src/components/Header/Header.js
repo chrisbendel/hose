@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import {search} from './../../api/phishin.js';
-import {createToken, getPlaylist, getUserInfo} from './../../api/hose.js';
+import {createToken, getPlaylist, getUserInfo, createPlaylist} from './../../api/hose.js';
 import {trackJamcharts} from './../../filters';
 import {shuffle} from './../../Utils';
 import Store from './../../Store';
@@ -21,7 +21,7 @@ String.prototype.fuzzy = function (s) {
   for (; l = s[i++] ;) {
     if ((n = hay.indexOf(l, n)) === -1) {
       return false;
-    } 
+    }
   } 
   return true;
 };
@@ -48,6 +48,7 @@ class Header extends Component {
       const res = Hello('facebook').getAuthResponse();
       createToken(res.access_token).then(res => {
         localStorage.setItem('jwt', res.token.replace(/"/g, ""));
+        createPlaylist();
         getUserInfo().then(user => {
           Store.user = user;
           this.closeLogin();
@@ -123,6 +124,7 @@ class Header extends Component {
       return;
     }
 
+    createPlaylist();
     const playlist = await getPlaylist();
     if (playlist && playlist.songs) {
       Store.setPlaylist(playlist.songs, true);
