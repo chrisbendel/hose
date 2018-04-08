@@ -172,6 +172,7 @@ class Player1 extends Component {
         </div>
         <div className="controls-container">
           <Ionicon
+            className="clickable"
             icon={Store.userDislikes.indexOf(Store.track.id) > -1 ? "ios-thumbs-down" : "ios-thumbs-down-outline"}
             font-size="50px"
             color="#4CAF50"
@@ -214,6 +215,7 @@ class Player1 extends Component {
             onClick={() => {Store.next()}}
           />
           <Ionicon 
+            className="clickable"
             icon={Store.userLikes.indexOf(Store.track.id) > -1 ? "ios-thumbs-up" : "ios-thumbs-up-outline"}
             font-size="50px"
             color="#4CAF50"
