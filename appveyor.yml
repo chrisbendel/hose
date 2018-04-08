@@ -19,6 +19,6 @@ install:
   - ps: Install-Product node 8 x64
 
 build_script:
-  - yarn release:win
+  - npm run release:win
 
 test: off

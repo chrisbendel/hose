@@ -124,7 +124,12 @@ class Tracks extends Component {
         </div>
 
         <div className="tracks-container" ref="tracks">
-          <TrackList sortTracks={this.sortTracks.bind(this)} currentFilter={this.state.currentFilter} songName={tracks[0].title} tracks={tracks}/>
+          <TrackList 
+            sortTracks={this.sortTracks.bind(this)} 
+            currentFilter={this.state.currentFilter} 
+            songName={tracks[0].title} 
+            tracks={tracks}
+          />
         </div>
       </div>
     );

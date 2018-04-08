@@ -97,12 +97,12 @@ class TrackList extends Component {
     const years = [...new Set(tracks.map(track => {
       let year = parseInt(track.show_date.substring(0, 4), 10);
       return year;
-    }))];
+    }))].sort((a, b) => b-a);
 
     return years.map(year => {
       let tracksForYear = tracks.filter(track => {
         return parseInt(track.show_date.substring(0, 4), 10) === year;
-      })
+      });
       return (
         <div key={year}>
           <h2>{year}</h2>
