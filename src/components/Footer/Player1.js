@@ -5,6 +5,7 @@ import {listen, completed, likeTrack, dislikeTrack, skipped} from './../../api/h
 import {history} from './../../History';
 import Ionicon from 'react-ionicons';
 import moment from 'moment';
+import './../../css/Player.css';
 
 const timeFormat = time => {
   var hrs = ~~(time / 3600);
