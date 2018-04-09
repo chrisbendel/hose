@@ -39,7 +39,6 @@ export default store({
         createPlaylist();
 
         getPlaylist().then(playlist => {
-          console.log(playlist);
           if (playlist && playlist.songs && playlist.songs.length) {
             this.setPlaylist(playlist.songs, true);
           } else {
