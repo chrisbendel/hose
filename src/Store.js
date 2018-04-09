@@ -1,6 +1,6 @@
 import { store } from 'react-easy-state'
 import { show, trackInfo } from './api/phishin';
-import { getUser, getPlaylist } from './api/hose';
+import { getUser, getPlaylist, createPlaylist } from './api/hose';
 import {trackJamcharts} from './filters';
 import {shuffle} from './Utils';
 
@@ -36,8 +36,11 @@ export default store({
   next() {
     if (this.position === this.playlist.length) {
       if (this.radio) {
+        createPlaylist();
+
         getPlaylist().then(playlist => {
-          if (playlist && playlist.songs) {
+          console.log(playlist);
+          if (playlist && playlist.songs && playlist.songs.length) {
             this.setPlaylist(playlist.songs, true);
           } else {
             let randomTracks = shuffle(trackJamcharts);
@@ -51,6 +54,10 @@ export default store({
         this.setCurrentlyPlaying(id);
       }
     } else {
+      if (this.position > this.playlist.length / 1.2) {
+        createPlaylist();
+      }
+
       this.position += 1;
       let id = this.playlist[this.position - 1];
       let next = this.playlist[this.position];
@@ -73,12 +80,13 @@ export default store({
     this.position = position;
     this.playlist = trackIds;
 
+    if (position > trackIds / 1.2) {
+      createPlaylist();
+    }
+
     let next = trackIds[position];
     let current = trackIds.find((id, index) => {
       return index === position - 1;
-      // if (index === position - 1) {
-      //   return id;
-      // }
     });
 
     this.setCurrentlyPlaying(current, next);
@@ -102,6 +110,7 @@ export default store({
         this.nextTrack = track.mp3;
       });
     }
+
     if (this.track && this.track.id === id) {
       this.player.play();
     } else {

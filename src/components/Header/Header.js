@@ -39,7 +39,8 @@ class Header extends Component {
 
   componentDidMount() {
     Hello.init({
-      facebook: '101222444042913'
+      facebook: '101222444042913',
+      google: '674463981364-t963pf9iiarjua1ocleog8nf97m30oeb.apps.googleusercontent.com'
     });
   }
 

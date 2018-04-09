@@ -28,10 +28,10 @@ class App extends Component {
     Store.updateUserLikes();
     getUserInfo().then(user => {
       Store.user = user;
+      createModel();
       createPlaylist();
     });
     getUser().then(songs => {
-      createModel();
       if (songs) {
         Store.userLikes = songs.filter(song => {
           return song.like
