@@ -53,7 +53,7 @@ export default store({
         this.setCurrentlyPlaying(id);
       }
     } else {
-      if (this.position > this.playlist.length / 1.2) {
+      if (this.position > this.playlist.length / 1.5) {
         createPlaylist();
       }
 
