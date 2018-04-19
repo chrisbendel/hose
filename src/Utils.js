@@ -75,20 +75,26 @@ export const isShowSoundboard = id => {
 
 
 export const msToSec = time => {
-  fetch('./wasm/program.wasm').then(response =>
-    response.arrayBuffer()
-  ).then(bytes => {
-    WebAssembly.instantiate(bytes)
-  }).then(results => {
+
+  fetchAndInstantiateWasm('https://rawgit.com/chrisbendel/hose/wasm/src/wasm/math.wasm').then(m => {
+    console.log(m.add(5, 5));
+    console.log(m.minutes(time));
+  });
+  // fetch('./wasm/program.wasm').then(response =>
+  //   response.arrayBuffer()
+  // ).then(bytes => {
+  //   WebAssembly.instantiate(bytes)
+  // }).then(results => {
     // console.log(results);
     // instance = results.instance;
     // console.log(instance.exports.add(1,1));
     // document.getElementById("container").innerText = instance.exports.add(1,1);
-  });
-
+  // });
+  
   
   var minutes = Math.floor(time / 60000);
   var seconds = ((time % 60000) / 1000).toFixed(0);
+  console.log("time", time, "minutes", minutes, "seconds", seconds )
   return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
