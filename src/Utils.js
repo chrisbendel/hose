@@ -10,8 +10,9 @@ import {saveAs} from 'file-saver';
 function fetchAndInstantiateWasm (url, imports) {
   return fetch(url)
   .then(res => {
-    if (res.ok)
+    if (res.ok) {
       return res.arrayBuffer();
+    }
     throw new Error(`Unable to fetch Web Assembly file ${url}.`);
   })
   .then(bytes => WebAssembly.compile(bytes))
@@ -67,9 +68,19 @@ export const test = async () => {
   .then(m => {
     console.log(m.getSqrt(5));
   });
+
+  //this
+  fetchAndInstantiateWasm('./wasm/add.wasm', {
+    env: {
+      consoleLog: num => console.log(num)
+    }
+  })
+  .then(m => {
+    console.log(m.add(5, 5));
+  });
 }
 
-export const msToSec = time => {  
+export const msToSec = time => {
   fetch('./wasm/program.wasm').then(response =>
     response.arrayBuffer()
   ).then(bytes => {
