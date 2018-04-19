@@ -7,7 +7,7 @@ import JSZip from 'jszip';
 import {saveAs} from 'file-saver';
 
 function fetchAndInstantiateWasm (url, imports) {
-  return fetch(url)
+  return fetch(url, {cache: "force-cache"})
   .then(res => {
     if (res.ok) {
       return res.arrayBuffer();
@@ -30,8 +30,12 @@ export const test = async () => {
   // });
 
   //this
-  fetchAndInstantiateWasm('https://rawgit.com/chrisbendel/hose/wasm/src/wasm/add.wasm').then(m => {
+  // fetchAndInstantiateWasm('https://rawgit.com/chrisbendel/hose/wasm/src/wasm/add.wasm').then(m => {
+  //   console.log(m.add(5, 5));
+  // });
+  fetchAndInstantiateWasm('https://cdn.rawgit.com/chrisbendel/hose/wasm/src/wasm/math.wasm').then(m => {
     console.log(m.add(5, 5));
+    console.log(m.minutes(1696444));
   });
 }
 
@@ -75,22 +79,11 @@ export const isShowSoundboard = id => {
 
 
 export const msToSec = time => {
-
-  fetchAndInstantiateWasm('https://rawgit.com/chrisbendel/hose/wasm/src/wasm/math.wasm').then(m => {
-    console.log(m.add(5, 5));
-    console.log(m.minutes(time));
-  });
-  // fetch('./wasm/program.wasm').then(response =>
-  //   response.arrayBuffer()
-  // ).then(bytes => {
-  //   WebAssembly.instantiate(bytes)
-  // }).then(results => {
-    // console.log(results);
-    // instance = results.instance;
-    // console.log(instance.exports.add(1,1));
-    // document.getElementById("container").innerText = instance.exports.add(1,1);
-  // });
   
+  fetchAndInstantiateWasm('https://cdn.rawgit.com/chrisbendel/hose/wasm/src/wasm/math.wasm').then(m => {
+    console.log(m.add(5, 5));
+    console.log(m.minutes(1696444));
+  });
   
   var minutes = Math.floor(time / 60000);
   var seconds = ((time % 60000) / 1000).toFixed(0);
