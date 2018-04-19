@@ -1,8 +1,23 @@
+/* global WebAssembly */
+
 import {trackJamcharts, trackSoundboards, showJamcharts, showSoundboards, tourFilters} from './filters';
 import isElectron from 'is-electron';
 import JSZipUtils from 'jszip-utils';
 import JSZip from 'jszip';
-import {saveAs} from 'file-saver'
+import {saveAs} from 'file-saver';
+// import WebAssembly from 'webassembly';
+
+function fetchAndInstantiateWasm (url, imports) {
+  return fetch(url)
+  .then(res => {
+    if (res.ok)
+      return res.arrayBuffer();
+    throw new Error(`Unable to fetch Web Assembly file ${url}.`);
+  })
+  .then(bytes => WebAssembly.compile(bytes))
+  .then(module => WebAssembly.instantiate(module, imports || {}))
+  .then(instance => instance.exports);
+}
 
 export const shuffle = array => {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -43,7 +58,30 @@ export const isShowSoundboard = id => {
   return showSoundboards.indexOf(id) !== -1;
 }
 
-export const msToSec = time => {
+export const test = async () => {
+  fetchAndInstantiateWasm('https://cdn.rawgit.com/guybedford/wasm-intro/f61eb0d0/3-calling-js-from-wasm/program.wasm', {
+    env: {
+      consoleLog: num => console.log(num)
+    }
+  })
+  .then(m => {
+    console.log(m.getSqrt(5));
+  });
+}
+
+export const msToSec = time => {  
+  fetch('./wasm/program.wasm').then(response =>
+    response.arrayBuffer()
+  ).then(bytes => {
+    WebAssembly.instantiate(bytes)
+  }).then(results => {
+    console.log(results);
+    // instance = results.instance;
+    // console.log(instance.exports.add(1,1));
+    // document.getElementById("container").innerText = instance.exports.add(1,1);
+  });
+
+  
   var minutes = Math.floor(time / 60000);
   var seconds = ((time % 60000) / 1000).toFixed(0);
   return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
