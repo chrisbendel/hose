@@ -5,37 +5,31 @@ import isElectron from 'is-electron';
 import JSZipUtils from 'jszip-utils';
 import JSZip from 'jszip';
 import {saveAs} from 'file-saver';
+import funMath from './math.wasm';
 
 function fetchAndInstantiateWasm (url, imports) {
-  return fetch(url, {cache: "force-cache"})
-  .then(res => {
-    if (res.ok) {
-      return res.arrayBuffer();
-    }
-    throw new Error(`Unable to fetch Web Assembly file ${url}.`);
-  })
+  return fetch(url)
+  .then(res => res.arrayBuffer())
   .then(bytes => WebAssembly.compile(bytes))
   .then(module => WebAssembly.instantiate(module, imports || {}))
   .then(instance => instance.exports);
 }
 
-export const test = async () => {
-  // fetchAndInstantiateWasm('https://cdn.rawgit.com/guybedford/wasm-intro/f61eb0d0/3-calling-js-from-wasm/program.wasm', {
-  //   env: {
-  //     consoleLog: num => console.log(num)
-  //   }
-  // })
-  // .then(m => {
-  //   console.log(m.getSqrt(5));
-  // });
+function fetchWasm(url) {
+  return fetch(url).then(response =>
+    response.arrayBuffer()
+  ).then(buffer =>
+      WebAssembly.instantiate(buffer, {})
+  ).then(({module, instance}) =>
+    console.log(instance.exports)
+      // instance.exports.f()
+  );
 
-  //this
-  // fetchAndInstantiateWasm('https://rawgit.com/chrisbendel/hose/wasm/src/wasm/add.wasm').then(m => {
-  //   console.log(m.add(5, 5));
-  // });
-  fetchAndInstantiateWasm('https://cdn.rawgit.com/chrisbendel/hose/wasm/src/wasm/math.wasm').then(m => {
+}
+
+export const test = async () => {
+  fetchAndInstantiateWasm(funMath).then(m => {
     console.log(m.add(5, 5));
-    console.log(m.minutes(1696444));
   });
 }
 
@@ -80,14 +74,14 @@ export const isShowSoundboard = id => {
 
 export const msToSec = time => {
   
-  fetchAndInstantiateWasm('https://cdn.rawgit.com/chrisbendel/hose/wasm/src/wasm/math.wasm').then(m => {
-    console.log(m.add(5, 5));
-    console.log(m.minutes(1696444));
-  });
+  // fetchAndInstantiateWasm('https://cdn.rawgit.com/chrisbendel/hose/wasm/src/wasm/math.wasm').then(m => {
+  //   console.log(m.add(5, 5));
+  //   console.log(m.minutes(1696444));
+  // });
   
   var minutes = Math.floor(time / 60000);
   var seconds = ((time % 60000) / 1000).toFixed(0);
-  console.log("time", time, "minutes", minutes, "seconds", seconds )
+  // console.log("time", time, "minutes", minutes, "seconds", seconds )
   return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
