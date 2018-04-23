@@ -7,30 +7,12 @@ import JSZip from 'jszip';
 import {saveAs} from 'file-saver';
 import funMath from './math.wasm';
 
-function fetchAndInstantiateWasm (url, imports) {
+function fetchWasm (url, imports) {
   return fetch(url)
   .then(res => res.arrayBuffer())
   .then(bytes => WebAssembly.compile(bytes))
   .then(module => WebAssembly.instantiate(module, imports || {}))
   .then(instance => instance.exports);
-}
-
-function fetchWasm(url) {
-  return fetch(url).then(response =>
-    response.arrayBuffer()
-  ).then(buffer =>
-      WebAssembly.instantiate(buffer, {})
-  ).then(({module, instance}) =>
-    console.log(instance.exports)
-      // instance.exports.f()
-  );
-
-}
-
-export const test = async () => {
-  fetchAndInstantiateWasm(funMath).then(m => {
-    console.log(m.add(5, 5));
-  });
 }
 
 export const shuffle = array => {
@@ -71,17 +53,13 @@ export const isShowSoundboard = id => {
   return showSoundboards.indexOf(id) !== -1;
 }
 
-
 export const msToSec = time => {
-  
-  // fetchAndInstantiateWasm('https://cdn.rawgit.com/chrisbendel/hose/wasm/src/wasm/math.wasm').then(m => {
-  //   console.log(m.add(5, 5));
-  //   console.log(m.minutes(1696444));
-  // });
-  
   var minutes = Math.floor(time / 60000);
   var seconds = ((time % 60000) / 1000).toFixed(0);
-  // console.log("time", time, "minutes", minutes, "seconds", seconds )
+  fetchWasm(funMath).then(m => {
+    console.log(m.add(5, 5));
+    console.log("time", time, "m", minutes, m.minutes(time), "s", seconds, m.seconds(time) )
+  });
   return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
