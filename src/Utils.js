@@ -54,13 +54,18 @@ export const isShowSoundboard = id => {
 }
 
 export const msToSec = time => {
-  var minutes = Math.floor(time / 60000);
-  var seconds = ((time % 60000) / 1000).toFixed(0);
+  // var minutes = Math.floor(time / 60000);
+  // var seconds = ((time % 60000) / 1000).toFixed(0);
+
   fetchWasm(funMath).then(m => {
-    console.log(m.add(5, 5));
-    console.log("time", time, "m", minutes, m.minutes(time), "s", seconds, m.seconds(time) )
+    var minutes = m.minutes(time);
+    var seconds = m.seconds(time);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    // console.log(m.add(5, 5));
+    // console.log("time", time, "m", minutes, m.minutes(time), "s", seconds, m.seconds(time) )
   });
-  return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+  // console.log("Time for wasm math: " + (end - start));
+  // return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
 export const getTourName = id => {

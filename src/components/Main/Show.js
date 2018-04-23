@@ -13,6 +13,8 @@ import './../../css/Show.css';
 import './../../css/SongCell.css';
 import 'react-tippy/dist/tippy.css';
 
+let start, end;
+
 class Show extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +26,11 @@ class Show extends Component {
       playingTrack: null,
       playingPosition: null
     }
+  }
+
+  componentDidMount() {
+    end = performance.now();
+    console.log("Total time: " + (end - start));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -177,6 +184,7 @@ class Show extends Component {
   }
 
   render() {
+    start = performance.now();
     let show = this.state.show;
     
     if (!show) {
