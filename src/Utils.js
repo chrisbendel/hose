@@ -20,19 +20,6 @@ function fetchAndInstantiateWasm (url, imports) {
 }
 
 export const test = async () => {
-  // fetchAndInstantiateWasm('https://cdn.rawgit.com/guybedford/wasm-intro/f61eb0d0/3-calling-js-from-wasm/program.wasm', {
-  //   env: {
-  //     consoleLog: num => console.log(num)
-  //   }
-  // })
-  // .then(m => {
-  //   console.log(m.getSqrt(5));
-  // });
-
-  //this
-  // fetchAndInstantiateWasm('https://rawgit.com/chrisbendel/hose/wasm/src/wasm/add.wasm').then(m => {
-  //   console.log(m.add(5, 5));
-  // });
   fetchAndInstantiateWasm('https://cdn.rawgit.com/chrisbendel/hose/wasm/src/wasm/math.wasm').then(m => {
     console.log(m.add(5, 5));
     console.log(m.minutes(1696444));
@@ -80,14 +67,12 @@ export const isShowSoundboard = id => {
 
 export const msToSec = time => {
   
-  fetchAndInstantiateWasm('https://cdn.rawgit.com/chrisbendel/hose/wasm/src/wasm/math.wasm').then(m => {
-    console.log(m.add(5, 5));
-    console.log(m.minutes(1696444));
-  });
-  
   var minutes = Math.floor(time / 60000);
   var seconds = ((time % 60000) / 1000).toFixed(0);
-  console.log("time", time, "minutes", minutes, "seconds", seconds )
+  fetchAndInstantiateWasm('https://rawgit.com/chrisbendel/hose/wasm/src/wasm/math.wasm').then(m => {
+    console.log(m.add(5, 5));
+    console.log("time", time, "m", minutes, m.minutes(time), "s", seconds, m.seconds(time) )
+  });
   return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 

@@ -6,14 +6,14 @@
   (func (export "minutes") (param $lhs i32) (result i32)
     get_local $lhs
     i32.const 60000
-    i32.div_s
+    i32.div_u
   )
   (func (export "seconds") (param $lhs i32) (result i32)
     get_local $lhs
     i32.const 60000
     i32.rem_s
     i32.const 1000
-    i32.div_s
+    i32.div_u
   )
   (export "add" (func $add))
 )
