@@ -4,8 +4,11 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import isElectron from 'is-electron';
+import { loadWasm } from './Utils';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+loadWasm().then(() => {
+  ReactDOM.render(<App />, document.getElementById('root'));
+})
 
 if (isElectron()) {
   registerServiceWorker();

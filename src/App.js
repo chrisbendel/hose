@@ -13,6 +13,7 @@ import {history} from './History';
 import Header from './components/Header/Header';
 import Spinner from 'react-spinkit';
 import Store from './Store';
+import {loadWasm} from './Utils';
 import { getUser, createModel, getUserInfo, createPlaylist } from './api/hose';
 
 class App extends Component {
@@ -23,7 +24,7 @@ class App extends Component {
       loading: true
     }
   }
-
+  
   componentDidMount() {
     Store.updateUserLikes();
     getUserInfo().then(user => {

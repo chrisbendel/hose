@@ -1,11 +1,17 @@
 /* global WebAssembly */
-
 import {trackJamcharts, trackSoundboards, showJamcharts, showSoundboards, tourFilters} from './filters';
 import isElectron from 'is-electron';
 import JSZipUtils from 'jszip-utils';
 import JSZip from 'jszip';
 import {saveAs} from 'file-saver';
 import funMath from './wasm/math.wasm';
+
+let wasm;
+export const loadWasm = async () => {
+  let expressions = await fetchWasm(funMath);
+  wasm = expressions;
+  return Promise.resolve();
+}
 
 function fetchWasm (url, imports) {
   return fetch(url)
@@ -54,17 +60,18 @@ export const isShowSoundboard = id => {
 }
 
 export const msToSec = time => {
+  // Old close for comparisons
   // var minutes = Math.floor(time / 60000);
   // var seconds = ((time % 60000) / 1000).toFixed(0);
-
-  fetchWasm(funMath).then(m => {
-    var minutes = m.minutes(time);
-    var seconds = m.seconds(time);
+  // console.log(funcs);
+  // let newTime = await fetchWasm(funMath).then(m => {
+    var minutes = wasm.minutes(time);
+    var seconds = wasm.seconds(time);
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-    // console.log(m.add(5, 5));
-    // console.log("time", time, "m", minutes, m.minutes(time), "s", seconds, m.seconds(time) )
-  });
-  // console.log("Time for wasm math: " + (end - start));
+  // });
+  // console.log(newTime);
+  // return newTime;
+  return 1
   // return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 

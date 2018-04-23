@@ -209,7 +209,6 @@ export const refreshToken = () => {
   return fetch("https://hose-api-dev.herokuapp.com/public/token/refresh", req)
   .then(res => res.json())
   .then(data => {
-    console.log(data.token);
     if (data.token) {
       return data.token.replace(/"/g, "");
     } else {

@@ -70,6 +70,7 @@ class Show extends Component {
     return tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
+      // console.log(msToSec(track.duration));
       return (
         <li key={track.position} 
             className={
