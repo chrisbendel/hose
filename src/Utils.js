@@ -5,7 +5,7 @@ import isElectron from 'is-electron';
 import JSZipUtils from 'jszip-utils';
 import JSZip from 'jszip';
 import {saveAs} from 'file-saver';
-import funMath from './math.wasm';
+import funMath from './wasm/math.wasm';
 
 function fetchWasm (url, imports) {
   return fetch(url)

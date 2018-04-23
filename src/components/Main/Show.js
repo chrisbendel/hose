@@ -38,7 +38,6 @@ class Show extends Component {
   }
 
   componentWillMount() {
-    test();
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();
     } else {
