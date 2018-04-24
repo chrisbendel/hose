@@ -16,4 +16,13 @@
     i32.div_u
   )
   (export "add" (func $add))
+
+  (func (export "percent") (param $likes f32) (param $max f32) (result f32)
+    get_local $likes
+    get_local $max
+    f32.div
+    f32.const 100
+    f32.mul
+    f32.ceil
+  )
 )
