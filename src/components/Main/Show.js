@@ -4,7 +4,7 @@ import Store from './../../Store';
 import { show, randomShow } from './../../api/phishin';
 import { likeTrack } from './../../api/hose';
 import Ionicon from 'react-ionicons';
-import {test, benchmark, getLikesPercent, formatTime, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName, downloadShow} from './../../Utils';
+import {test, benchmark, getLikesPercent, msFormat, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName, downloadShow} from './../../Utils';
 import { Tooltip } from 'react-tippy';
 import {history} from './../../History';
 import Spinner from 'react-spinkit';
@@ -66,7 +66,7 @@ class Show extends Component {
     return tracks.filter(track => {
       return track.set_name === set;
     }).map(track => {
-      // console.log(formatTime(track.duration));
+      // console.log(msFormat(track.duration));
       return (
         <li key={track.position} 
             className={
@@ -98,7 +98,7 @@ class Show extends Component {
             </span>
             <span className="track-number">{track.position}</span>
           </span>
-          <span className="length-cell">{formatTime(track.duration)}</span>
+          <span className="length-cell">{msFormat(track.duration)}</span>
           <span className="like-cell">
             <Ionicon 
               icon={Store.userLikes.indexOf(track.id) > -1 ? "ios-thumbs-up" : "ios-thumbs-up-outline"}

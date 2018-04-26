@@ -76,35 +76,35 @@ export const benchmark = () => {
 
   let t3 = performance.now();
   for (let i = 0; i < 1000000; i++) {
-    var minutes = wasm.minutes(time);
-    var seconds = wasm.seconds(time);
+    var minutes = wasm.msToMinutes(time);
+    var seconds = wasm.msToSeconds(time);
   }
   let t4 = performance.now();
   console.log("WASM  took: " + (t4-t3) + " milliseconds");
 }
 
-export const formatTime = time => {
+export const msFormat = time => {
   // Old code for comparisons
   // var minutes = Math.floor(time / 60000);
   // var seconds = ((time % 60000) / 1000).toFixed(0);
 
   //Wasm code
-  let hrs = wasm.hours(time);
-  let mins = wasm.minutes(time);
-  let secs = wasm.seconds(time);
+  let minutes = wasm.msToMinutes(time);
+  let seconds = wasm.msToSeconds(time);
 
-  var ret = "";
-
-  if (hrs > 0) {
-    ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
-  }
-
-  ret += "" + mins + ":" + (secs < 10 ? "0" : "");
-  ret += "" + secs;
-  return ret;
-  // return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+  // console.log("mins", minutes);
+  // console.log("secs", secs);
+  // console.log(minutes, seconds);
+  return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
   // return newTime;
   // return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+}
+
+export const secFormat = time => {
+  let seconds = wasm.secToSeconds(time);
+  let minutes = wasm.secToMinutes(time);
+
+  return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
 export const getTourName = id => {

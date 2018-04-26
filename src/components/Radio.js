@@ -3,7 +3,7 @@ import Store from './../Store';
 import { view } from 'react-easy-state'
 import Ionicon from 'react-ionicons';
 import {history} from './../History';
-import {formatTime} from './../Utils';
+import {msFormat} from './../Utils';
 import {fetchRandomTrack, show, trackInfo, playsCount} from './../api/phishin';
 import {} from './../api/hose';
 import Spinner from 'react-spinkit';
@@ -90,7 +90,7 @@ class Radio extends Component {
               <Ionicon fontSize="15px" color="red" icon="ios-heart"/>
               <span>{track.likes_count}</span>
             </div>
-            <div>{formatTime(track.duration)}</div>
+            <div>{msFormat(track.duration)}</div>
             <div>{show.date}</div>
             <div>{show.venue.name}</div>
             <div>{show.venue.location}</div>

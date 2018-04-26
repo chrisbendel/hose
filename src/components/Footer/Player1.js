@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { view } from 'react-easy-state';
 import Store from './../../Store';
 import {listen, completed, likeTrack, dislikeTrack, skipped} from './../../api/hose';
-import {seekTime} from './../../Utils';
+import {seekTime, msFormat, secFormat} from './../../Utils';
 import {history} from './../../History';
 import Ionicon from 'react-ionicons';
 import moment from 'moment';
@@ -280,8 +280,8 @@ class Player1 extends Component {
               />
             </div>
           </span>
-          <span>{timeFormat(this.state.currentTime)}</span>
-          <span>&nbsp; / {timeFormat(this.state.totalTime)}</span>
+          <span>{secFormat(this.state.currentTime)}</span>
+          <span>&nbsp; / {secFormat(this.state.totalTime)}</span>
         </div>
       </div>
     );

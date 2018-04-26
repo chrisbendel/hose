@@ -5,13 +5,13 @@
     i32.add
   )
 
-  (func (export "minutes") (param $time i32) (result i32)
+  (func (export "msToMinutes") (param $time i32) (result i32)
     get_local $time
     i32.const 60000
     i32.div_u
   )
 
-  (func (export "seconds") (param $time i32) (result i32)
+  (func (export "msToSeconds") (param $time i32) (result i32)
     get_local $time
     i32.const 60000
     i32.rem_s
@@ -19,9 +19,17 @@
     i32.div_u
   )
 
-  (func (export "hours") (param $time i32) (result i32)
+  (func (export "secToSeconds") (param $time i32) (result i32)
+    get_local $time
+    i32.const 60
+    i32.rem_s
+  )
+
+  (func (export "secToMinutes") (param $time i32) (result i32)
     get_local $time
     i32.const 3600
+    i32.rem_s
+    i32.const 60
     i32.div_u
   )
 
