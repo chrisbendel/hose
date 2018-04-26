@@ -60,6 +60,10 @@ export const isShowSoundboard = id => {
   return showSoundboards.indexOf(id) !== -1;
 }
 
+export const seekTime = (offset, offsetWidth, duration) => {
+  return wasm.seekTime(offset, offsetWidth, duration);
+}
+
 export const benchmark = () => {
   let time = 23412309;
   let t1 = performance.now();
@@ -77,21 +81,28 @@ export const benchmark = () => {
   }
   let t4 = performance.now();
   console.log("WASM  took: " + (t4-t3) + " milliseconds");
-
-
 }
 
-export const msToSec = time => {
-  // Old close for comparisons
+export const formatTime = time => {
+  // Old code for comparisons
   // var minutes = Math.floor(time / 60000);
   // var seconds = ((time % 60000) / 1000).toFixed(0);
-  // console.log(funcs);
-  // let newTime = await fetchWasm(funMath).then(m => {
-    var minutes = wasm.minutes(time);
-    var seconds = wasm.seconds(time);
-    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-  // });
-  // console.log(newTime);
+
+  //Wasm code
+  let hrs = wasm.hours(time);
+  let mins = wasm.minutes(time);
+  let secs = wasm.seconds(time);
+
+  var ret = "";
+
+  if (hrs > 0) {
+    ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+  }
+
+  ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+  ret += "" + secs;
+  return ret;
+  // return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
   // return newTime;
   // return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }

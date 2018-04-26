@@ -2,26 +2,27 @@ import React, { Component } from 'react';
 import { view } from 'react-easy-state';
 import Store from './../../Store';
 import {listen, completed, likeTrack, dislikeTrack, skipped} from './../../api/hose';
+import {seekTime} from './../../Utils';
 import {history} from './../../History';
 import Ionicon from 'react-ionicons';
 import moment from 'moment';
 import './../../css/Player.css';
 
-const timeFormat = time => {
-  var hrs = ~~(time / 3600);
-  var mins = ~~((time % 3600) / 60);
-  var secs = (time % 60).toFixed(0);
+// const timeFormat = time => {
+//   var hrs = ~~(time / 3600);
+//   var mins = ~~((time % 3600) / 60);
+//   var secs = (time % 60).toFixed(0);
 
-  var ret = "";
+//   var ret = "";
 
-  if (hrs > 0) {
-    ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
-  }
+//   if (hrs > 0) {
+//     ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+//   }
 
-  ret += "" + mins + ":" + (secs < 10 ? "0" : "");
-  ret += "" + secs;
-  return ret;
-}
+//   ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+//   ret += "" + secs;
+//   return ret;
+// }
 
 class Player1 extends Component {
   constructor(props) {
@@ -61,8 +62,11 @@ class Player1 extends Component {
       this.player.addEventListener('ended', this.trackEnded);
       this.player.addEventListener('loadedmetadata', this.trackStarted);
       this.prog.addEventListener('click', (e) => {
-        var percent = e.offsetX / this.prog.offsetWidth;
-        this.player.currentTime = percent * this.player.duration;
+        let newTime = seekTime(e.offsetX, this.prog.offsetWidth, this.player.duration);
+        this.player.currentTime = newTime;
+        // this.player.currentTime = seekTime(e.offsetX, this.prog.offsetWidth, this.player.duration);
+        // this.player.currentTime = percent * this.player.duration;
+        let percent = e.offsetX / this.prog.offsetWidth;
         this.setState({
           currentProgress: percent
         })

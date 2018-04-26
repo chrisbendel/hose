@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { view } from 'react-easy-state'
 import Ionicon from 'react-ionicons';
 import {likeTrack} from './../../api/hose';
-import {isTrackJamchart, isTrackSoundboard, getLikesPercent, msToSec} from './../../Utils';
+import {isTrackJamchart, isTrackSoundboard, getLikesPercent, formatTime} from './../../Utils';
 import Store from './../../Store';
 import { NavLink } from 'react-router-dom';
 import Spinner from 'react-spinkit';
@@ -64,7 +64,7 @@ class TrackList extends Component {
             />
           </span>
           <span className="title-cell">{track.title}</span>
-          <span className="length-cell">{msToSec(track.duration)}</span>
+          <span className="length-cell">{formatTime(track.duration)}</span>
           <NavLink className="title-cell" to={'/show/' + track.show_id}><span>{track.show_date}</span></NavLink>
           <span className="jamcharts-cell">{isTrackJamchart(track.id) ? "Jamcharts" : ""}</span>
           <span className="jamcharts-cell">{isTrackSoundboard(track.id) ? "Soundboard" : ""}</span>
