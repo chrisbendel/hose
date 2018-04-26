@@ -4,7 +4,7 @@ import Store from './../../Store';
 import { show, randomShow } from './../../api/phishin';
 import { likeTrack } from './../../api/hose';
 import Ionicon from 'react-ionicons';
-import {test, getLikesPercent, msToSec, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName, downloadShow} from './../../Utils';
+import {test, benchmark, getLikesPercent, msToSec, isTrackJamchart, isShowJamchart, isShowSoundboard, getTourName, downloadShow} from './../../Utils';
 import { Tooltip } from 'react-tippy';
 import {history} from './../../History';
 import Spinner from 'react-spinkit';
@@ -28,11 +28,6 @@ class Show extends Component {
     }
   }
 
-  componentDidMount() {
-    end = performance.now();
-    console.log("Total time: " + (end - start));
-  }
-
   componentWillReceiveProps(nextProps) {
     let nextId = nextProps.match.params.id;
     if (this.state.show && (nextId !== this.state.show.id)) {
@@ -45,6 +40,7 @@ class Show extends Component {
   }
 
   componentWillMount() {
+    benchmark();
     if (this.props.match.params.id === 'random') {
       this.fetchRandomShow();
     } else {

@@ -39,7 +39,8 @@ export const getLikesPercent = (tracks, likes) => {
   const max = Math.max.apply(Math, tracks.map(function(o) {
     return o.likes_count;
   }));
-  let percent = Math.ceil((likes / max) * 100);
+  // let percent = Math.ceil((likes / max) * 100);
+  let percent = wasm.percent(likes, max);
   return percent > 0 ? percent + "%" : "5px";
 }
 
@@ -59,6 +60,27 @@ export const isShowSoundboard = id => {
   return showSoundboards.indexOf(id) !== -1;
 }
 
+export const benchmark = () => {
+  let time = 23412309;
+  let t1 = performance.now();
+  for (let i = 0; i < 1000000; i++) {
+    var minutes = Math.floor(time / 60000);
+    var seconds = ((time % 60000) / 1000).toFixed(0);
+  }
+  let t2 = performance.now();
+  console.log("JS took: " + (t2-t1) + " milliseconds");
+
+  let t3 = performance.now();
+  for (let i = 0; i < 1000000; i++) {
+    var minutes = wasm.minutes(time);
+    var seconds = wasm.seconds(time);
+  }
+  let t4 = performance.now();
+  console.log("WASM  took: " + (t4-t3) + " milliseconds");
+
+
+}
+
 export const msToSec = time => {
   // Old close for comparisons
   // var minutes = Math.floor(time / 60000);
@@ -71,7 +93,6 @@ export const msToSec = time => {
   // });
   // console.log(newTime);
   // return newTime;
-  return 1
   // return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 

@@ -7,6 +7,7 @@ import isElectron from 'is-electron';
 import { loadWasm } from './Utils';
 
 loadWasm().then(() => {
+  console.log('loaded wasm');
   ReactDOM.render(<App />, document.getElementById('root'));
 })
 
