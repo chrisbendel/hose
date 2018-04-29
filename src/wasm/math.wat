@@ -1,10 +1,4 @@
 (module
-  (func (export "add") (param $lhs i32) (param $rhs i32) (result i32)
-    get_local $lhs
-    get_local $rhs
-    i32.add
-  )
-
   (func (export "msToMinutes") (param $time i32) (result i32)
     get_local $time
     i32.const 60000
@@ -55,17 +49,17 @@
     f32.mul
   )
 
-  (func (export "poweroftwo") (result i32)
+  (func (export "benchmark") (result i32)
     (local $count i32)
     (local $sum i32)
     (local $i i32)
     (set_local $sum (i32.const 1))
-    (set_local $count (i32.const 5))
+    (set_local $count (i32.const 1000000))
     (block $stop
       (br_if $stop (i32.lt_s (get_local $count) (i32.const 1)))
       (loop $mainloop 
-        (set_local $sum
-          ( i32.mul (get_local $sum) (i32.const 2) )
+        (set_local $sum 
+          (i32.rem_s (i32.const 60) (i32.const 8000))
         )
         (br_if $mainloop
           ( i32.gt_s
@@ -78,48 +72,4 @@
     )
     (i32.const 0)
   )
-
-  (func (export "test") (param $0 i32) (result i32)
-  (local $1 i32)
-  (local $2 i32)
-  (block $label$0
-   (br_if $label$0
-    (i32.lt_s
-     (get_local $0)
-     (i32.const 1)
-    )
-   )
-   (set_local $1
-    (i32.const 0)
-   )
-   (set_local $2
-    (i32.const 0)
-   )
-   (loop $label$1
-    (set_local $2
-     (i32.add
-      (i32.popcnt
-       (get_local $1)
-      )
-      (get_local $2)
-     )
-    )
-    (br_if $label$1
-     (i32.ne
-      (get_local $0)
-      (tee_local $1
-       (i32.add
-        (get_local $1)
-        (i32.const 1)
-       )
-      )
-     )
-    )
-   )
-   (return
-    (get_local $2)
-   )
-  )
-  (i32.const 0)
- )
 )

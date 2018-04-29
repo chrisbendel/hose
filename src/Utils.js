@@ -83,27 +83,115 @@ export const msFormat = time => {
 }
 
 export const benchmark = () => {
-  console.log(wasm.poweroftwo(4));
-  console.log(wasm.test(50));
-  let time = 23412309;
-  let t1 = performance.now();
-  for (let i = 0; i < 10000; i++) {
-    var timestamp = msFormatJs(time);
-    // var minutes = Math.floor(time / 60000);
-    // var seconds = ((time % 60000) / 1000);
-  }
-  let t2 = performance.now();
-  console.log("JS took: " + (t2-t1) + " milliseconds");
+  var t0, t1;
+  //15 minutes in seconds and millseconds
+  let secondsTime = 900;
+  let msTime = 900000;
+  let counter = 1000000;
 
-  let t3 = performance.now();
-  for (let i = 0; i < 100000; i++) {
-    // const likes = 12;
-    // const max = 28;
-    // let percent = wasm.percent(likes, max);
-    var timestamp = msFormat(time);
+// ----------------------
+// msToSeconds benchmark
+// ----------------------
+  console.log('----------------------');
+  console.log('msToSeconds benchmark');
+  console.log('----------------------');
+  t0 = performance.now();
+  //inline wasm tests here
+  wasm.benchmark();
+  //msToSeconds code
+  t1 = performance.now();
+  console.log("JS took: " + (t1-t0) + " milliseconds");
+
+// ----------------------
+// msToMinutes benchmark
+// ----------------------
+  console.log('----------------------');
+  console.log('msToMinutes benchmark');
+  console.log('----------------------');
+  t0 = performance.now();
+  //msToMinutes code
+  t1 = performance.now();
+  console.log("JS took: " + (t1-t0) + " milliseconds");
+
+// ----------------------
+// secToSeconds benchmark
+// ----------------------
+  console.log('----------------------');
+  console.log('secToSeconds benchmark');
+  console.log('----------------------');
+  t0 = performance.now();
+  for (let i = 0; i < counter; i++) {
+    var secs = secondsTime % 60
   }
-  let t4 = performance.now();
-  console.log("WASM  took: " + (t4-t3) + " milliseconds");
+  t1 = performance.now();
+  console.log("JS took: " + (t1-t0) + " milliseconds");
+
+  t0 = performance.now();
+  for (let i = 0; i < counter; i++) {
+    var secs = wasm.secToSeconds(secondsTime);
+  }
+  t1 = performance.now();
+  console.log("WASM took: " + (t1-t0) + " milliseconds");
+
+  t0 = performance.now();
+  wasm.benchmark();
+  t1 = performance.now();
+  console.log("Inline WASM took: " + (t1-t0) + " milliseconds");
+
+// ----------------------
+// secToMinutes benchmark
+// ----------------------
+  console.log('----------------------');
+  console.log('secToMinutes benchmark');
+  console.log('----------------------');
+  t0 = performance.now();
+  //secToMinutes code
+  t1 = performance.now();
+  console.log("JS took: " + (t1-t0) + " milliseconds");
+
+// ----------------------
+// percent benchmark
+// ----------------------
+  console.log('----------------------');
+  console.log('percent benchmark');
+  console.log('----------------------');
+  t0 = performance.now();
+  //percent code
+  t1 = performance.now();
+  console.log("JS took: " + (t1-t0) + " milliseconds");
+
+// ----------------------
+// seekTime benchmark
+// ----------------------
+  console.log('----------------------');
+  console.log('seekTime benchmark');
+  console.log('----------------------');
+  t0 = performance.now();
+  //seekTime code
+  t1 = performance.now();
+  console.log("JS took: " + (t1-t0) + " milliseconds");
+
+
+
+  // let time = 23412309;
+  // let t1 = performance.now();
+  // for (let i = 0; i < 1000000; i++) {
+  //   var timestamp = msFormatJs(time);
+  //   // var minutes = Math.floor(time / 60000);
+  //   // var seconds = ((time % 60000) / 1000);
+  // }
+  // let t2 = performance.now();
+  // console.log("JS took: " + (t2-t1) + " milliseconds");
+
+  // let t3 = performance.now();
+  // for (let i = 0; i < 1000000; i++) {
+  //   // const likes = 12;
+  //   // const max = 28;
+  //   // let percent = wasm.percent(likes, max);
+  //   var timestamp = msFormat(time);
+  // }
+  // let t4 = performance.now();
+  // console.log("WASM  took: " + (t4-t3) + " milliseconds");
 }
 
 export const secFormat = time => {
