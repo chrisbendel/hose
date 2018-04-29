@@ -96,11 +96,23 @@ export const benchmark = () => {
   console.log('msToSeconds benchmark');
   console.log('----------------------');
   t0 = performance.now();
-  //inline wasm tests here
-  wasm.benchmark();
-  //msToSeconds code
+  for (let i = 0; i < counter; i++) {
+    var secs = ((msTime % 60000) / 1000)
+  }
   t1 = performance.now();
   console.log("JS took: " + (t1-t0) + " milliseconds");
+
+  t0 = performance.now();
+  for (let i = 0; i < counter; i++) {
+    var secs = wasm.msToSeconds(msTime);
+  }
+  t1 = performance.now();
+  console.log("WASM took: " + (t1-t0) + " milliseconds");
+
+  t0 = performance.now();
+  wasm.benchmarkMsToSeconds();
+  t1 = performance.now();
+  console.log("Inline WASM took: " + (t1-t0) + " milliseconds");
 
 // ----------------------
 // msToMinutes benchmark
@@ -109,9 +121,24 @@ export const benchmark = () => {
   console.log('msToMinutes benchmark');
   console.log('----------------------');
   t0 = performance.now();
-  //msToMinutes code
+  for (let i = 0; i < counter; i++) {
+    var mins = Math.floor(msTime / 60000);
+  }
   t1 = performance.now();
   console.log("JS took: " + (t1-t0) + " milliseconds");
+
+  t0 = performance.now();
+  for (let i = 0; i < counter; i++) {
+    var secs = wasm.msToMinutes(msTime);
+  }
+  t1 = performance.now();
+  console.log("WASM took: " + (t1-t0) + " milliseconds");
+
+  t0 = performance.now();
+  wasm.benchmarkMsToMinutes();
+  t1 = performance.now();
+  console.log("Inline WASM took: " + (t1-t0) + " milliseconds");
+
 
 // ----------------------
 // secToSeconds benchmark
@@ -145,9 +172,23 @@ export const benchmark = () => {
   console.log('secToMinutes benchmark');
   console.log('----------------------');
   t0 = performance.now();
-  //secToMinutes code
+  for (let i = 0; i < counter; i++) {
+    var minutes = ~~((secondsTime % 3600) / 60);
+  }
   t1 = performance.now();
   console.log("JS took: " + (t1-t0) + " milliseconds");
+
+  t0 = performance.now();
+  for (let i = 0; i < counter; i++) {
+    var secs = wasm.secToMinutes(secondsTime);
+  }
+  t1 = performance.now();
+  console.log("WASM took: " + (t1-t0) + " milliseconds");
+
+  t0 = performance.now();
+  wasm.benchmarkSecToMinutes();
+  t1 = performance.now();
+  console.log("Inline WASM took: " + (t1-t0) + " milliseconds");
 
 // ----------------------
 // percent benchmark
@@ -156,10 +197,25 @@ export const benchmark = () => {
   console.log('percent benchmark');
   console.log('----------------------');
   t0 = performance.now();
-  //percent code
+  let max = 28;
+  let likes = 24;
+  for (let i = 0; i < counter; i++) {
+    let percent = Math.ceil((likes / max) * 100);
+  }
   t1 = performance.now();
   console.log("JS took: " + (t1-t0) + " milliseconds");
 
+  t0 = performance.now();
+  for (let i = 0; i < counter; i++) {
+    var secs = wasm.percent(likes, max);
+  }
+  t1 = performance.now();
+  console.log("WASM took: " + (t1-t0) + " milliseconds");
+
+  t0 = performance.now();
+  wasm.benchmarkPercent();
+  t1 = performance.now();
+  console.log("Inline WASM took: " + (t1-t0) + " milliseconds");
 // ----------------------
 // seekTime benchmark
 // ----------------------
@@ -167,31 +223,27 @@ export const benchmark = () => {
   console.log('seekTime benchmark');
   console.log('----------------------');
   t0 = performance.now();
-  //seekTime code
+  let duration = 2000454;
+  let offSet = 80;
+  let offsetWidth = 100;
+  for (let i = 0; i < counter; i++) {
+    let offsetPercent = offSet / offsetWidth;
+    let timeToSeek = duration * offsetPercent;
+  }
   t1 = performance.now();
   console.log("JS took: " + (t1-t0) + " milliseconds");
 
+  t0 = performance.now();
+  for (let i = 0; i < counter; i++) {
+    var secs = wasm.seekTime(offSet, offsetWidth, duration);
+  }
+  t1 = performance.now();
+  console.log("WASM took: " + (t1-t0) + " milliseconds");
 
-
-  // let time = 23412309;
-  // let t1 = performance.now();
-  // for (let i = 0; i < 1000000; i++) {
-  //   var timestamp = msFormatJs(time);
-  //   // var minutes = Math.floor(time / 60000);
-  //   // var seconds = ((time % 60000) / 1000);
-  // }
-  // let t2 = performance.now();
-  // console.log("JS took: " + (t2-t1) + " milliseconds");
-
-  // let t3 = performance.now();
-  // for (let i = 0; i < 1000000; i++) {
-  //   // const likes = 12;
-  //   // const max = 28;
-  //   // let percent = wasm.percent(likes, max);
-  //   var timestamp = msFormat(time);
-  // }
-  // let t4 = performance.now();
-  // console.log("WASM  took: " + (t4-t3) + " milliseconds");
+  t0 = performance.now();
+  wasm.benchmarkSeekTime();
+  t1 = performance.now();
+  console.log("Inline WASM took: " + (t1-t0) + " milliseconds");
 }
 
 export const secFormat = time => {
