@@ -55,6 +55,28 @@
     f32.mul
   )
 
+  (func (export "poweroftwo") (param $count i32) (result i32)
+    (local $sum i32)
+    (local $i i32)
+    (set_local $sum (i32.const 1))
+    (block $stop
+      (br_if $stop (i32.lt_s (get_local $count) (i32.const 1)))
+      (loop $mainloop 
+        (set_local $sum
+          ( i32.mul (get_local $sum) (i32.const 2) )
+        )
+        (br_if $mainloop
+          ( i32.gt_s
+            ( get_local $count )
+            ( tee_local $i (i32.add (get_local $i) (i32.const 1) ) )
+          )
+        )
+      )
+      (return (get_local $sum))
+    )
+    (i32.const 0)
+  )
+
   (func (export "test") (param $0 i32) (result i32)
   (local $1 i32)
   (local $2 i32)

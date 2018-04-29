@@ -83,6 +83,7 @@ export const msFormat = time => {
 }
 
 export const benchmark = () => {
+  console.log(wasm.poweroftwo(4));
   console.log(wasm.test(50));
   let time = 23412309;
   let t1 = performance.now();
