@@ -134,7 +134,7 @@ export const benchmark = () => {
   console.log("WASM took: " + (t1-t0) + " milliseconds");
 
   t0 = performance.now();
-  wasm.benchmark();
+  wasm.benchmarkSecToSeconds();
   t1 = performance.now();
   console.log("Inline WASM took: " + (t1-t0) + " milliseconds");
 
