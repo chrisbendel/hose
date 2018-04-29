@@ -49,7 +49,7 @@
     f32.mul
   )
 
-  (func (export "benchmark") (result i32)
+  (func (export "benchmarkSecToSeconds") (result i32)
     (local $count i32)
     (local $sum i32)
     (local $i i32)
@@ -59,7 +59,7 @@
       (br_if $stop (i32.lt_s (get_local $count) (i32.const 1)))
       (loop $mainloop 
         (set_local $sum 
-          (i32.rem_s (i32.const 60) (i32.const 8000))
+          (i32.rem_s (i32.const 60) (i32.const 900))
         )
         (br_if $mainloop
           ( i32.gt_s
