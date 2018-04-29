@@ -64,40 +64,45 @@ export const seekTime = (offset, offsetWidth, duration) => {
   return wasm.seekTime(offset, offsetWidth, duration);
 }
 
-export const benchmark = () => {
-  let time = 23412309;
-  let t1 = performance.now();
-  for (let i = 0; i < 1000000; i++) {
-    var minutes = Math.floor(time / 60000);
-    var seconds = ((time % 60000) / 1000).toFixed(0);
-  }
-  let t2 = performance.now();
-  console.log("JS took: " + (t2-t1) + " milliseconds");
+export const msFormatJs = time => {
+  var minutes = Math.floor(time / 60000);
+  var seconds = ((time % 60000) / 1000);
 
-  let t3 = performance.now();
-  for (let i = 0; i < 1000000; i++) {
-    var minutes = wasm.msToMinutes(time);
-    var seconds = wasm.msToSeconds(time);
-  }
-  let t4 = performance.now();
-  console.log("WASM  took: " + (t4-t3) + " milliseconds");
+  return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
 export const msFormat = time => {
   // Old code for comparisons
   // var minutes = Math.floor(time / 60000);
   // var seconds = ((time % 60000) / 1000).toFixed(0);
-
+  
   //Wasm code
   let minutes = wasm.msToMinutes(time);
   let seconds = wasm.msToSeconds(time);
-
-  // console.log("mins", minutes);
-  // console.log("secs", secs);
-  // console.log(minutes, seconds);
   return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-  // return newTime;
-  // return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+}
+
+export const benchmark = () => {
+  console.log(wasm.test(50));
+  let time = 23412309;
+  let t1 = performance.now();
+  for (let i = 0; i < 10000; i++) {
+    var timestamp = msFormatJs(time);
+    // var minutes = Math.floor(time / 60000);
+    // var seconds = ((time % 60000) / 1000);
+  }
+  let t2 = performance.now();
+  console.log("JS took: " + (t2-t1) + " milliseconds");
+
+  let t3 = performance.now();
+  for (let i = 0; i < 100000; i++) {
+    // const likes = 12;
+    // const max = 28;
+    // let percent = wasm.percent(likes, max);
+    var timestamp = msFormat(time);
+  }
+  let t4 = performance.now();
+  console.log("WASM  took: " + (t4-t3) + " milliseconds");
 }
 
 export const secFormat = time => {
